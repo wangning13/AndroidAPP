@@ -1,4 +1,4 @@
-package com.akari.quark.activity.navigation;
+package com.akari.quark.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;

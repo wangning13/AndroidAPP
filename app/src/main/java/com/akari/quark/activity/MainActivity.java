@@ -11,17 +11,16 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
 import com.akari.quark.R;
-import com.akari.quark.adapter.HomeAdapter;
-
-import java.util.ArrayList;
+import com.akari.quark.adapter.RecyclerViewAdapter;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,SwipeRefreshLayout.OnRefreshListener {
@@ -29,8 +28,7 @@ public class MainActivity extends AppCompatActivity
     private Context context;
     private Toolbar toolbar;
     private SwipeRefreshLayout mSwipeLayout;
-    private ListView mListView;
-    private ArrayList<String> list = new ArrayList<String>();
+    private RecyclerView mRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,9 +68,12 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void initEvent(){
-        mListView = (ListView) findViewById(R.id.listview);
-        mListView.setAdapter(new HomeAdapter<String>(this, android.R.layout.simple_list_item_1,
-                getData()));
+        mRecyclerView = (RecyclerView) findViewById(R.id.rv_list);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setAdapter(new RecyclerViewAdapter(this));
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
         mSwipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
         mSwipeLayout.setOnRefreshListener(this);
@@ -80,32 +81,6 @@ public class MainActivity extends AppCompatActivity
                 android.R.color.holo_green_light, android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
 
-    }
-
-    private ArrayList<String> getData() {
-        list.add("Hello");
-        list.add("This is Akari");
-        list.add("An Android Developer");
-        list.add("Love Open Source");
-        list.add("My GitHub: NonexistentAkarin");
-        list.add("Hello");
-        list.add("This is Akari");
-        list.add("An Android Developer");
-        list.add("Love Open Source");
-        list.add("My GitHub: NonexistentAkarin");list.add("Hello");
-        list.add("This is Akari");
-        list.add("An Android Developer");
-        list.add("Love Open Source");
-        list.add("My GitHub: NonexistentAkarin");list.add("Hello");
-        list.add("This is Akari");
-        list.add("An Android Developer");
-        list.add("Love Open Source");
-        list.add("My GitHub: NonexistentAkarin");list.add("Hello");
-        list.add("This is Akari");
-        list.add("An Android Developer");
-        list.add("Love Open Source");
-        list.add("My GitHub: NonexistentAkarin");
-        return list;
     }
 
     public void onRefresh() {
