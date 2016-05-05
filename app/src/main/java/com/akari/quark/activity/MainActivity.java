@@ -156,17 +156,17 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
         toolbar.setTitle(item.getTitle());
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.nav_find) {
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.nav_message) {
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_care_field) {
 
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.nav_care_question) {
 
-        } else if (id == R.id.nav_share) {
+        } else if (id == R.id.nav_raise_question) {
 
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.nav_answer_question) {
 
         }
 

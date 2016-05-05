@@ -3,34 +3,33 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="Import" />
+            android:id="@+id/nav_find"
+            android:icon="@drawable/guanzhu"
+            android:title="发现" />
         <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Gallery" />
-        <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow" />
-        <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
+            android:id="@+id/nav_message"
+            android:icon="@mipmap/xiaoxi"
+            android:title="消息" />
     </group>
 
-    <item android:title="Communicate">
-        <menu>
-            <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
-            <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
-        </menu>
-    </item>
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_care_field"
+            android:icon="@mipmap/ic1"
+            android:title="我关注的领域" />
+        <item
+            android:id="@+id/nav_care_question"
+            android:icon="@mipmap/ic2"
+            android:title="我关注的问题" />
+        <item
+            android:id="@+id/nav_raise_question"
+            android:icon="@mipmap/ic3"
+            android:title="我提出的问题" />
+        <item
+            android:id="@+id/nav_answer_question"
+            android:icon="@mipmap/ic4"
+            android:title="我回答的问题" />
+
+    </group>
 
 </menu>
