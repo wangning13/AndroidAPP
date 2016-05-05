@@ -1,2 +1,2 @@
 # Quark
-An Android Application Inspired by Zhihu
+An Android Application Temporarily Called Quark
