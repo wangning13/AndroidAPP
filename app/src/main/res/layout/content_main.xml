@@ -12,26 +12,16 @@
     tools:context=".activity.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
-    <LinearLayout
-        android:orientation="vertical"
+    <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/swipe_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent" >
 
-        <include
-            layout="@layout/card_main"
+        <ListView
+            android:id="@+id/listview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <include
-            layout="@layout/card_main"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <include
-            layout="@layout/card_main"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-    </LinearLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </RelativeLayout>
