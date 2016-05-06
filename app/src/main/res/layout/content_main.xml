@@ -5,13 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".activity.MainActivity"
-    tools:showIn="@layout/app_bar_main">
+    tools:context=".activity.MainActivity">
 
-    <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <com.yazhi.superswiperefreshlayout.SuperSwipeRefreshLayout
         android:id="@+id/swipe_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        app:AllowUpToRefresh="true"
+        app:BottomLocationPercent="0.88" >
 
         <android.support.v7.widget.RecyclerView
             xmlns:android="http://schemas.android.com/apk/res/android"
@@ -20,6 +21,6 @@
             android:id="@+id/rv_list"
             />
 
-    </android.support.v4.widget.SwipeRefreshLayout>
+    </com.yazhi.superswiperefreshlayout.SuperSwipeRefreshLayout>
 
 </RelativeLayout>
