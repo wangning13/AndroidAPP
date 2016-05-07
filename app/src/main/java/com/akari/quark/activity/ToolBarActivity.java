@@ -8,14 +8,15 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.akari.quark.R;
-import com.akari.quark.tools.ToolBarHelper;
+import com.akari.quark.tool.ToolBarHelper;
 
 /**
  * Created by motoon on 2016/5/6.
  */
 public abstract class ToolBarActivity extends AppCompatActivity {
-    private ToolBarHelper mToolBarHelper ;
     public Toolbar toolbar ;
+    private ToolBarHelper mToolBarHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
