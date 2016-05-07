@@ -63,11 +63,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     public int loadMore() {
         int pos = mInt.size();
-        mInt.add(mInt.size() - 1, 1);
-        mInt.add(mInt.size() - 1, 1);
-        mInt.add(mInt.size() - 1, 1);
-        mInt.add(mInt.size() - 1, 1);
-        mInt.add(mInt.size() - 1, 1);
+        mInt.add(mInt.size(), 1);
+        mInt.add(mInt.size(), 1);
+        mInt.add(mInt.size(), 1);
+        mInt.add(mInt.size(), 1);
+        mInt.add(mInt.size(), 1);
         notifyItemRangeInserted(mInt.size() - 5, mInt.size());
         return pos;
     }
