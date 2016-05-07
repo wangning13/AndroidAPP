@@ -1,4 +1,4 @@
-package com.akari.quark.tools;
+package com.akari.quark.tool;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -7,27 +7,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+
 import com.akari.quark.R;
 
 /**
  * Created by motoon on 2016/5/6.
  */
 public class ToolBarHelper {
-
-    /*上下文，创建view的时候需要用到*/
-    private Context mContext;
-
-    /*base view*/
-    private FrameLayout mContentView;
-
-    /*用户定义的view*/
-    private View mUserView;
-
-    /*toolbar*/
-    private Toolbar mToolBar;
-
-    /*视图构造器*/
-    private LayoutInflater mInflater;
 
     /*
     * 两个属性
@@ -38,6 +24,16 @@ public class ToolBarHelper {
             R.attr.windowActionBarOverlay,
             R.attr.actionBarSize
     };
+    /*上下文，创建view的时候需要用到*/
+    private Context mContext;
+    /*base view*/
+    private FrameLayout mContentView;
+    /*用户定义的view*/
+    private View mUserView;
+    /*toolbar*/
+    private Toolbar mToolBar;
+    /*视图构造器*/
+    private LayoutInflater mInflater;
 
     public ToolBarHelper(Context context, int layoutId) {
         this.mContext = context;

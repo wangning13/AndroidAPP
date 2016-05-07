@@ -3,15 +3,16 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".activity.CreatQuestion">
+    android:orientation="vertical"
+    tools:context=".activity.CreatQuestionActivity">
 
     <android.support.v7.widget.Toolbar
-        android:layout_height="?attr/actionBarSize"
-        android:layout_width="match_parent"
         android:id="@+id/id_tool_bar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
         app:navigationIcon="?attr/homeAsUpIndicator"
         >
@@ -20,54 +21,54 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:textSize="18sp"
             android:gravity="center"
             android:singleLine="true"
             android:text="一句话概括你的问题"
             android:textColor="#ffffff"
+            android:textSize="18sp"
             />
         <ImageView
             android:id="@+id/id_send_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="8dp"
             android:layout_gravity="right"
+            android:layout_marginRight="8dp"
             android:src="@drawable/send"/>
     </android.support.v7.widget.Toolbar>
 
 
     <TextView
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="18dp"
+        android:id="@+id/newTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="18dp"
         android:text="标题"
-        android:id="@+id/newTitle"
+        android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="#5052dd" />
 
     <EditText
+        android:id="@+id/newTitleText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
-        android:id="@+id/newTitleText"
         android:hint="请写下你的问题标题，用问号结尾" />
 
     <EditText
+        android:id="@+id/newTitleTopic"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="38dp"
-        android:id="@+id/newTitleTopic"
         android:hint="话题" />
 
     <EditText
+        android:id="@+id/newQuestionDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/newQuestionDescription"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="38dp"
-        android:hint="添加问题的补充说明"
-        android:background="@null" />
+        android:background="@null"
+        android:hint="添加问题的补充说明" />
 </LinearLayout>

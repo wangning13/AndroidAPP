@@ -20,7 +20,7 @@
         </activity>
         <activity android:name=".activity.QuestionDetailActivity" ></activity>
         <activity android:name=".activity.ToolBarActivity" ></activity>
-        <activity android:name=".activity.CreatQuestion" ></activity>
+        <activity android:name=".activity.CreatQuestionActivity"></activity>
     </application>
 
 </manifest>

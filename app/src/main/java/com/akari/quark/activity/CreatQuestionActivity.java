@@ -1,20 +1,12 @@
 package com.akari.quark.activity;
 
-import android.app.Activity;
 import android.content.Context;
-import android.os.Bundle;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SearchView;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.akari.quark.R;
@@ -22,14 +14,14 @@ import com.akari.quark.R;
 /**
  * Created by motoon on 2016/5/6.
  */
-public class CreatQuestion  extends ToolBarActivity {
+public class CreatQuestionActivity extends ToolBarActivity {
     private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.creat_question);
-        context = CreatQuestion.this;
+        context = CreatQuestionActivity.this;
         Toolbar toolbar = (Toolbar) findViewById(R.id.id_tool_bar);
         setSupportActionBar(toolbar);
     }
