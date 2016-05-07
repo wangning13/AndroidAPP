@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import com.akari.quark.R;
 import com.akari.quark.adapter.RecyclerViewAdapter;
+import com.akari.quark.listener.OnVerticalScrollListener;
 import com.hippo.refreshlayout.RefreshLayout;
 
 public class PageFragment extends Fragment implements RefreshLayout.OnRefreshListener {
@@ -20,6 +21,7 @@ public class PageFragment extends Fragment implements RefreshLayout.OnRefreshLis
     private int mPage;
     private RefreshLayout mSwipeLayout;
     private RecyclerView mRecyclerView;
+    private RecyclerViewAdapter mRecyclerViewAdapter;
 
     public static PageFragment newInstance(int page) {
         Bundle args = new Bundle();
@@ -40,13 +42,6 @@ public class PageFragment extends Fragment implements RefreshLayout.OnRefreshLis
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.content_main, container, false);
 
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.rv_list);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        mRecyclerView.setLayoutManager(layoutManager);
-        mRecyclerView.setAdapter(new RecyclerViewAdapter(getContext()));
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-
         mSwipeLayout = (RefreshLayout) view.findViewById(R.id.swipe_container);
         mSwipeLayout.setHeaderColorSchemeResources(android.R.color.holo_blue_bright,
                 android.R.color.holo_green_light, android.R.color.holo_orange_light,
@@ -56,6 +51,20 @@ public class PageFragment extends Fragment implements RefreshLayout.OnRefreshLis
                 android.R.color.holo_red_light);
         mSwipeLayout.setOnRefreshListener(this);
 
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.rv_list);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setAdapter(mRecyclerViewAdapter = new RecyclerViewAdapter(getContext()));
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerView.addOnScrollListener(new OnVerticalScrollListener() {
+            @Override
+            public void onScrolledToBottom() {
+                mSwipeLayout.setFooterRefreshing(true);
+                onFooterRefresh();
+            }
+        });
+
         return view;
     }
 
@@ -64,6 +73,8 @@ public class PageFragment extends Fragment implements RefreshLayout.OnRefreshLis
         sHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
+                mRecyclerViewAdapter.refresh();
+                mRecyclerView.scrollToPosition(0);
                 mSwipeLayout.setHeaderRefreshing(false);
             }
         }, 3000);
@@ -74,6 +85,7 @@ public class PageFragment extends Fragment implements RefreshLayout.OnRefreshLis
         sHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
+                mRecyclerView.scrollToPosition(mRecyclerViewAdapter.loadMore());
                 mSwipeLayout.setFooterRefreshing(false);
             }
         }, 3000);
