@@ -75,7 +75,7 @@ public class CircleImageView extends ImageView {
             mSetupPending = false;
         }
     }
-    
+
 
     @Override
     public ScaleType getScaleType() {

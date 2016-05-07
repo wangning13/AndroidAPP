@@ -1,6 +1,7 @@
 package com.akari.quark.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.akari.quark.R;
+import com.akari.quark.activity.QuestionDetailActivity;
 
 /**
  * Created by Akari on 2016/5/5.
@@ -50,6 +52,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             @Override
             public void onClick(View v) {
                 Toast.makeText(mContext,"蛤蛤",Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(mContext, QuestionDetailActivity.class);
+//                startActivity(intent);
             }
         });
 
