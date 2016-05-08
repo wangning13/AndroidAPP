@@ -15,6 +15,7 @@ import com.akari.quark.R;
  * Created by motoon on 2016/5/6.
  */
 public class CreatQuestionActivity extends ToolBarActivity {
+
     private Context context;
 
     @Override
