@@ -42,9 +42,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.mCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, "蛤蛤", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(mContext, "蛤蛤", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(mContext, QuestionDetailActivity.class);
-//                startActivity(intent);
+                mContext.startActivity(intent);
             }
         });
 
@@ -91,6 +91,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         public NormalViewHolder(View itemView) {
             super(itemView);
             mCardView = (CardView) itemView.findViewById(R.id.card_view);
+
+        }
+
+        public CardView getmCardView() {
+            return mCardView;
         }
     }
 }

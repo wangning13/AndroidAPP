@@ -15,6 +15,7 @@
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
         app:navigationIcon="?attr/homeAsUpIndicator"
+        android:theme="@style/AppTheme.AppBarOverlay"
         >
         <TextView
             android:id="@+id/toolbar_title"
