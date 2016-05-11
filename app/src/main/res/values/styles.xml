@@ -1,19 +1,14 @@
 <resources>
 
-    <style name="Theme.ToolBar.Quark" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="actionOverflowButtonStyle">@style/ActionButton.Overflow.Quark</item>
-    </style>
 
-    <style name="ActionButton.Overflow.Quark" parent="android:style/Widget.Holo.Light.ActionButton.Overflow">
-        <item name="android:src">@mipmap/menu</item>
-    </style>
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppBaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
+    <style name="AppTheme" parent="@style/AppBaseTheme"></style>
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>

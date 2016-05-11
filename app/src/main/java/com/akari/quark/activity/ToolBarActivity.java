@@ -20,6 +20,7 @@ public abstract class ToolBarActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.toolbar);
         toolbar = (Toolbar) findViewById(R.id.id_tool_bar);
         setSupportActionBar(toolbar);
 
