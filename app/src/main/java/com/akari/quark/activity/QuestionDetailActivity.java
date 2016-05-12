@@ -1,6 +1,7 @@
 package com.akari.quark.activity;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -14,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.widget.Button;
 import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
@@ -57,6 +59,27 @@ public class QuestionDetailActivity extends AppCompatActivity implements SwipeRe
                     Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show();
 //                    Intent intent = new Intent(context, CreatQuestionActivity.class);
 //                    startActivity(intent);
+                }
+            });
+        }
+        //为关注按钮设置响应事件
+        final Button button = (Button) findViewById(R.id.concern_button);
+        if(button.getText().equals("关注")){
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    button.setText("已关注");
+                    button.setBackgroundColor(Color.parseColor("#D1D1D1"));
+                }
+            });
+
+        }
+        if(button.getText().equals("已关注")){
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    button.setText("关注");
+                    button.setBackgroundColor(Color.parseColor("#00A162"));
                 }
             });
         }

@@ -144,11 +144,13 @@
                         android:id="@+id/concern_button"
                         android:layout_width="70dp"
                         android:layout_height="27dp"
-                        android:background="#00A162"
+                        android:background="@drawable/shape"
                         android:layout_marginLeft="180dp"
                         android:text="关注"
                         android:textSize="14dp"
-                        android:textColor="#FFFFFF"/>
+                        android:textColor="#FFFFFF"
+                        />
+
 
 
                 </LinearLayout>
