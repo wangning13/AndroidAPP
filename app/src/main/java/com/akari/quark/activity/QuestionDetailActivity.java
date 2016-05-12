@@ -2,6 +2,8 @@ package com.akari.quark.activity;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -47,6 +49,18 @@ public class QuestionDetailActivity extends AppCompatActivity implements SwipeRe
             }
         });
 
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_question_detail);
+        if (fab != null) {
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+//                    Intent intent = new Intent(context, CreatQuestionActivity.class);
+//                    startActivity(intent);
+                }
+            });
+        }
+
         mRecyclerView = (RecyclerView) findViewById(R.id.answer_list);
         mRefreshlayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
         mRefreshlayout.setOnRefreshListener(this);
@@ -68,7 +82,7 @@ public class QuestionDetailActivity extends AppCompatActivity implements SwipeRe
             }
         });
     }
-    
+
     @Override
     public void onRefresh()
     {
@@ -125,4 +139,7 @@ public class QuestionDetailActivity extends AppCompatActivity implements SwipeRe
 
         return super.onOptionsItemSelected(item);
     }
+
+
+
 }

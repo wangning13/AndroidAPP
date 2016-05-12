@@ -4,9 +4,9 @@
     android:id="@+id/answer_card_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="9dp"
-    android:layout_marginLeft="5dp"
-    android:layout_marginRight="5dp"
+    android:layout_marginTop="5dp"
+    android:layout_marginLeft="1dp"
+    android:layout_marginRight="1dp"
     android:background="#DEDEDE"
     android:foreground="?android:attr/selectableItemBackground"
     android:orientation="vertical" >
