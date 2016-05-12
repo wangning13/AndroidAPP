@@ -46,12 +46,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
         android:src="@android:drawable/ic_input_add"
-        app:backgroundTint="#1E73B3"
-        app:elevation="6dp"
+        app:backgroundTint="#ff000099"
+        app:rippleColor="#33728dff"
+        app:elevation="12dp"
         app:layout_behavior="com.akari.quark.behavior.ScrollAwareFABBehavior"
-        app:pressedTranslationZ="12dp"
-        app:rippleColor="#33728dff" />
+        app:pressedTranslationZ="20dp"
+        app:borderWidth="0dp"
+        android:layout_margin="@dimen/fab_margin"/>
 
 </android.support.design.widget.CoordinatorLayout>
