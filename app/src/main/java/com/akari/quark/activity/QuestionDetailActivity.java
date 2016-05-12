@@ -1,8 +1,6 @@
 package com.akari.quark.activity;
 
-import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -19,18 +17,14 @@ public class QuestionDetailActivity extends AppCompatActivity {
     private Context context;
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.question_detail);
         context = QuestionDetailActivity.this;
         Toolbar toolbar = (Toolbar) findViewById(R.id.id_tool_bar);
+        toolbar.setTitle("");
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -39,11 +33,13 @@ public class QuestionDetailActivity extends AppCompatActivity {
             }
         });
 
+    }
 
-
-
-
-
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
     }
 
     @Override

@@ -4,8 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -25,6 +23,7 @@ public class CreatQuestionActivity extends AppCompatActivity {
         setContentView(R.layout.creat_question);
         context = CreatQuestionActivity.this;
         Toolbar toolbar = (Toolbar) findViewById(R.id.id_tool_bar);
+        toolbar.setTitle("");
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
