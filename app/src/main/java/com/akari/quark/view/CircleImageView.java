@@ -19,6 +19,9 @@ import com.akari.quark.R;
 
 import java.util.Arrays;
 
+/**
+ * Created by Akari on 2016/5/13.
+ */
 public class CircleImageView extends ImageView {
 
     private static final int SHAPE_MODE_ROUND_RECT = 1;

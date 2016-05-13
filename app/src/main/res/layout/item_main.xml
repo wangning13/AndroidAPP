@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/card_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -9,7 +9,7 @@
     android:layout_marginRight="5dp"
     android:background="#DEDEDE"
     android:foreground="?android:attr/selectableItemBackground"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/item_view"
@@ -43,42 +43,44 @@
             android:layout_marginTop="5dp"
             android:orientation="horizontal" >
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:orientation="vertical" >
 
-                <ImageView
+                <com.akari.quark.view.CircleImageView
                     android:id="@+id/item_image"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_gravity="center_horizontal"
-                    android:src="@android:drawable/sym_def_app_icon" />
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/head"
+                    android:layout_alignParentTop="true"
+                    app:shape_mode="circle" />
 
                 <TextView
                     android:id="@+id/item_count"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center_horizontal"
+                    android:layout_width="25dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:background="#0060A1"
                     android:gravity="center"
-                    android:layout_marginTop="1dp"
                     android:text="12K"
-                    android:textColor="#0076D8"
+                    android:textColor="#ffffff"
                     android:textSize="14sp" />
-            </LinearLayout>
 
+            </RelativeLayout>
 
             <TextView
-                android:gravity="top"
                 android:id="@+id/item_content"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:lineSpacingExtra="1dp"
                 android:maxLines="3"
+                android:minLines="3"
                 android:text="Android 5.0采用了全新的Material Design设计语言，整个操作界面有了较大的变化。它相比以前更为简约，图标与操作方式都有所改进，整体更加扁平化，纸片儿风很多地方都可见"
                 android:textColor="#6B6B6B"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:gravity="left|top" />
 
         </LinearLayout>
 
