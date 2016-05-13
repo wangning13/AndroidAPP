@@ -8,24 +8,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.akari.quark.R;
-import com.akari.quark.activity.AnswerDetailActivity;
-import com.akari.quark.activity.CreatQuestionActivity;
 import com.akari.quark.activity.QuestionDetailActivity;
+import com.akari.quark.adapter.baseAdapter.RecyclerViewAdapter;
 
 import java.util.ArrayList;
 
 /**
- * Created by Akari on 2016/5/5.
+ * Created by Akari on 2016/5/14.
  */
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.NormalViewHolder> {
+public class AnswerRecyclerViewAdapter extends RecyclerViewAdapter<AnswerRecyclerViewAdapter.NormalViewHolder> {
     private LayoutInflater mLayoutInflater;
     private Context mContext;
     private ArrayList<Integer> mInt = new ArrayList<>();
 
-    public RecyclerViewAdapter(Context context){
+    public AnswerRecyclerViewAdapter(Context context){
         mContext=context;
         mLayoutInflater=LayoutInflater.from(context);
     }
@@ -33,7 +31,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public NormalViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        return new NormalViewHolder(mLayoutInflater.inflate(R.layout.item_main, parent, false));
+        return new NormalViewHolder(mLayoutInflater.inflate(R.layout.item_answer_main, parent, false));
     }
 
     /**
@@ -42,14 +40,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
      */
     @Override
     public void onBindViewHolder(NormalViewHolder holder, final int position) {
-//        holder.mCardView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-////                Toast.makeText(mContext, "蛤蛤", Toast.LENGTH_SHORT).show();
-//                Intent intent = new Intent(mContext, QuestionDetailActivity.class);
-//                mContext.startActivity(intent);
-//            }
-//        });
         holder.item_title.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -57,13 +47,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 mContext.startActivity(intent);
             }
         });
-        holder.item_content.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(mContext,AnswerDetailActivity.class);
-                mContext.startActivity(intent);
-            }
-        });
+//        holder.item_content.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(mContext,AnswerDetailActivity.class);
+//                mContext.startActivity(intent);
+//            }
+//        });
 
     }
 
@@ -72,16 +62,19 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return mInt == null ? 0 : mInt.size();
     }
 
+    @Override
     public void add(int position) {
         mInt.add(position, 1);
         notifyItemInserted(position);
     }
 
+    @Override
     public void remove(int position) {
         mInt.remove(position);
         notifyItemRemoved(position);
     }
 
+    @Override
     public int loadMore() {
         int pos = mInt.size();
         mInt.add(mInt.size(), 1);
@@ -93,6 +86,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return pos;
     }
 
+    @Override
     public void refresh() {
         mInt.add(0, 1);
         mInt.add(0, 1);
@@ -109,9 +103,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         public NormalViewHolder(View itemView) {
             super(itemView);
-            mCardView = (CardView) itemView.findViewById(R.id.card_view);
-            item_title = (TextView) mCardView.findViewById(R.id.item_title);
-            item_content = (TextView) mCardView.findViewById(R.id.item_content);
+            mCardView = (CardView) itemView.findViewById(R.id.answer_card_view);
+            item_title = (TextView) mCardView.findViewById(R.id.answer_item_title);
+//            item_content = (TextView) mCardView.findViewById(R.id.item_content);
         }
 
         public CardView getmCardView() {

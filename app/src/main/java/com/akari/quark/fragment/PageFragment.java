@@ -11,7 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.akari.quark.R;
-import com.akari.quark.adapter.RecyclerViewAdapter;
+import com.akari.quark.adapter.AnswerRecyclerViewAdapter;
+import com.akari.quark.adapter.AskRecyclerViewAdapter;
+import com.akari.quark.adapter.baseAdapter.RecyclerViewAdapter;
 import com.akari.quark.listener.OnVerticalScrollListener;
 import com.hippo.refreshlayout.RefreshLayout;
 
@@ -55,7 +57,14 @@ public class PageFragment extends Fragment implements RefreshLayout.OnRefreshLis
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(layoutManager);
-        mRecyclerView.setAdapter(mRecyclerViewAdapter = new RecyclerViewAdapter(getContext()));
+        switch (mPage){
+            case 1:
+                mRecyclerView.setAdapter(mRecyclerViewAdapter = new AskRecyclerViewAdapter(getContext()));
+                break;
+            case 2:
+                mRecyclerView.setAdapter(mRecyclerViewAdapter = new AnswerRecyclerViewAdapter(getContext()));
+                break;
+        }
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.addOnScrollListener(new OnVerticalScrollListener() {
             @Override
