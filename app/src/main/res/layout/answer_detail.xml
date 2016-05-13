@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.AnswerDetailActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+        android:id="@+id/id_tool_bar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:navigationIcon="?attr/homeAsUpIndicator"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        >
+        <TextView
+            android:id="@+id/toolbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:singleLine="true"
+            android:text="回答"
+            android:textColor="#ffffff"
+            android:textSize="18sp"
+            />
+        </android.support.v7.widget.Toolbar>
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/id_tool_bar2"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            android:theme="@style/AppTheme.AppBarOverlay"
+            >
+            <TextView
+                android:id="@+id/question_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:singleLine="true"
+                android:text="你见过哪些神一样的优化操作？"
+                android:textColor="#ffffff"
+                android:textSize="18sp"
+                />
+        </android.support.v7.widget.Toolbar>
+    </android.support.design.widget.AppBarLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginTop="110dp">
+        <LinearLayout
+            android:id="@+id/id_viewpage"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="0dp"
+            android:layout_weight="1" >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="21dp">
+                <com.akari.quark.view.CircleImageView
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_marginLeft="17dp"
+                    android:src="@drawable/head"/>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:text="蒋易成"
+                        android:textSize="15dp"
+                        android:textColor="#174465"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:textSize="13dp"
+                        android:textColor="#C3C3C3"
+                        android:text="一只奋斗在一线的理论化学家"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="17dp"
+                android:layout_marginRight="29dp"
+                android:layout_marginTop="21dp"
+                android:textSize="15dp"
+                android:textColor="#000000"
+                android:text="Android 5.0采用了全新的Material Design设计语言，整个操作界面有了较大的变化。它相比以前更为简约，图标与操作方式都有所改进，整体更加扁平化，纸片儿风很多地方都可见"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="创建于2014-12-15"
+                android:layout_gravity="end"
+                android:layout_marginTop="44dp"
+                android:layout_marginRight="34dp"
+                android:textSize="15dp"
+                android:textColor="#707070"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginRight="34dp"
+                android:textSize="15dp"
+                android:textColor="#707070"
+                android:text="著作权归作者所有" />
+        </LinearLayout>
+        <include layout="@layout/answer_detail_bottom"/>
+    </LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

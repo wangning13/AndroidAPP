@@ -2,6 +2,7 @@ package com.akari.quark.activity;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -10,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -64,12 +66,30 @@ public class QuestionDetailActivity extends AppCompatActivity implements SwipeRe
         }
         //为关注按钮设置响应事件
         final Button button = (Button) findViewById(R.id.concern_button);
+//        if (button != null) {
+//            button.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    if (button.getText().equals("关注")){
+//                        System.out.println("有木有关注");
+//                        button.setText("已关注");
+//                        button.setBackgroundColor(Color.parseColor("#D1D1D1"));
+//                    }
+//                    if (button.getText().equals("已关注")){
+//                        button.setText("关注");
+//                        System.out.println("到死有木有关注");
+//                        button.setBackgroundColor(Color.parseColor("#00A162"));
+//                    }
+//                }
+//            });
+//        }
         if(button.getText().equals("关注")){
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     button.setText("已关注");
                     button.setBackgroundColor(Color.parseColor("#D1D1D1"));
+                    button.setId(R.id.concern_button);
                 }
             });
 
@@ -80,6 +100,8 @@ public class QuestionDetailActivity extends AppCompatActivity implements SwipeRe
                 public void onClick(View view) {
                     button.setText("关注");
                     button.setBackgroundColor(Color.parseColor("#00A162"));
+                    button.setId(R.id.concern_button);
+//                    button.setBackground(Drawable.createFromPath("@drawable/shape"));
                 }
             });
         }

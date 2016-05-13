@@ -20,6 +20,7 @@
         </activity>
         <activity android:name=".activity.QuestionDetailActivity" ></activity>
         <activity android:name=".activity.CreatQuestionActivity"></activity>
+        <activity android:name=".activity.AnswerDetailActivity"></activity>
     </application>
 
 </manifest>

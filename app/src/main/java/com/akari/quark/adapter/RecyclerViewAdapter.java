@@ -7,9 +7,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.akari.quark.R;
+import com.akari.quark.activity.AnswerDetailActivity;
+import com.akari.quark.activity.CreatQuestionActivity;
 import com.akari.quark.activity.QuestionDetailActivity;
 
 import java.util.ArrayList;
@@ -39,11 +42,25 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
      */
     @Override
     public void onBindViewHolder(NormalViewHolder holder, final int position) {
-        holder.mCardView.setOnClickListener(new View.OnClickListener() {
+//        holder.mCardView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+////                Toast.makeText(mContext, "蛤蛤", Toast.LENGTH_SHORT).show();
+//                Intent intent = new Intent(mContext, QuestionDetailActivity.class);
+//                mContext.startActivity(intent);
+//            }
+//        });
+        holder.item_title.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-//                Toast.makeText(mContext, "蛤蛤", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(mContext, QuestionDetailActivity.class);
+            public void onClick(View view) {
+                Intent intent = new Intent(mContext,QuestionDetailActivity.class);
+                mContext.startActivity(intent);
+            }
+        });
+        holder.item_content.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(mContext,AnswerDetailActivity.class);
                 mContext.startActivity(intent);
             }
         });
@@ -87,11 +104,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     public static class NormalViewHolder extends RecyclerView.ViewHolder {
         CardView mCardView;
+        TextView item_title;
+        TextView item_content;
 
         public NormalViewHolder(View itemView) {
             super(itemView);
             mCardView = (CardView) itemView.findViewById(R.id.card_view);
-
+            item_title = (TextView) mCardView.findViewById(R.id.item_title);
+            item_content = (TextView) mCardView.findViewById(R.id.item_content);
         }
 
         public CardView getmCardView() {
