@@ -37,6 +37,13 @@ public class PageFragment extends Fragment implements RefreshLayout.OnRefreshLis
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mPage = getArguments().getInt(ARG_PAGE);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mSwipeLayout.setHeaderRefreshing(true);
+                onHeaderRefresh();
+            }
+        }, 0);
     }
 
     @Override
