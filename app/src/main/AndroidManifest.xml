@@ -18,9 +18,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.QuestionDetailActivity" ></activity>
-        <activity android:name=".activity.CreatQuestionActivity"></activity>
-        <activity android:name=".activity.AnswerDetailActivity"></activity>
+        <activity android:name=".activity.QuestionDetailActivity" />
+        <activity android:name=".activity.CreatQuestionActivity" />
+        <activity android:name=".activity.AnswerDetailActivity" />
+        <activity
+            android:name=".activity.EditorActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"></activity>
     </application>
 
 </manifest>

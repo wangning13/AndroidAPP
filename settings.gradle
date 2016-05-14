@@ -1,1 +1,2 @@
-include ':app'
+include ':app', ':WordPressEditor'
+project(':WordPressEditor').projectDir = new File('lib/WordPressEditor')
