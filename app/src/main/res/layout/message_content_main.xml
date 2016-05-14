@@ -8,7 +8,7 @@
     >
 
     <com.hippo.refreshlayout.RefreshLayout
-        android:id="@+id/swipe_container"
+        android:id="@+id/message_swipe_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
