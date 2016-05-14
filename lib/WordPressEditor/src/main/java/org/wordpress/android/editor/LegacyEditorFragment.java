@@ -114,29 +114,11 @@ public class LegacyEditorFragment extends EditorFragmentAbstract implements Text
     }
 
     @Override
-    public CharSequence getTitle() {
-        if (mTitleEditText != null) {
-            return mTitleEditText.getText().toString();
-        }
-        return mTitle;
-    }
-
-    @Override
     public CharSequence getContent() {
         if (mContentEditText != null) {
             return mContentEditText.getText().toString();
         }
         return mContent;
-    }
-
-    @Override
-    public void setTitle(CharSequence text) {
-        mTitle = text;
-        if (mTitleEditText != null) {
-            mTitleEditText.setText(text);
-        } else {
-            // TODO
-        }
     }
 
     @Override
@@ -1161,11 +1143,6 @@ public class LegacyEditorFragment extends EditorFragmentAbstract implements Text
 
     @Override
     public void removeAllFailedMediaUploads() {}
-
-    @Override
-    public void setTitlePlaceholder(CharSequence text) {
-
-    }
 
     @Override
     public void setContentPlaceholder(CharSequence text) {
