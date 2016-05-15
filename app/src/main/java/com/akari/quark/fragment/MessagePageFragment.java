@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.akari.quark.R;
+import com.akari.quark.adapter.LikeRecyclerViewAdapter;
 import com.akari.quark.adapter.MessageRecyclerViewAdapter;
 import com.akari.quark.adapter.baseAdapter.RecyclerViewAdapter;
 import com.akari.quark.listener.OnVerticalScrollListener;
@@ -25,7 +26,7 @@ public class MessagePageFragment extends Fragment implements RefreshLayout.OnRef
     private int mPage;
     private RefreshLayout mSwipeLayout;
     private RecyclerView mRecyclerView;
-    private MessageRecyclerViewAdapter mRecyclerViewAdapter;
+    private RecyclerViewAdapter mRecyclerViewAdapter;
 
     public static MessagePageFragment newInstance(int page) {
         Bundle args = new Bundle();
@@ -65,6 +66,8 @@ public class MessagePageFragment extends Fragment implements RefreshLayout.OnRef
                 break;
             case 2:
 
+                mRecyclerView.setAdapter(mRecyclerViewAdapter = new LikeRecyclerViewAdapter(getContext()));
+                break;
             case 3:
 
         }
