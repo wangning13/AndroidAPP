@@ -58,12 +58,10 @@ import java.util.concurrent.TimeUnit;
 public class EditorFragment extends EditorFragmentAbstract implements View.OnClickListener, View.OnTouchListener,
         OnJsEditorStateChangedListener, OnImeBackListener, EditorWebViewAbstract.AuthHeaderRequestListener,
         EditorMediaUploadListener {
-    private static final String ARG_PARAM_TITLE = "param_title";
     private static final String ARG_PARAM_CONTENT = "param_content";
 
     private static final String JS_CALLBACK_HANDLER = "nativeCallbackHandler";
 
-    private static final String KEY_TITLE = "title";
     private static final String KEY_CONTENT = "content";
 
     private static final String TAG_FORMAT_BAR_BUTTON_MEDIA = "media";
@@ -72,18 +70,15 @@ public class EditorFragment extends EditorFragmentAbstract implements View.OnCli
     private static final float TOOLBAR_ALPHA_ENABLED = 1;
     private static final float TOOLBAR_ALPHA_DISABLED = 0.5f;
 
-    private String mTitle = "";
     private String mContentHtml = "";
 
     private EditorWebViewAbstract mWebView;
     private View mSourceView;
-    private SourceViewEditText mSourceViewTitle;
     private SourceViewEditText mSourceViewContent;
 
     private int mSelectionStart;
     private int mSelectionEnd;
 
-    private String mTitlePlaceholder = "";
     private String mContentPlaceholder = "";
 
     private boolean mDomHasLoaded = false;
@@ -100,16 +95,14 @@ public class EditorFragment extends EditorFragmentAbstract implements View.OnCli
 
     private String mJavaScriptResult = "";
 
-    private CountDownLatch mGetTitleCountDownLatch;
     private CountDownLatch mGetContentCountDownLatch;
     private CountDownLatch mGetSelectedTextCountDownLatch;
 
     private final Map<String, ToggleButton> mTagToggleButtonMap = new HashMap<>();
 
-    public static EditorFragment newInstance(String title, String content) {
+    public static EditorFragment newInstance(String content) {
         EditorFragment fragment = new EditorFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM_TITLE, title);
         args.putString(ARG_PARAM_CONTENT, content);
         fragment.setArguments(args);
         return fragment;
@@ -175,33 +168,20 @@ public class EditorFragment extends EditorFragmentAbstract implements View.OnCli
         initJsEditor();
 
         if (savedInstanceState != null) {
-            setTitle(savedInstanceState.getCharSequence(KEY_TITLE));
             setContent(savedInstanceState.getCharSequence(KEY_CONTENT));
         }
 
         // -- HTML mode configuration
 
         mSourceView = view.findViewById(R.id.sourceview);
-        mSourceViewTitle = (SourceViewEditText) view.findViewById(R.id.sourceview_title);
         mSourceViewContent = (SourceViewEditText) view.findViewById(R.id.sourceview_content);
 
-        // Toggle format bar on/off as user changes focus between title and content in HTML mode
-        mSourceViewTitle.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                updateFormatBarEnabledState(!hasFocus);
-            }
-        });
-
-        mSourceViewTitle.setOnTouchListener(this);
         mSourceViewContent.setOnTouchListener(this);
 
-        mSourceViewTitle.setOnImeBackListener(this);
         mSourceViewContent.setOnImeBackListener(this);
 
         mSourceViewContent.addTextChangedListener(new HtmlStyleTextWatcher());
 
-        mSourceViewTitle.setHint(mTitlePlaceholder);
         mSourceViewContent.setHint("<p>" + mContentPlaceholder + "</p>");
 
         // -- Format bar configuration
@@ -252,7 +232,6 @@ public class EditorFragment extends EditorFragmentAbstract implements View.OnCli
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putCharSequence(KEY_TITLE, getTitle());
         outState.putCharSequence(KEY_CONTENT, getContent());
     }
 
@@ -310,18 +289,14 @@ public class EditorFragment extends EditorFragmentAbstract implements View.OnCli
             }
 
             // Reload HTML mode margins
-            View sourceViewTitle = getView().findViewById(R.id.sourceview_title);
             View sourceViewContent = getView().findViewById(R.id.sourceview_content);
 
-            if (sourceViewTitle != null && sourceViewContent != null) {
+            if (sourceViewContent != null) {
                 int sideMargin = (int) getActivity().getResources().getDimension(R.dimen.sourceview_side_margin);
 
-                ViewGroup.MarginLayoutParams titleParams =
-                        (ViewGroup.MarginLayoutParams) sourceViewTitle.getLayoutParams();
                 ViewGroup.MarginLayoutParams contentParams =
                         (ViewGroup.MarginLayoutParams) sourceViewContent.getLayoutParams();
 
-                titleParams.setMargins(sideMargin, titleParams.topMargin, sideMargin, titleParams.bottomMargin);
                 contentParams.setMargins(sideMargin, contentParams.topMargin, sideMargin, contentParams.bottomMargin);
             }
         }
@@ -452,15 +427,12 @@ public class EditorFragment extends EditorFragmentAbstract implements View.OnCli
                 @Override
                 public void run() {
                     // Update mTitle and mContentHtml with the latest state from the ZSSEditor
-                    getTitle();
                     getContent();
 
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             // Set HTML mode state
-                            mSourceViewTitle.setText(mTitle);
-
                             SpannableString spannableContent = new SpannableString(mContentHtml);
                             HtmlStyleUtils.styleHtmlForDisplay(spannableContent);
                             mSourceViewContent.setText(spannableContent);
@@ -485,7 +457,6 @@ public class EditorFragment extends EditorFragmentAbstract implements View.OnCli
             mWebView.setVisibility(View.VISIBLE);
             mSourceView.setVisibility(View.GONE);
 
-            mTitle = mSourceViewTitle.getText().toString();
             mContentHtml = mSourceViewContent.getText().toString();
             updateVisualEditorFields();
 
@@ -712,52 +683,8 @@ public class EditorFragment extends EditorFragmentAbstract implements View.OnCli
     }
 
     @Override
-    public void setTitle(CharSequence text) {
-        mTitle = text.toString();
-    }
-
-    @Override
     public void setContent(CharSequence text) {
         mContentHtml = text.toString();
-    }
-
-    /**
-     * Returns the contents of the title field from the JavaScript editor. Should be called from a background thread
-     * where possible.
-     */
-    @Override
-    public CharSequence getTitle() {
-        if (!isAdded()) {
-            return "";
-        }
-
-        if (mSourceView != null && mSourceView.getVisibility() == View.VISIBLE) {
-            mTitle = mSourceViewTitle.getText().toString();
-            return StringUtils.notNullStr(mTitle);
-        }
-
-        if (Looper.myLooper() == Looper.getMainLooper()) {
-            AppLog.d(T.EDITOR, "getTitle() called from UI thread");
-        }
-
-        mGetTitleCountDownLatch = new CountDownLatch(1);
-
-        // All WebView methods must be called from the UI thread
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mWebView.execJavaScriptFromString("ZSSEditor.getField('zss_field_title').getHTMLForCallback();");
-            }
-        });
-
-        try {
-            mGetTitleCountDownLatch.await(1, TimeUnit.SECONDS);
-        } catch (InterruptedException e) {
-            AppLog.e(T.EDITOR, e);
-            Thread.currentThread().interrupt();
-        }
-
-        return StringUtils.notNullStr(mTitle.replaceAll("&nbsp;$", ""));
     }
 
     /**
@@ -897,11 +824,6 @@ public class EditorFragment extends EditorFragmentAbstract implements View.OnCli
     }
 
     @Override
-    public void setTitlePlaceholder(CharSequence placeholderText) {
-        mTitlePlaceholder = placeholderText.toString();
-    }
-
-    @Override
     public void setContentPlaceholder(CharSequence placeholderText) {
         mContentPlaceholder = placeholderText.toString();
     }
@@ -1003,8 +925,6 @@ public class EditorFragment extends EditorFragmentAbstract implements View.OnCli
                 mWebView.execJavaScriptFromString("ZSSEditor.getField('zss_field_content').setMultiline('true');");
 
                 // Set title and content placeholder text
-                mWebView.execJavaScriptFromString("ZSSEditor.getField('zss_field_title').setPlaceholderText('" +
-                        Utils.escapeQuotes(mTitlePlaceholder) + "');");
                 mWebView.execJavaScriptFromString("ZSSEditor.getField('zss_field_content').setPlaceholderText('" +
                         Utils.escapeQuotes(mContentPlaceholder) + "');");
 
@@ -1093,9 +1013,6 @@ public class EditorFragment extends EditorFragmentAbstract implements View.OnCli
             public void run() {
                 if (!focusedFieldId.isEmpty()) {
                     switch (focusedFieldId) {
-                        case "zss_field_title":
-                            updateFormatBarEnabledState(false);
-                            break;
                         case "zss_field_content":
                             updateFormatBarEnabledState(true);
                             break;
@@ -1272,10 +1189,6 @@ public class EditorFragment extends EditorFragmentAbstract implements View.OnCli
                 String fieldContents = inputArgs.get("contents");
                 if (!fieldId.isEmpty()) {
                     switch (fieldId) {
-                        case "zss_field_title":
-                            mTitle = fieldContents;
-                            mGetTitleCountDownLatch.countDown();
-                            break;
                         case "zss_field_content":
                             mContentHtml = fieldContents;
                             mGetContentCountDownLatch.countDown();
@@ -1302,8 +1215,6 @@ public class EditorFragment extends EditorFragmentAbstract implements View.OnCli
     }
 
     private void updateVisualEditorFields() {
-        mWebView.execJavaScriptFromString("ZSSEditor.getField('zss_field_title').setPlainText('" +
-                Utils.escapeHtml(mTitle) + "');");
         mWebView.execJavaScriptFromString("ZSSEditor.getField('zss_field_content').setHTML('" +
                 Utils.escapeHtml(mContentHtml) + "');");
     }

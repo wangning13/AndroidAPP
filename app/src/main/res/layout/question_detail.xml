@@ -40,8 +40,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:src="@android:drawable/ic_input_add"
-        app:backgroundTint="#ff000099"
+        android:src="@drawable/ic_add"
+        app:backgroundTint="@color/colorPrimary"
         app:rippleColor="#33728dff"
         app:elevation="12dp"
         app:layout_behavior="com.akari.quark.behavior.ScrollAwareFABBehavior"
@@ -118,26 +118,29 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="38dp"
+                    android:layout_marginTop="20dp"
                     android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/item_concern"
+                        android:layout_height="wrap_content"
                         android:layout_width="wrap_content"
-                        android:layout_height="19dp"
+                        android:layout_gravity="center_vertical"
                         android:text="52人关注"
                         android:textColor="#173A52"
-                        android:textSize="12dp"
+                        android:textSize="14sp"
                         android:textStyle=""
                         />
                     <TextView
                         android:id="@+id/item_answer"
-                        android:layout_width="wrap_content"
-                        android:layout_height="19dp"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
                         android:text="6个回答"
                         android:layout_marginLeft="20dp"
                         android:textColor="#173A52"
-                        android:textSize="12dp"
+                        android:textSize="14sp"
                         />
 
                     <Button
@@ -145,13 +148,10 @@
                         android:layout_width="70dp"
                         android:layout_height="27dp"
                         android:background="@drawable/shape"
-                        android:layout_marginLeft="180dp"
                         android:text="关注"
-                        android:textSize="14dp"
+                        android:textSize="14sp"
                         android:textColor="#FFFFFF"
                         />
-
-
 
                 </LinearLayout>
 
@@ -161,12 +161,10 @@
         </android.support.v7.widget.CardView>
 
 
-        <android.support.v4.widget.SwipeRefreshLayout
+        <com.hippo.refreshlayout.RefreshLayout
             android:id="@+id/swipe_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
-
 
             <android.support.v7.widget.RecyclerView
                 xmlns:android="http://schemas.android.com/apk/res/android"
@@ -175,11 +173,7 @@
                 android:layout_height="match_parent"
                 />
 
-
-        </android.support.v4.widget.SwipeRefreshLayout>
-
-
-
+        </com.hippo.refreshlayout.RefreshLayout>
 
     </LinearLayout >
 

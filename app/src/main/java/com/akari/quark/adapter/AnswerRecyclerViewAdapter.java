@@ -47,14 +47,6 @@ public class AnswerRecyclerViewAdapter extends RecyclerViewAdapter<AnswerRecycle
                 mContext.startActivity(intent);
             }
         });
-//        holder.item_content.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(mContext,AnswerDetailActivity.class);
-//                mContext.startActivity(intent);
-//            }
-//        });
-
     }
 
     @Override

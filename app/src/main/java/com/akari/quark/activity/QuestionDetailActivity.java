@@ -24,16 +24,17 @@ import com.akari.quark.R;
 import com.akari.quark.adapter.AnswerItemDecoration;
 import com.akari.quark.adapter.QuestionDetailRecycleViewAdapter;
 import com.akari.quark.data.DataDemo;
+import com.hippo.refreshlayout.RefreshLayout;
 
 import org.wordpress.android.editor.Utils;
 
 /**
  * Created by motoon on 2016/5/6.
  */
-public class QuestionDetailActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener{
+public class QuestionDetailActivity extends AppCompatActivity implements RefreshLayout.OnRefreshListener{
     private Context context;
     private RecyclerView mRecyclerView;
-    private SwipeRefreshLayout mRefreshlayout;
+    private RefreshLayout mRefreshlayout;
     private LinearLayoutManager mLinearLayoutManager;
     private QuestionDetailRecycleViewAdapter mAdapter;
     private Activity mActivity;
@@ -114,7 +115,13 @@ public class QuestionDetailActivity extends AppCompatActivity implements SwipeRe
         }
 
         mRecyclerView = (RecyclerView) findViewById(R.id.answer_list);
-        mRefreshlayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
+        mRefreshlayout = (RefreshLayout) findViewById(R.id.swipe_container);
+        mRefreshlayout.setHeaderColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light, android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+        mRefreshlayout.setFooterColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light, android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
         mRefreshlayout.setOnRefreshListener(this);
         mLinearLayoutManager = new LinearLayoutManager(this);
         mAdapter = new QuestionDetailRecycleViewAdapter(DataDemo.generateData(20));
@@ -130,16 +137,22 @@ public class QuestionDetailActivity extends AppCompatActivity implements SwipeRe
             @Override
             public void OnItemClick(View view, String data)
             {
-                Toast.makeText(QuestionDetailActivity.this, "data:" + data, Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(context,AnswerDetailActivity.class);
+                context.startActivity(intent);
             }
         });
     }
 
     @Override
-    public void onRefresh()
-    {
+    public void onHeaderRefresh() {
         new UpdateTask().execute();
     }
+
+    @Override
+    public void onFooterRefresh() {
+        mRefreshlayout.setFooterRefreshing(false);
+    }
+
     private class UpdateTask extends AsyncTask<Void,Void,List<String>>
     {
         @Override
@@ -164,7 +177,7 @@ public class QuestionDetailActivity extends AppCompatActivity implements SwipeRe
         {
             mAdapter.addItems(strings);
             //通知刷新完毕
-            mRefreshlayout.setRefreshing(false);
+            mRefreshlayout.setHeaderRefreshing(false);
             //滚动到列首部--->这是一个很方便的api，可以滑动到指定位置
             mRecyclerView.scrollToPosition(0);
         }
