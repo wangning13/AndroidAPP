@@ -17,59 +17,66 @@
         app:navigationIcon="?attr/homeAsUpIndicator"
         android:theme="@style/AppTheme.AppBarOverlay"
         >
-        <TextView
-            android:id="@+id/toolbar_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:singleLine="true"
-            android:text="一句话概括你的问题"
-            android:textColor="#ffffff"
-            android:textSize="18sp"
-            />
-        <ImageView
-            android:id="@+id/id_send_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_gravity="right"
-            android:layout_marginRight="8dp"
-            android:src="@drawable/send"/>
+
     </android.support.v7.widget.Toolbar>
 
-
-    <TextView
-        android:id="@+id/newTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="18dp"
-        android:text="标题"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="#5052dd" />
-
-    <EditText
-        android:id="@+id/newTitleText"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:hint="请写下你的问题标题，用问号结尾" />
+        android:layout_height="match_parent"
+        xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <EditText
-        android:id="@+id/newTitleTopic"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="38dp"
-        android:hint="话题" />
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/edit_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
 
-    <EditText
-        android:id="@+id/newQuestionDescription"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="38dp"
-        android:background="@null"
-        android:hint="添加问题的补充说明" />
+            <TextView
+                android:id="@+id/newTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="18dp"
+                android:text="标题"
+                android:textColorHint="?attr/colorPrimary"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="?attr/colorPrimary" />
+
+            <EditText
+                android:id="@+id/newTitleText"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:layout_marginLeft="16dp"
+                android:hint="请写下你的问题标题，用问号结尾"
+                android:textSize="18sp"
+                android:background="@drawable/line_et_bg"
+                android:editable="true"
+                android:focusable="true" />
+
+            <EditText
+                android:id="@+id/newTitleTopic"
+                android:layout_width="match_parent"
+                android:layout_height="67dp"
+                android:textSize="18sp"
+                android:layout_marginLeft="16dp"
+                android:background="@drawable/line_et_bg"
+                android:hint="话题" />
+
+            <EditText
+                android:id="@+id/newQuestionDescription"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="38dp"
+                android:textSize="18sp"
+                android:background="@null"
+                android:hint="添加问题的补充说明"
+                android:gravity="start"/>
+        </LinearLayout>
+    </ScrollView>
+
+
 </LinearLayout>
