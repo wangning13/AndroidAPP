@@ -90,7 +90,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_marginLeft="16dp"
-                android:background="#0060A1"
+                android:background="@drawable/corners_bg"
                 android:gravity="center"
                 android:text="628"
                 android:textColor="#ffffff"
