@@ -10,12 +10,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.method.ScrollingMovementMethod;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
@@ -55,6 +57,10 @@ public class QuestionDetailActivity extends AppCompatActivity implements Refresh
                 onBackPressed();
             }
         });
+
+        TextView item_tag = (TextView) findViewById(R.id.item_tag);
+        item_tag.setMovementMethod(ScrollingMovementMethod.getInstance());
+        item_tag.setHorizontallyScrolling(true);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_question_detail);
         if (fab != null) {
