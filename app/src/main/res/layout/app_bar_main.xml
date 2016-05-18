@@ -24,8 +24,8 @@
             android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:tabGravity="center"
-            app:tabMode="scrollable" />
+            app:tabGravity="fill"
+            app:tabMode="fixed" />
 
     </android.support.design.widget.AppBarLayout>
 
@@ -46,7 +46,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:src="@drawable/ic_add"
+        android:src="@drawable/ic_add_white"
         app:backgroundTint="@color/colorPrimary"
         app:rippleColor="#33728dff"
         app:elevation="12dp"
