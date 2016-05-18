@@ -22,8 +22,8 @@
             android:id="@+id/item_tag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Android"
-            android:textColor="#787878"
+            android:text="Material Design"
+            android:textColor="#3C84C1"
             android:textSize="14sp" />
 
         <TextView
@@ -50,22 +50,24 @@
 
                 <com.akari.quark.view.CircleImageView
                     android:id="@+id/item_image"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
+                    android:layout_width="27.5dp"
+                    android:layout_height="27.5dp"
+                    android:layout_centerHorizontal="true"
                     android:src="@drawable/head"
                     android:layout_alignParentTop="true"
                     app:shape_mode="circle" />
 
                 <TextView
                     android:id="@+id/item_count"
-                    android:layout_width="25dp"
+                    android:layout_width="32dp"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
                     android:background="@drawable/corners_bg"
                     android:gravity="center"
-                    android:text="12K"
+                    android:text="99.9K"
                     android:textColor="#ffffff"
-                    android:textSize="14sp" />
+                    android:textSize="12sp" />
 
             </RelativeLayout>
 
