@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -11,12 +12,15 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.util.ArrayList;
@@ -40,6 +44,7 @@ public class QuestionDetailActivity extends AppCompatActivity implements Refresh
     private LinearLayoutManager mLinearLayoutManager;
     private QuestionDetailRecycleViewAdapter mAdapter;
     private Activity mActivity;
+    public static Handler sHandler = new Handler();
 
 
     @Override
@@ -58,10 +63,6 @@ public class QuestionDetailActivity extends AppCompatActivity implements Refresh
             }
         });
 
-        TextView item_tag = (TextView) findViewById(R.id.item_tag);
-        item_tag.setMovementMethod(ScrollingMovementMethod.getInstance());
-        item_tag.setHorizontallyScrolling(true);
-
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_question_detail);
         if (fab != null) {
             fab.setOnClickListener(new View.OnClickListener() {
@@ -78,47 +79,7 @@ public class QuestionDetailActivity extends AppCompatActivity implements Refresh
                 }
             });
         }
-        //为关注按钮设置响应事件
-        final Button button = (Button) findViewById(R.id.concern_button);
-//        if (button != null) {
-//            button.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    if (button.getText().equals("关注")){
-//                        System.out.println("有木有关注");
-//                        button.setText("已关注");
-//                        button.setBackgroundColor(Color.parseColor("#D1D1D1"));
-//                    }
-//                    if (button.getText().equals("已关注")){
-//                        button.setText("关注");
-//                        System.out.println("到死有木有关注");
-//                        button.setBackgroundColor(Color.parseColor("#00A162"));
-//                    }
-//                }
-//            });
-//        }
-        if(button.getText().equals("关注")){
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    button.setText("已关注");
-                    button.setBackgroundColor(Color.parseColor("#D1D1D1"));
-                    button.setId(R.id.concern_button);
-                }
-            });
 
-        }
-        if(button.getText().equals("已关注")){
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    button.setText("关注");
-                    button.setBackgroundColor(Color.parseColor("#00A162"));
-                    button.setId(R.id.concern_button);
-//                    button.setBackground(Drawable.createFromPath("@drawable/shape"));
-                }
-            });
-        }
 
         mRecyclerView = (RecyclerView) findViewById(R.id.answer_list);
         mRefreshlayout = (RefreshLayout) findViewById(R.id.swipe_container);
@@ -135,8 +96,12 @@ public class QuestionDetailActivity extends AppCompatActivity implements Refresh
         //每个item高度一致，可设置为true，提高性能
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
+
+        View header = LayoutInflater.from(context).inflate(R.layout.question_headerview, mRecyclerView, false);
+        mAdapter.setHeaderView(header);
+
         //分隔线
-        mRecyclerView.addItemDecoration(new AnswerItemDecoration(this));
+        mRecyclerView.addItemDecoration(new AnswerItemDecoration(1));
         //为每个item增加响应事件
         mAdapter.setOnItemClickListener(new QuestionDetailRecycleViewAdapter.OnItemClickListener()
         {
@@ -147,16 +112,74 @@ public class QuestionDetailActivity extends AppCompatActivity implements Refresh
                 context.startActivity(intent);
             }
         });
+
+//        TextView item_tag = (TextView) findViewById(R.id.item_tag);
+//        item_tag.setMovementMethod(ScrollingMovementMethod.getInstance());
+//        item_tag.setHorizontallyScrolling(true);
+//
+        //为关注按钮设置响应事件
+//        LinearLayout question_headerview_layout = (LinearLayout)findViewById(R.id.question_headerview);
+        final Button button = (Button) findViewById(R.id.concern_button);
+        if (button != null) {
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (button.getText().equals("关注")){
+                        System.out.println("有木有关注");
+                        button.setText("已关注");
+                        button.setBackgroundColor(Color.parseColor("#D1D1D1"));
+                    }
+                    if (button.getText().equals("已关注")){
+                        button.setText("关注");
+                        System.out.println("到死有木有关注");
+                        button.setBackgroundColor(Color.parseColor("#00A162"));
+                    }
+                }
+            });
+        }
+//        if(button.getText().equals("关注")){
+//            button.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    button.setText("已关注");
+//                    button.setBackgroundColor(Color.parseColor("#D1D1D1"));
+//                    button.setId(R.id.concern_button);
+//                }
+//            });
+//
+//        }
+//        if(button.getText().equals("已关注")){
+//            button.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    button.setText("关注");
+//                    button.setBackgroundColor(Color.parseColor("#00A162"));
+//                    button.setId(R.id.concern_button);
+////                    button.setBackground(Drawable.createFromPath("@drawable/shape"));
+//                }
+//            });
+//        }
     }
 
     @Override
     public void onHeaderRefresh() {
-        new UpdateTask().execute();
+        sHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mRecyclerView.scrollToPosition(0);
+                mRefreshlayout.setHeaderRefreshing(false);
+            }
+        }, 3000);
     }
 
     @Override
     public void onFooterRefresh() {
-        mRefreshlayout.setFooterRefreshing(false);
+        sHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mRefreshlayout.setFooterRefreshing(false);
+            }
+        }, 3000);
     }
 
     private class UpdateTask extends AsyncTask<Void,Void,List<String>>
