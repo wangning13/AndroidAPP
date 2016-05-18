@@ -8,6 +8,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.akari.quark.R;
 
@@ -31,36 +33,40 @@ public class AnswerDetailActivity extends AppCompatActivity{
                 onBackPressed();
             }
         });
-        final ImageButton up = (ImageButton) findViewById(R.id.up);
+        final ImageView up = (ImageView) findViewById(R.id.up);
+        LinearLayout up_layout = (LinearLayout)this.findViewById(R.id.up_layout);
         if (up != null) {
-            up.setOnClickListener(new View.OnClickListener() {
+            up_layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     up.setImageResource(R.drawable.up2);
                 }
             });
         }
-        final ImageButton down = (ImageButton) findViewById(R.id.down);
+        final ImageView down = (ImageView) findViewById(R.id.down);
+        LinearLayout down_layout = (LinearLayout)this.findViewById(R.id.down_layout);
         if (down != null) {
-            down.setOnClickListener(new View.OnClickListener() {
+            down_layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     down.setImageResource(R.drawable.down2);
                 }
             });
         }
-        final ImageButton mark = (ImageButton) findViewById(R.id.mark);
+        final ImageView mark = (ImageView) findViewById(R.id.mark);
+        LinearLayout mark_layout = (LinearLayout)this.findViewById(R.id.mark_layout);
         if (mark != null) {
-            mark.setOnClickListener(new View.OnClickListener() {
+            mark_layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     mark.setImageResource(R.drawable.mark2);
                 }
             });
         }
-        final ImageButton comment = (ImageButton) findViewById(R.id.comment);
+        final ImageView comment = (ImageView) findViewById(R.id.comment);
+        LinearLayout comment_layout = (LinearLayout)this.findViewById(R.id.comment_layout);
         if (comment != null) {
-            comment.setOnClickListener(new View.OnClickListener() {
+            comment_layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 

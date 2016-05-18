@@ -7,13 +7,14 @@
     android:background="#F7F7F8">
 
     <LinearLayout
+        android:id="@+id/up_layout"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
         android:orientation="vertical">
 
-        <ImageButton
+        <ImageView
             android:id="@+id/up"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -28,13 +29,14 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/down_layout"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
         android:orientation="vertical">
 
-        <ImageButton
+        <ImageView
             android:id="@+id/down"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -49,13 +51,14 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/mark_layout"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
         android:orientation="vertical">
 
-        <ImageButton
+        <ImageView
             android:id="@+id/mark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -70,13 +73,15 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/comment_layout"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
         android:orientation="vertical">
 
-        <ImageButton
+
+        <ImageView
             android:id="@+id/comment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

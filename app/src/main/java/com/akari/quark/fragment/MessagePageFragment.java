@@ -40,6 +40,13 @@ public class MessagePageFragment extends Fragment implements RefreshLayout.OnRef
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mPage = getArguments().getInt(ARG_PAGE_MSG);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mSwipeLayout.setHeaderRefreshing(true);
+                onHeaderRefresh();
+            }
+        }, 0);
     }
 
     @Override

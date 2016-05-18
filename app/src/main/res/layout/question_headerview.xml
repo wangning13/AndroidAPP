@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <android.support.v7.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_marginBottom="1dp"
+        android:background="#DEDEDE"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:orientation="vertical" >
+        <HorizontalScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:scrollbarAlwaysDrawHorizontalTrack="false"
+            android:touchscreenBlocksFocus="true"
+            android:scrollbars="none"
+            android:padding="10dp">
+            <TextView
+                android:id="@+id/item_tag"
+                android:layout_gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Android · java · IOS · javaWeb · Python · swift · Object-c · C++ · C 就是这么任性任性热性"
+                android:singleLine="true"
+                android:textColor="#3C84C1"
+                android:ellipsize="end"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:scrollHorizontally="true"
+                android:scrollbars="horizontal"
+                android:focusableInTouchMode="true"
+                android:focusable="true"
+                android:textSize="14sp" />
+        </HorizontalScrollView>
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="6dp"
+        android:background="#DEDEDE"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:id="@+id/item_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp" >
+            <TextView
+                android:id="@+id/item_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:lineSpacingExtra="1dp"
+                android:maxLines="2"
+                android:text="为什么国内的Android APP都不愿意遵循Google推出的Material Design设计规范？"
+                android:textColor="#1F1F1F"
+                android:textSize="16sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal" >
+
+
+                <TextView
+                    android:gravity="top"
+                    android:id="@+id/item_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:lineSpacingExtra="1dp"
+                    android:maxLines="3"
+                    android:text="Android 5.0采用了全新的Material Design设计语言，整个操作界面有了较大的变化。它相比以前更为简约，图标与操作方式都有所改进，整体更加扁平化，纸片儿风很多地方都可见"
+                    android:textColor="#6B6B6B"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/item_concern"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="52人关注"
+                    android:textColor="#173A52"
+                    android:textSize="14sp"
+                    android:textStyle=""
+                    />
+                <TextView
+                    android:id="@+id/item_answer"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="6个回答"
+                    android:layout_marginLeft="20dp"
+                    android:textColor="#173A52"
+                    android:textSize="14sp"
+                    />
+
+                <Button
+                    android:id="@+id/concern_button"
+                    android:layout_width="70dp"
+                    android:layout_height="27dp"
+                    android:background="@drawable/shape"
+                    android:text="关注"
+                    android:textSize="14sp"
+                    android:textColor="#FFFFFF"
+                    />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>
