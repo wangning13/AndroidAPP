@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.DrawableRes;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -104,29 +106,50 @@ public class QuestionDetailActivity extends AppCompatActivity implements Refresh
         item_tag.setMovementMethod(ScrollingMovementMethod.getInstance());
         item_tag.setHorizontallyScrolling(true);
 
+        final boolean state = button.isSelected();
         //为关注按钮设置响应事件
-        if(button.getText().equals("关注")){
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(button.isSelected()==false){
                     button.setText("已关注");
                     button.setBackgroundColor(Color.parseColor("#D1D1D1"));
-                    button.setId(R.id.concern_button);
-                }
-            });
-
-        }
-        if(button.getText().equals("已关注")){
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
+                    button.setSelected(true);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                        button.setBackground(context.getResources().getDrawable(R.drawable.shape));
+                    }
+                }else {
                     button.setText("关注");
                     button.setBackgroundColor(Color.parseColor("#00A162"));
-                    button.setId(R.id.concern_button);
-//                    button.setBackground(Drawable.createFromPath("@drawable/shape"));
+                    button.setSelected(false);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                        button.setBackground(context.getResources().getDrawable(R.drawable.shape));
+                    }
                 }
-            });
-        }
+            }
+        });
+//        if(button.isSelected()==false){
+//            button.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    button.setText("已关注");
+//                    button.setBackgroundColor(Color.parseColor("#D1D1D1"));
+//                    button.setSelected(true);
+//                }
+//            });
+//
+//        }else{
+//            button.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    button.setText("关注");
+//                    button.setBackgroundColor(Color.parseColor("#00A162"));
+//                    button.setSelected(!state);
+////                    button.setBackground(Drawable.createFromPath("@drawable/shape"));
+//                }
+//            });
+//        }
+
         mAdapter.setHeaderView(header);
 
         //分隔线
