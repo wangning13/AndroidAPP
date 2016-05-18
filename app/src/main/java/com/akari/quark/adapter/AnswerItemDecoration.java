@@ -3,6 +3,7 @@ package com.akari.quark.adapter;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -12,30 +13,21 @@ import android.view.View;
  */
 public class AnswerItemDecoration extends RecyclerView.ItemDecoration{
 
-    private static final int[] ATTRS = {android.R.attr.listDivider};
-    private Drawable mDivider;
-    public AnswerItemDecoration(Context context)
-    {
-        TypedArray array = context.obtainStyledAttributes(ATTRS);
-        // 获取分隔条
-        mDivider = array.getDrawable(0);
-        array.recycle();
+    private int space;
+
+    public AnswerItemDecoration(int space) {
+        this.space = space;
     }
+
     @Override
-    public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state)
-    {
-        super.onDrawOver(c, parent, state);
-        int count = parent.getChildCount();
-        int left = parent.getPaddingLeft();
-        int right = parent.getWidth()-parent.getPaddingRight();
-        for(int i = 0; i < count; i++)
-        {
-            View v = parent.getChildAt(i);
-            RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) v.getLayoutParams();
-            int top = v.getBottom() + params.bottomMargin;
-            int bottom = top + mDivider.getIntrinsicHeight();
-            mDivider.setBounds(left,top,right,bottom);
-            mDivider.draw(c);
-        }
+    public void getItemOffsets(Rect outRect, View view,
+                               RecyclerView parent, RecyclerView.State state) {
+        outRect.left = space;
+        outRect.right = space;
+        outRect.bottom = space;
+
+        // Add top margin only for the first item to avoid double space between items
+        if(parent.getChildPosition(view) == 0)
+            outRect.top = space;
     }
 }
