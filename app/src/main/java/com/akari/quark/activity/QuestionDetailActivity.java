@@ -3,6 +3,7 @@ package com.akari.quark.activity;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
@@ -98,6 +99,34 @@ public class QuestionDetailActivity extends AppCompatActivity implements Refresh
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
 
         View header = LayoutInflater.from(context).inflate(R.layout.question_headerview, mRecyclerView, false);
+        final Button button = (Button) header.findViewById(R.id.concern_button);
+        TextView item_tag = (TextView) header.findViewById(R.id.item_tag);
+        item_tag.setMovementMethod(ScrollingMovementMethod.getInstance());
+        item_tag.setHorizontallyScrolling(true);
+
+        //为关注按钮设置响应事件
+        if(button.getText().equals("关注")){
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    button.setText("已关注");
+                    button.setBackgroundColor(Color.parseColor("#D1D1D1"));
+                    button.setId(R.id.concern_button);
+                }
+            });
+
+        }
+        if(button.getText().equals("已关注")){
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    button.setText("关注");
+                    button.setBackgroundColor(Color.parseColor("#00A162"));
+                    button.setId(R.id.concern_button);
+//                    button.setBackground(Drawable.createFromPath("@drawable/shape"));
+                }
+            });
+        }
         mAdapter.setHeaderView(header);
 
         //分隔线
@@ -113,52 +142,7 @@ public class QuestionDetailActivity extends AppCompatActivity implements Refresh
             }
         });
 
-//        TextView item_tag = (TextView) findViewById(R.id.item_tag);
-//        item_tag.setMovementMethod(ScrollingMovementMethod.getInstance());
-//        item_tag.setHorizontallyScrolling(true);
-//
-        //为关注按钮设置响应事件
-//        LinearLayout question_headerview_layout = (LinearLayout)findViewById(R.id.question_headerview);
-        final Button button = (Button) findViewById(R.id.concern_button);
-        if (button != null) {
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (button.getText().equals("关注")){
-                        System.out.println("有木有关注");
-                        button.setText("已关注");
-                        button.setBackgroundColor(Color.parseColor("#D1D1D1"));
-                    }
-                    if (button.getText().equals("已关注")){
-                        button.setText("关注");
-                        System.out.println("到死有木有关注");
-                        button.setBackgroundColor(Color.parseColor("#00A162"));
-                    }
-                }
-            });
-        }
-//        if(button.getText().equals("关注")){
-//            button.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    button.setText("已关注");
-//                    button.setBackgroundColor(Color.parseColor("#D1D1D1"));
-//                    button.setId(R.id.concern_button);
-//                }
-//            });
-//
-//        }
-//        if(button.getText().equals("已关注")){
-//            button.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    button.setText("关注");
-//                    button.setBackgroundColor(Color.parseColor("#00A162"));
-//                    button.setId(R.id.concern_button);
-////                    button.setBackground(Drawable.createFromPath("@drawable/shape"));
-//                }
-//            });
-//        }
+
     }
 
     @Override
