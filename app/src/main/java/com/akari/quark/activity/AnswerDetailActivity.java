@@ -18,6 +18,7 @@ import com.akari.quark.R;
  */
 public class AnswerDetailActivity extends AppCompatActivity{
     private Context context;
+    private  boolean isdown = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,12 +47,24 @@ public class AnswerDetailActivity extends AppCompatActivity{
         final ImageView down = (ImageView) findViewById(R.id.down);
         LinearLayout down_layout = (LinearLayout)this.findViewById(R.id.down_layout);
         if (down != null) {
-            down_layout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    down.setImageResource(R.drawable.down2);
-                }
-            });
+            if(isdown==true){
+                down_layout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        down.setImageResource(R.drawable.down2);
+                        isdown = false;
+                    }
+                });
+            }else{
+                down_layout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        down.setImageResource(R.drawable.down);
+                        isdown = true;
+                    }
+                });
+            }
+
         }
         final ImageView mark = (ImageView) findViewById(R.id.mark);
         LinearLayout mark_layout = (LinearLayout)this.findViewById(R.id.mark_layout);
