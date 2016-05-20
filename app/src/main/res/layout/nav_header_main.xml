@@ -12,7 +12,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
-    <com.akari.quark.view.CircleImageView
+    <com.akari.quark.ui.view.CircleImageView
         android:id="@+id/imageView"
         android:layout_width="@dimen/circle_image_view_width"
         android:layout_height="@dimen/circle_image_view_height"

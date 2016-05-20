@@ -29,7 +29,7 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical" >
 
-                <com.akari.quark.view.CircleImageView
+                <com.akari.quark.ui.view.CircleImageView
                     android:id="@+id/imageView"
                     android:layout_width="40dp"
                     android:layout_height="40dp"

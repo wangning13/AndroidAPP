@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.AnswerDetailActivity">
+    tools:context=".ui.activity.AnswerDetailActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -75,7 +75,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="21dp"
                     android:orientation="horizontal">
-                    <com.akari.quark.view.CircleImageView
+                    <com.akari.quark.ui.view.CircleImageView
                         android:layout_width="36dp"
                         android:layout_height="36dp"
                         android:layout_marginLeft="17dp"
