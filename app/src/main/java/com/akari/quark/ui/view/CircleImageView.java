@@ -1,4 +1,4 @@
-package com.akari.quark.view;
+package com.akari.quark.ui.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;

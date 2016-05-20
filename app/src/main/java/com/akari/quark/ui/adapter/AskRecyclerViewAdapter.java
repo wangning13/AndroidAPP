@@ -1,4 +1,4 @@
-package com.akari.quark.adapter;
+package com.akari.quark.ui.adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,9 +10,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.akari.quark.R;
-import com.akari.quark.activity.AnswerDetailActivity;
-import com.akari.quark.activity.QuestionDetailActivity;
-import com.akari.quark.adapter.baseAdapter.RecyclerViewAdapter;
+import com.akari.quark.ui.activity.AnswerDetailActivity;
+import com.akari.quark.ui.activity.QuestionDetailActivity;
+import com.akari.quark.ui.adapter.baseAdapter.RecyclerViewAdapter;
 
 import java.util.ArrayList;
 

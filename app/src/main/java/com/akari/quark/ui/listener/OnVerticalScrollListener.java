@@ -1,4 +1,4 @@
-package com.akari.quark.listener;
+package com.akari.quark.ui.listener;
 
 import android.support.v7.widget.RecyclerView;
 

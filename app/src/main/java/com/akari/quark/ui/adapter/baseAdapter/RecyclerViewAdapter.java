@@ -1,4 +1,4 @@
-package com.akari.quark.adapter.baseAdapter;
+package com.akari.quark.ui.adapter.baseAdapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;

@@ -1,12 +1,11 @@
-package com.akari.quark.adapter;
+package com.akari.quark.ui.adapter;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.akari.quark.fragment.MessagePageFragment;
-import com.akari.quark.fragment.PageFragment;
+import com.akari.quark.ui.fragment.MessagePageFragment;
 
 /**
  * Created by motoon on 2016/5/14.

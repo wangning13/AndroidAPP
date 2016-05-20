@@ -1,4 +1,4 @@
-package com.akari.quark.activity;
+package com.akari.quark.ui.activity;
 
 import android.app.Fragment;
 import android.content.Intent;
@@ -19,7 +19,6 @@ import org.wordpress.android.editor.EditorMediaUploadListener;
 import org.wordpress.android.editor.ImageSettingsDialogFragment;
 import org.wordpress.android.util.AppLog;
 import org.wordpress.android.util.AppLog.T;
-import org.wordpress.android.util.ToastUtils;
 import org.wordpress.android.util.helpers.MediaFile;
 
 import java.util.HashMap;

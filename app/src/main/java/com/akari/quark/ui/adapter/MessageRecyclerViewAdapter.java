@@ -1,28 +1,26 @@
-package com.akari.quark.adapter;
+package com.akari.quark.ui.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.akari.quark.R;
-import com.akari.quark.adapter.baseAdapter.RecyclerViewAdapter;
+import com.akari.quark.ui.adapter.baseAdapter.RecyclerViewAdapter;
 
 import java.util.ArrayList;
 
 /**
  * Created by motoon on 2016/5/14.
  */
-public class LikeRecyclerViewAdapter extends RecyclerViewAdapter<LikeRecyclerViewAdapter.NormalViewHolder> {
+public class MessageRecyclerViewAdapter extends RecyclerViewAdapter<MessageRecyclerViewAdapter.NormalViewHolder> {
     private LayoutInflater mLayoutInflater;
     private Context mContext;
     private ArrayList<Integer> mInt = new ArrayList<>();
 
-    public LikeRecyclerViewAdapter(Context context){
+    public MessageRecyclerViewAdapter(Context context){
         mContext=context;
         mLayoutInflater=LayoutInflater.from(context);
     }
@@ -31,7 +29,7 @@ public class LikeRecyclerViewAdapter extends RecyclerViewAdapter<LikeRecyclerVie
     @Override
     public NormalViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        return new NormalViewHolder(mLayoutInflater.inflate(R.layout.item_like, parent, false));
+        return new NormalViewHolder(mLayoutInflater.inflate(R.layout.item_message, parent, false));
     }
 
     /**
@@ -111,7 +109,7 @@ public class LikeRecyclerViewAdapter extends RecyclerViewAdapter<LikeRecyclerVie
 
         public NormalViewHolder(View itemView) {
             super(itemView);
-            mCardView = (CardView) itemView.findViewById(R.id.like_card_view);
+            mCardView = (CardView) itemView.findViewById(R.id.message_card_view);
 //            item_title = (TextView) mCardView.findViewById(R.id.item_title);
 //            item_content = (TextView) mCardView.findViewById(R.id.item_content);
         }

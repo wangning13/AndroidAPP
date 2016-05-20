@@ -1,21 +1,17 @@
-package com.akari.quark.activity;
+package com.akari.quark.ui.activity;
 
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.DrawableRes;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,19 +19,16 @@ import android.view.View;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import com.akari.quark.R;
-import com.akari.quark.adapter.AnswerItemDecoration;
-import com.akari.quark.adapter.QuestionDetailRecycleViewAdapter;
+import com.akari.quark.ui.adapter.AnswerItemDecoration;
+import com.akari.quark.ui.adapter.QuestionDetailRecycleViewAdapter;
 import com.akari.quark.data.DataDemo;
 import com.hippo.refreshlayout.RefreshLayout;
-
-import org.wordpress.android.editor.Utils;
 
 /**
  * Created by motoon on 2016/5/6.

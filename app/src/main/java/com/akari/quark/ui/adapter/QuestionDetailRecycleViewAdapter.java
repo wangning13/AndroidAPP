@@ -1,4 +1,4 @@
-package com.akari.quark.adapter;
+package com.akari.quark.ui.adapter;
 
 import android.graphics.Color;
 import android.support.v7.widget.CardView;
@@ -7,7 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
+
 import java.util.List;
 import com.akari.quark.R;
 

@@ -1,4 +1,4 @@
-package com.akari.quark.adapter;
+package com.akari.quark.ui.adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,28 +10,28 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.akari.quark.R;
-import com.akari.quark.adapter.baseAdapter.RecyclerViewAdapter;
+import com.akari.quark.ui.activity.QuestionDetailActivity;
+import com.akari.quark.ui.adapter.baseAdapter.RecyclerViewAdapter;
 
 import java.util.ArrayList;
 
 /**
- * Created by motoon on 2016/5/14.
+ * Created by Akari on 2016/5/14.
  */
-public class MessageRecyclerViewAdapter extends RecyclerViewAdapter<MessageRecyclerViewAdapter.NormalViewHolder> {
+public class AnswerRecyclerViewAdapter extends RecyclerViewAdapter<AnswerRecyclerViewAdapter.NormalViewHolder> {
     private LayoutInflater mLayoutInflater;
     private Context mContext;
     private ArrayList<Integer> mInt = new ArrayList<>();
 
-    public MessageRecyclerViewAdapter(Context context){
+    public AnswerRecyclerViewAdapter(Context context){
         mContext=context;
         mLayoutInflater=LayoutInflater.from(context);
     }
 
-
     @Override
     public NormalViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        return new NormalViewHolder(mLayoutInflater.inflate(R.layout.item_message, parent, false));
+        return new NormalViewHolder(mLayoutInflater.inflate(R.layout.item_answer_main, parent, false));
     }
 
     /**
@@ -40,29 +40,13 @@ public class MessageRecyclerViewAdapter extends RecyclerViewAdapter<MessageRecyc
      */
     @Override
     public void onBindViewHolder(NormalViewHolder holder, final int position) {
-//        holder.mCardView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-////                Toast.makeText(mContext, "蛤蛤", Toast.LENGTH_SHORT).show();
-//                Intent intent = new Intent(mContext, QuestionDetailActivity.class);
-//                mContext.startActivity(intent);
-//            }
-//        });
-//        holder.item_title.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(mContext,QuestionDetailActivity.class);
-//                mContext.startActivity(intent);
-//            }
-//        });
-//        holder.item_content.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(mContext,AnswerDetailActivity.class);
-//                mContext.startActivity(intent);
-//            }
-//        });
-
+        holder.item_title.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(mContext,QuestionDetailActivity.class);
+                mContext.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -106,13 +90,13 @@ public class MessageRecyclerViewAdapter extends RecyclerViewAdapter<MessageRecyc
 
     public static class NormalViewHolder extends RecyclerView.ViewHolder {
         CardView mCardView;
-//        TextView item_title;
-//        TextView item_content;
+        TextView item_title;
+        TextView item_content;
 
         public NormalViewHolder(View itemView) {
             super(itemView);
-            mCardView = (CardView) itemView.findViewById(R.id.message_card_view);
-//            item_title = (TextView) mCardView.findViewById(R.id.item_title);
+            mCardView = (CardView) itemView.findViewById(R.id.answer_card_view);
+            item_title = (TextView) mCardView.findViewById(R.id.answer_item_title);
 //            item_content = (TextView) mCardView.findViewById(R.id.item_content);
         }
 
@@ -120,6 +104,4 @@ public class MessageRecyclerViewAdapter extends RecyclerViewAdapter<MessageRecyc
             return mCardView;
         }
     }
-
-
 }

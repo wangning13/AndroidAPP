@@ -1,4 +1,4 @@
-package com.akari.quark.activity;
+package com.akari.quark.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -17,7 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.akari.quark.R;
-import com.akari.quark.adapter.MainFragmentPagerAdapter;
+import com.akari.quark.ui.adapter.MainFragmentPagerAdapter;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {

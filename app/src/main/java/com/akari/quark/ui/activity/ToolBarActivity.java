@@ -1,4 +1,4 @@
-package com.akari.quark.activity;
+package com.akari.quark.ui.activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
