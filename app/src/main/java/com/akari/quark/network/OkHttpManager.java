@@ -20,67 +20,41 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 
-/**
- * Created by 若兰 on 2016/1/23.
- * 一个懂得了编程乐趣的小白，希望自己
- * 能够在这个道路上走的很远，也希望自己学习到的
- * 知识可以帮助更多的人,分享就是学习的一种乐趣
- * QQ:1069584784
- * csdn:http://blog.csdn.net/wuyinlei
- */
 
 public class OkHttpManager {
 
-    /**
-     * 静态实例
-     */
+    //静态实例
     private static OkHttpManager sOkHttpManager;
 
-    /**
-     * okhttpclient实例
-     */
+    //okhttpclient实例
     private OkHttpClient mClient;
 
-    /**
-     * 因为我们请求数据一般都是子线程中请求，在这里我们使用了handler
-     */
+    //因为我们请求数据一般都是子线程中请求，在这里我们使用了handler
     private Handler mHandler;
 
-    /**
-     * 构造方法
-     */
+    //构造方法
     private OkHttpManager() {
 
         mClient = new OkHttpClient();
 
-        /**
-         * 在这里直接设置连接超时.读取超时，写入超时
-         */
+        //在这里直接设置连接超时.读取超时，写入超时
         mClient.newBuilder().connectTimeout(10, TimeUnit.SECONDS);
         mClient.newBuilder().readTimeout(10, TimeUnit.SECONDS);
         mClient.newBuilder().writeTimeout(10, TimeUnit.SECONDS);
 
-        /**
-         * 如果是用的3.0之前的版本  使用以下直接设置连接超时.读取超时，写入超时
-         */
+        //如果是用的3.0之前的版本  使用以下直接设置连接超时.读取超时，写入超时
 
         //client.setConnectTimeout(10, TimeUnit.SECONDS);
         //client.setWriteTimeout(10, TimeUnit.SECONDS);
         //client.setReadTimeout(30, TimeUnit.SECONDS);
 
 
-        /**
-         * 初始化handler
-         */
+        //初始化handler
         mHandler = new Handler(Looper.getMainLooper());
     }
 
 
-    /**
-     * 单例模式  获取OkHttpManager实例
-     *
-     * @return
-     */
+    //单例模式  获取OkHttpManager实例
     public static OkHttpManager getInstance() {
 
         if (sOkHttpManager == null) {
