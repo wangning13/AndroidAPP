@@ -75,7 +75,9 @@ public class MessagePageFragment extends Fragment implements RefreshLayout.OnRef
 
                 mRecyclerView.setAdapter(mRecyclerViewAdapter = new LikeRecyclerViewAdapter(getContext()));
                 break;
-            case 3:
+//            case 3:
+//
+//                break;
 
         }
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
