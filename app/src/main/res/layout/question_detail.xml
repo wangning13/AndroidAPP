@@ -44,7 +44,7 @@
         app:backgroundTint="@color/colorPrimary"
         app:rippleColor="#33728dff"
         app:elevation="12dp"
-        app:layout_behavior="com.akari.quark.behavior.ScrollAwareFABBehavior"
+        app:layout_behavior="com.akari.quark.ui.behavior.ScrollAwareFABBehavior"
         app:pressedTranslationZ="20dp"
         app:borderWidth="0dp"
         android:layout_margin="@dimen/fab_margin"/>
