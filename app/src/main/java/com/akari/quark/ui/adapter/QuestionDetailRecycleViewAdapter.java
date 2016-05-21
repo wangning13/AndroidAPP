@@ -1,21 +1,20 @@
 package com.akari.quark.ui.adapter;
 
-import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.TextView;
+
+import com.akari.quark.R;
 
 import java.util.List;
-import com.akari.quark.R;
 
 /**
  * Created by motoon on 2016/5/12.
  */
-public class QuestionDetailRecycleViewAdapter extends RecyclerView.Adapter<QuestionDetailRecycleViewAdapter.ViewHolder>{
-
+public class QuestionDetailRecycleViewAdapter extends RecyclerView.Adapter<QuestionDetailRecycleViewAdapter.MyViewHolder> {
     public static final int TYPE_HEADER = 0;
     public static final int TYPE_NORMAL = 1;
     private View mHeaderView;
@@ -37,12 +36,10 @@ public class QuestionDetailRecycleViewAdapter extends RecyclerView.Adapter<Quest
         this.datas = datas;
     }
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
     {
-        if(mHeaderView != null && viewType == TYPE_HEADER) return new ViewHolder(mHeaderView);
+        if(mHeaderView != null && viewType == TYPE_HEADER) return new MyViewHolder(mHeaderView);
         final View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_answer, parent, false);
-        final View headerView = LayoutInflater.from(parent.getContext()).inflate(R.layout.question_headerview,parent,false);
-
         itemView.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -54,8 +51,9 @@ public class QuestionDetailRecycleViewAdapter extends RecyclerView.Adapter<Quest
                 }
             }
         });
-        return new ViewHolder(itemView);
+        return new MyViewHolder(itemView);
     }
+
     @Override
     public int getItemViewType(int position) {
         if(mHeaderView == null) return TYPE_NORMAL;
@@ -67,11 +65,13 @@ public class QuestionDetailRecycleViewAdapter extends RecyclerView.Adapter<Quest
         notifyDataSetChanged();
     }
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position)
+    public void onBindViewHolder(MyViewHolder holder, int position)
     {
-        String s = datas.get(position);
-        holder.bindData(s);
-        holder.itemView.setTag(s);
+//        String s = datas.get(position);
+//        holder.bindData(s);
+//        holder.itemView.setTag(s);
+        if(position!=0)
+            holder.username.setText("djshf");
     }
     public int getRealPosition(RecyclerView.ViewHolder holder) {
         int position = holder.getLayoutPosition();
@@ -98,48 +98,28 @@ public class QuestionDetailRecycleViewAdapter extends RecyclerView.Adapter<Quest
         public void OnItemClick(View view,String data);
     }
 
-    class ViewHolderHeader extends RecyclerView.ViewHolder{
+    public static class ViewHolderHeader extends RecyclerView.ViewHolder{
         public ViewHolderHeader(View itemView){
             super(itemView);
-            final Button button = (Button)itemView.findViewById(R.id.concern_button);
-            if (button != null) {
-                button.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (button.getText().equals("关注")){
-                            System.out.println("有木有关注");
-                            button.setText("已关注");
-                            button.setBackgroundColor(Color.parseColor("#D1D1D1"));
-                        }
-                        if (button.getText().equals("已关注")){
-                            button.setText("关注");
-                            System.out.println("到死有木有关注");
-                            button.setBackgroundColor(Color.parseColor("#00A162"));
-                        }
-                    }
-                });
-            }
         }
 
     }
 
 
-    static class ViewHolder extends RecyclerView.ViewHolder
+    public  class MyViewHolder extends RecyclerView.ViewHolder
     {
-        private CardView cardView;
-        public ViewHolder(View itemView)
+        CardView cardView;
+        TextView username;
+        public MyViewHolder(View itemView)
         {
             super(itemView);
-            cardView = (CardView) itemView.findViewById(R.id.answer_card_view);
+            if(itemView == mHeaderView) return;
+            cardView = (CardView) itemView.findViewById(R.id.answer_card);
+            username = (TextView) cardView.findViewById(R.id.username);
         }
-        public void bindData(String s)
-        {
-//            if (s != null)
-////                mContent.setText(s);
-        }
-        interface OnItemClickListener {
-            void onItemClick(int position, String data);
-        }
+        public CardView getmCardView() {
+            return cardView;
+        };
     }
 
 }

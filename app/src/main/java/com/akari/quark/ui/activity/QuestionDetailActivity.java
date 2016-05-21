@@ -2,6 +2,7 @@ package com.akari.quark.ui.activity;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,18 +17,12 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.content.Intent;
-import android.os.AsyncTask;
 import android.widget.Button;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.akari.quark.R;
-import com.akari.quark.ui.adapter.AnswerItemDecoration;
-import com.akari.quark.ui.adapter.QuestionDetailRecycleViewAdapter;
 import com.akari.quark.data.DataDemo;
+import com.akari.quark.ui.adapter.QuestionDetailRecycleViewAdapter;
 import com.hippo.refreshlayout.RefreshLayout;
 
 /**
@@ -121,32 +116,10 @@ public class QuestionDetailActivity extends AppCompatActivity implements Refresh
                 }
             }
         });
-//        if(button.isSelected()==false){
-//            button.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    button.setText("已关注");
-//                    button.setBackgroundColor(Color.parseColor("#D1D1D1"));
-//                    button.setSelected(true);
-//                }
-//            });
-//
-//        }else{
-//            button.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    button.setText("关注");
-//                    button.setBackgroundColor(Color.parseColor("#00A162"));
-//                    button.setSelected(!state);
-////                    button.setBackground(Drawable.createFromPath("@drawable/shape"));
-//                }
-//            });
-//        }
 
         mAdapter.setHeaderView(header);
 
-        //分隔线
-        mRecyclerView.addItemDecoration(new AnswerItemDecoration(1));
+
         //为每个item增加响应事件
         mAdapter.setOnItemClickListener(new QuestionDetailRecycleViewAdapter.OnItemClickListener()
         {
@@ -180,36 +153,6 @@ public class QuestionDetailActivity extends AppCompatActivity implements Refresh
                 mRefreshlayout.setFooterRefreshing(false);
             }
         }, 3000);
-    }
-
-    private class UpdateTask extends AsyncTask<Void,Void,List<String>>
-    {
-        @Override
-        protected List<String> doInBackground(Void... params)
-        {
-            try
-            {
-                Thread.sleep(2000);
-            } catch (InterruptedException e)
-            {
-                e.printStackTrace();
-            }
-            List<String> strings = new ArrayList<>();
-            strings.add("新数据1");
-            strings.add("新数据2");
-            strings.add("新数据3");
-            strings.add("新数据4");
-            return strings;
-        }
-        @Override
-        protected void onPostExecute(List<String> strings)
-        {
-            mAdapter.addItems(strings);
-            //通知刷新完毕
-            mRefreshlayout.setHeaderRefreshing(false);
-            //滚动到列首部--->这是一个很方便的api，可以滑动到指定位置
-            mRecyclerView.scrollToPosition(0);
-        }
     }
 
     @Override

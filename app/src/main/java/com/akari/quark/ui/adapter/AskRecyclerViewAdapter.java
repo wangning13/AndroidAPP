@@ -41,14 +41,6 @@ public class AskRecyclerViewAdapter extends RecyclerViewAdapter<AskRecyclerViewA
      */
     @Override
     public void onBindViewHolder(NormalViewHolder holder, final int position) {
-//        holder.mCardView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-////                Toast.makeText(mContext, "蛤蛤", Toast.LENGTH_SHORT).show();
-//                Intent intent = new Intent(mContext, QuestionDetailActivity.class);
-//                mContext.startActivity(intent);
-//            }
-//        });
         holder.item_title.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
