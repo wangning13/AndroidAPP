@@ -1,6 +1,7 @@
 package com.akari.quark.network;
 
 import android.os.Handler;
+import android.os.Looper;
 import android.os.RemoteException;
 
 import com.akari.quark.util.AppCtx;
@@ -11,7 +12,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.ConnectException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -39,43 +39,51 @@ public class OkHttpManager {
     private static final String X_ACCESS_TOKEN="x-access-token";
     private static final String TEMP_X_ACCESS_TOKEN="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZXhwIjoxNDY0MTkwOTc1NDYxfQ.5ejSZACMPlz3KXgQmBgINYYfgxULmEx2zVf-19TN34E";
 
+    /**
+     * 静态实例
+     */
+    private static OkHttpManager sOkHttpManager;
     //okhttpclient实例
-    private static final OkHttpClient mClient;
+    private OkHttpClient mClient;
 
     //因为我们请求数据一般都是子线程中请求，在这里我们使用了handler
-    private static Handler mHandler;
+    private Handler mHandler;
 
     //构造方法
-//    private OkHttpManager() {
-//
-//        mClient = new OkHttpClient();
-//
-//        //在这里直接设置连接超时.读取超时，写入超时
-//        mClient.newBuilder().connectTimeout(10, TimeUnit.SECONDS);
-//        mClient.newBuilder().readTimeout(10, TimeUnit.SECONDS);
-//        mClient.newBuilder().writeTimeout(10, TimeUnit.SECONDS);
-//
-//        //如果是用的3.0之前的版本  使用以下直接设置连接超时.读取超时，写入超时
-//
-//        //client.setConnectTimeout(10, TimeUnit.SECONDS);
-//        //client.setWriteTimeout(10, TimeUnit.SECONDS);
-//        //client.setReadTimeout(30, TimeUnit.SECONDS);
-//
-//
-//    }
-
-    static {
+    public OkHttpManager() {
         mClient = new OkHttpClient();
 //        mClient.newBuilder().cache(buildCache());
         mClient.newBuilder().connectTimeout(10, TimeUnit.SECONDS);
         mClient.newBuilder().writeTimeout(10, TimeUnit.SECONDS);
-        mClient.newBuilder().readTimeout(30, TimeUnit.SECONDS);
+        mClient.newBuilder().readTimeout(10, TimeUnit.SECONDS);
+
         mClient.newBuilder().followRedirects(false);
-
-//        初始化handler
-//        mHandler = new Handler(Looper.getMainLooper());
-
+        //初始化handler
+        mHandler = new Handler(Looper.getMainLooper());
+//
+//
     }
+
+    public static OkHttpManager getInstance() {
+
+        if (sOkHttpManager == null) {
+            sOkHttpManager = new OkHttpManager();
+        }
+        return sOkHttpManager;
+    }
+
+//    static {
+//        mClient = new OkHttpClient();
+////        mClient.newBuilder().cache(buildCache());
+//        mClient.newBuilder().connectTimeout(10, TimeUnit.SECONDS);
+//        mClient.newBuilder().writeTimeout(10, TimeUnit.SECONDS);
+//        mClient.newBuilder().readTimeout(30, TimeUnit.SECONDS);
+//        mClient.newBuilder().followRedirects(false);
+//
+////        初始化handler
+////        mHandler = new Handler(Looper.getMainLooper());
+//
+//    }
 
     //建立缓存
     private static Cache buildCache() {
@@ -93,27 +101,27 @@ public class OkHttpManager {
         return builder;
     }
 
-    static OkHttpClient getClient() {
-        return mClient;
-    }
+//    static OkHttpClient getClient() {
+//        return mClient;
+//    }
 
     //-------------------------同步的方式请求数据--------------------------
-    public static void main(String[] args) throws ConnectException,IOException,RemoteException{
-        String response = getSyncString(
-                "http://115.159.160.18:3000/api/question/detail?question_id=1",
-                X_ACCESS_TOKEN,TEMP_X_ACCESS_TOKEN);
-        System.out.print(response);
-    }
+//    public static void main(String[] args) throws ConnectException,IOException,RemoteException{
+//        String response = getSyncString(
+//                "http://115.159.160.18:3000/api/question/detail?question_id=1",
+//                X_ACCESS_TOKEN,TEMP_X_ACCESS_TOKEN);
+//        System.out.print(response);
+//    }
 
     //同步GET，返回Response
-    public static Response getSync(String url,String key,String token) {
+    public  Response getSync(String url,String key,String token) {
 
         //通过获取到的实例来调用内部方法
-        return inner_getSync(url,key,token);
+        return sOkHttpManager.inner_getSync(url,key,token);
     }
 
     //同步GET返回Response内部逻辑
-    private static Response inner_getSync(String url,String key,String token) {
+    private  Response inner_getSync(String url,String key,String token) {
         Request request = new Request.Builder()
                 .url(url)
                 .header(key,token)
@@ -129,13 +137,13 @@ public class OkHttpManager {
     }
 
     //同步GET返回String
-    public static String getSyncString(String url,String key,String token) {
-        return inner_getSyncString(url,key,token);
+    public  String getSyncString(String url,String key,String token) {
+        return sOkHttpManager.inner_getSyncString(url,key,token);
     }
 
 
     //同步GET返回String内部逻辑
-    private static String inner_getSyncString(String url,String key,String token) {
+    private  String inner_getSyncString(String url,String key,String token) {
         String result = null;
         try {
             /**
@@ -151,13 +159,30 @@ public class OkHttpManager {
     }
 
     //-------------------------异步的方式请求数据--------------------------
+    public static void main(String[] args) throws ConnectException,IOException,RemoteException {
+//        OkHttpManager okHttpManager = new OkHttpManager();
+        DataCallBack dataCallBack = new DataCallBack() {
+            @Override
+            public void requestFailure(Request request, IOException e) {
+                System.out.print("ERROR");
+            }
+
+            @Override
+            public void requestSuccess(String result) throws Exception {
+                System.out.print(result);
+            }
+        };
+        getAsync(
+                "http://115.159.160.18:3000/api/question/detail?question_id=1",dataCallBack,
+                X_ACCESS_TOKEN,TEMP_X_ACCESS_TOKEN);
+    }
     //异步GET
     public static void getAsync(String url, DataCallBack callBack,String key,String token) {
-        inner_getAsync(url, callBack,key,token);
+        getInstance().inner_getAsync(url, callBack,key,token);
     }
 
     //异步GET内部逻辑
-    private static void inner_getAsync(String url, final DataCallBack callBack,String key,String token) {
+    private  void inner_getAsync(String url, final DataCallBack callBack,String key,String token) {
         final Request request = new Request.Builder()
                 .header(key,token)
                 .url(url)
@@ -190,7 +215,7 @@ public class OkHttpManager {
      * @param e
      * @param callBack
      */
-    private static void deliverDataFailure(final Request request, final IOException e, final DataCallBack callBack) {
+    private void deliverDataFailure(final Request request, final IOException e, final DataCallBack callBack) {
         /**
          * 在这里使用异步处理
          */
@@ -210,7 +235,7 @@ public class OkHttpManager {
      * @param result
      * @param callBack
      */
-    private static void deliverDataSuccess(final String result, final DataCallBack callBack) {
+    private void deliverDataSuccess(final String result, final DataCallBack callBack) {
         /**
          * 在这里使用异步线程处理
          */
@@ -240,11 +265,11 @@ public class OkHttpManager {
     //-------------------------提交表单--------------------------
     //异步POST
 
-    public static void postAsync(String url, Map<String, String> params, DataCallBack callBack) {
+    public void postAsync(String url, Map<String, String> params, DataCallBack callBack) {
         inner_postAsync(url, params, callBack);
     }
 
-    private static void inner_postAsync(String url, Map<String, String> params, final DataCallBack callBack) {
+    private void inner_postAsync(String url, Map<String, String> params, final DataCallBack callBack) {
 
         RequestBody requestBody = null;
         if (params == null) {
@@ -301,7 +326,7 @@ public class OkHttpManager {
 
 
     //-------------------------文件下载--------------------------
-    public static void downloadAsync(String url, String desDir, DataCallBack callBack) {
+    public void downloadAsync(String url, String desDir, DataCallBack callBack) {
         inner_downloadAsync(url, desDir, callBack);
     }
 
@@ -312,7 +337,7 @@ public class OkHttpManager {
      * @param desDir   目标地址
      * @param callBack
      */
-    private static void inner_downloadAsync(final String url, final String desDir, final DataCallBack callBack) {
+    private void inner_downloadAsync(final String url, final String desDir, final DataCallBack callBack) {
         final Request request = new Request.Builder().url(url).build();
         mClient.newCall(request).enqueue(new Callback() {
             @Override
@@ -368,13 +393,13 @@ public class OkHttpManager {
      * @param url
      * @return
      */
-    private static String getFileName(String url) {
+    private String getFileName(String url) {
         int separatorIndex = url.lastIndexOf("/");
         String path = (separatorIndex < 0) ? url : url.substring(separatorIndex + 1, url.length());
         return path;
     }
 
-    private static final String CHARSET_NAME = "UTF-8";
+    private final String CHARSET_NAME = "UTF-8";
 //    /**
 //     * 这里使用了HttpClinet的API。只是为了方便
 //     * @param params
