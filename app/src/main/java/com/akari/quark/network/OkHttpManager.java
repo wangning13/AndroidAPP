@@ -1,12 +1,13 @@
 package com.akari.quark.network;
 
 import android.os.Handler;
-import android.os.Looper;
+import android.os.RemoteException;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.ConnectException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -50,7 +51,7 @@ public class OkHttpManager {
 
 
         //初始化handler
-        mHandler = new Handler(Looper.getMainLooper());
+//        mHandler = new Handler(Looper.getMainLooper());
     }
 
 
@@ -64,6 +65,14 @@ public class OkHttpManager {
     }
 
     //-------------------------同步的方式请求数据--------------------------
+    public static void main(String[] args) throws ConnectException,IOException,RemoteException{
+        OkHttpManager okHttpManager = new OkHttpManager();
+        String response = okHttpManager.inner_getSyncString(
+                "http://115.159.160.18:3000/api/question/detail?question_id=1",
+                "x-access-token",
+                "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZXhwIjoxNDY0MTkwOTc1NDYxfQ.5ejSZACMPlz3KXgQmBgINYYfgxULmEx2zVf-19TN34E");
+        System.out.print(response);
+    }
 
     //同步GET，返回Response
     public static Response getSync(String url,String key,String token) {
