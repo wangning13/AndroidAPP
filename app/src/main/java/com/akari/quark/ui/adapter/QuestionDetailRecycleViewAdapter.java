@@ -108,6 +108,7 @@ public class QuestionDetailRecycleViewAdapter extends RecyclerView.Adapter<Quest
                     List<String> topics = message.getTopics();
                     List<Answer> answers = message.getAnswers();
                     holder.questionTitle.setText(title);
+                    
                 }
             }
         };
