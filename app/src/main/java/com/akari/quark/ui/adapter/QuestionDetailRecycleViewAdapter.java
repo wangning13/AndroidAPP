@@ -12,9 +12,11 @@ import com.akari.quark.entity.Answer;
 import com.akari.quark.entity.Message;
 import com.akari.quark.entity.QuestinoDetail;
 import com.akari.quark.network.OkHttpManager;
+import com.akari.quark.ui.view.CircleImageView;
 import com.akari.quark.util.GsonUtil;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.Request;
@@ -30,7 +32,7 @@ public class QuestionDetailRecycleViewAdapter extends RecyclerView.Adapter<Quest
     public static final int TYPE_HEADER = 0;
     public static final int TYPE_NORMAL = 1;
     private View mHeaderView;
-    private List<String> datas = null;
+    private List<Answer> answerList = new ArrayList<>();
     private OnItemClickListener mListener;
     private Message message;
     public void setOnItemClickListener(OnItemClickListener listener)
@@ -44,9 +46,8 @@ public class QuestionDetailRecycleViewAdapter extends RecyclerView.Adapter<Quest
     public View getHeaderView() {
         return mHeaderView;
     }
-    public QuestionDetailRecycleViewAdapter(List<String> datas)
+    public QuestionDetailRecycleViewAdapter()
     {
-        this.datas = datas;
     }
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
@@ -73,14 +74,14 @@ public class QuestionDetailRecycleViewAdapter extends RecyclerView.Adapter<Quest
         if(position == 0) return TYPE_HEADER;
         return TYPE_NORMAL;
     }
-    public void addDatas(List<String> mdatas) {
-        datas.addAll(mdatas);
-        notifyDataSetChanged();
-    }
+//    public void addDatas(List<String> mdatas) {
+//        datas.addAll(mdatas);
+//        notifyDataSetChanged();
+//    }
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position)
     {
-        int question_id = 2;
+        int question_id = 1;
 //        message = QuestionDetailData.GetQuestionDetail(question_id);
 //        String s = datas.get(position);
 //        holder.bindData(s);
@@ -98,17 +99,31 @@ public class QuestionDetailRecycleViewAdapter extends RecyclerView.Adapter<Quest
 
             @Override
             public void requestSuccess(String result) throws Exception {
+                QuestinoDetail questinoDetail = GsonUtil.GsonToBean(result,QuestinoDetail.class);
+                Message message = questinoDetail.getMessage();
+                String title = message.getTitle();
+                String content = message.getContent();
+                String focusNum = String.valueOf(message.getFocusNum())+"人关注";
+                String answerNum =  String.valueOf(message.getAnswerNum())+"人回答";
+                List<String> topics = message.getTopics();
                 if(position==0){
-                    QuestinoDetail questinoDetail = GsonUtil.GsonToBean(result,QuestinoDetail.class);
-                    Message message = questinoDetail.getMessage();
-                    String title = message.getTitle();
-                    String context = message.getContent();
-                    int answerNum = message.getAnswerNum();
-                    int focusNum = message.getFocusNum();
-                    List<String> topics = message.getTopics();
-                    List<Answer> answers = message.getAnswers();
                     holder.questionTitle.setText(title);
-                    
+                    holder.content.setText(content);
+                    holder.focusNum.setText(focusNum);
+                    holder.answerNum.setText(answerNum);
+                    for (int i=0;i<topics.size();i++){
+                        if(i!=topics.size()-2){
+                            holder.topics.setText(topics.get(i) +"·");
+                        }else {
+                            holder.topics.setText(topics.get(i));
+                        }
+                    }
+                }else{
+                    answerList = message.getAnswers();
+                    holder.context.setText(answerList.get(position).getContent());
+                    holder.username.setText(answerList.get(position).getUser().getName());
+                    holder.introduction.setText(answerList.get(position).getUser().getIntroduction());
+
                 }
             }
         };
@@ -124,16 +139,16 @@ public class QuestionDetailRecycleViewAdapter extends RecyclerView.Adapter<Quest
     @Override
     public int getItemCount()
     {
-        return mHeaderView == null ? datas.size() : datas.size() ;
+        return mHeaderView == null ? answerList.size() : answerList.size()+1 ;
     }
     /**
      * 批量增加
      * */
-    public void addItems(List<String> items)
+    public void addItems(List<Answer> items)
     {
         if (items == null)
             return;
-        this.datas.addAll(0, items);
+        this.answerList.addAll(0, items);
         this.notifyItemRangeInserted(0, items.size());
     }
     public interface OnItemClickListener
@@ -151,17 +166,34 @@ public class QuestionDetailRecycleViewAdapter extends RecyclerView.Adapter<Quest
 
     public  class MyViewHolder extends RecyclerView.ViewHolder
     {
-        CardView cardView;
-        TextView username;
         TextView questionTitle;
+        TextView content;
+        TextView focusNum;
+        TextView answerNum;
+        TextView topics;
+
+        CardView cardView;
+        TextView context;
+        TextView username;
+        CircleImageView imageView;
+        TextView introduction;
         public MyViewHolder(View itemView)
         {
             super(itemView);
             if(itemView == mHeaderView){
                 questionTitle = (TextView) itemView.findViewById(R.id.quetion_detail_title);
+                content = (TextView) itemView.findViewById(R.id.content);
+                focusNum = (TextView) itemView.findViewById(R.id.focus_num);
+                answerNum = (TextView) itemView.findViewById(R.id.answer_num);
+                topics = (TextView) itemView.findViewById(R.id.topic);
+
             }else {
                 cardView = (CardView) itemView.findViewById(R.id.answer_card);
+                context = (TextView) itemView.findViewById((R.id.answer_content1));
                 username = (TextView) cardView.findViewById(R.id.username);
+                imageView = (CircleImageView) cardView.findViewById(R.id.image_view);
+                introduction = (TextView) cardView.findViewById(R.id.introduction);
+
             }
 
         }

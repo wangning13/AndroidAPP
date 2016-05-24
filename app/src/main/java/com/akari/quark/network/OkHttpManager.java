@@ -2,7 +2,6 @@ package com.akari.quark.network;
 
 import android.os.Handler;
 import android.os.Looper;
-import android.os.RemoteException;
 
 import com.akari.quark.util.AppCtx;
 
@@ -10,7 +9,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.ConnectException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -106,7 +104,7 @@ public class OkHttpManager {
 //    }
 
     //-------------------------同步的方式请求数据--------------------------
-//    public static void main(String[] args) throws ConnectException,IOException,RemoteException{
+//    public static void main(String[] args) throws ConnectException,IOException,RemoteException {
 //        String response = getSyncString(
 //                "http://115.159.160.18:3000/api/question/detail?question_id=1",
 //                X_ACCESS_TOKEN,TEMP_X_ACCESS_TOKEN);
@@ -159,23 +157,23 @@ public class OkHttpManager {
     }
 
     //-------------------------异步的方式请求数据--------------------------
-    public static void main(String[] args) throws ConnectException,IOException,RemoteException {
-//        OkHttpManager okHttpManager = new OkHttpManager();
-        DataCallBack dataCallBack = new DataCallBack() {
-            @Override
-            public void requestFailure(Request request, IOException e) {
-                System.out.print("ERROR");
-            }
-
-            @Override
-            public void requestSuccess(String result) throws Exception {
-                System.out.print(result);
-            }
-        };
-        getAsync(
-                "http://115.159.160.18:3000/api/question/detail?question_id=1",dataCallBack,
-                X_ACCESS_TOKEN,TEMP_X_ACCESS_TOKEN);
-    }
+//    public static void main(String[] args) throws ConnectException,IOException,RemoteException {
+////        OkHttpManager okHttpManager = new OkHttpManager();
+//        DataCallBack dataCallBack = new DataCallBack() {
+//            @Override
+//            public void requestFailure(Request request, IOException e) {
+//                System.out.print("ERROR");
+//            }
+//
+//            @Override
+//            public void requestSuccess(String result) throws Exception {
+//                System.out.print(result);
+//            }
+//        };
+//        getAsync(
+//                "http://115.159.160.18:3000/api/question/detail?question_id=1",dataCallBack,
+//                X_ACCESS_TOKEN,TEMP_X_ACCESS_TOKEN);
+//    }
     //异步GET
     public static void getAsync(String url, DataCallBack callBack,String key,String token) {
         getInstance().inner_getAsync(url, callBack,key,token);
