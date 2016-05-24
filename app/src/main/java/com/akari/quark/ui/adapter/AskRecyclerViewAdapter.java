@@ -8,13 +8,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.akari.quark.R;
+import com.akari.quark.entity.asksInMain.AsksInMain;
+import com.akari.quark.entity.asksInMain.AsksInMainMessage;
+import com.akari.quark.network.OkHttpManager;
 import com.akari.quark.ui.activity.AnswerDetailActivity;
 import com.akari.quark.ui.activity.QuestionDetailActivity;
 import com.akari.quark.ui.adapter.baseAdapter.RecyclerViewAdapter;
+import com.akari.quark.util.GsonUtil;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+
+import okhttp3.Request;
 
 /**
  * Created by Akari on 2016/5/5.
@@ -22,7 +31,8 @@ import java.util.ArrayList;
 public class AskRecyclerViewAdapter extends RecyclerViewAdapter<AskRecyclerViewAdapter.NormalViewHolder> {
     private LayoutInflater mLayoutInflater;
     private Context mContext;
-    private ArrayList<Integer> mInt = new ArrayList<>();
+    private List<AsksInMainMessage> mMessage = new ArrayList<AsksInMainMessage>();
+    private int mPage=1;
 
     public AskRecyclerViewAdapter(Context context){
         mContext=context;
@@ -41,6 +51,9 @@ public class AskRecyclerViewAdapter extends RecyclerViewAdapter<AskRecyclerViewA
      */
     @Override
     public void onBindViewHolder(NormalViewHolder holder, final int position) {
+        holder.item_title.setText(mMessage.get(position).getTitle());
+        holder.item_content.setText(mMessage.get(position).getBestAnswer().getContent());
+
         holder.item_title.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -60,41 +73,38 @@ public class AskRecyclerViewAdapter extends RecyclerViewAdapter<AskRecyclerViewA
 
     @Override
     public int getItemCount() {
-        return mInt == null ? 0 : mInt.size();
+        return mMessage == null ? 0 : mMessage.size();
     }
 
     @Override
     public void add(int position) {
-        mInt.add(position, 1);
-        notifyItemInserted(position);
+//        mMessage.add(position, 1);
+//        notifyItemInserted(position);
     }
 
     @Override
     public void remove(int position) {
-        mInt.remove(position);
-        notifyItemRemoved(position);
+//        mMessage.remove(position);
+//        notifyItemRemoved(position);
     }
 
     @Override
     public int loadMore() {
-        int pos = mInt.size();
-        mInt.add(mInt.size(), 1);
-        mInt.add(mInt.size(), 1);
-        mInt.add(mInt.size(), 1);
-        mInt.add(mInt.size(), 1);
-        mInt.add(mInt.size(), 1);
-        notifyItemRangeInserted(mInt.size() - 5, mInt.size());
-        return pos;
+        mPage++;
+        int preSize=mMessage.size();
+        load();
+        notifyItemRangeChanged(preSize,mMessage.size());
+        return preSize+1;
     }
 
     @Override
     public void refresh() {
-        mInt.add(0, 1);
-        mInt.add(0, 1);
-        mInt.add(0, 1);
-        mInt.add(0, 1);
-        mInt.add(0, 1);
-        notifyItemRangeInserted(0, 5);
+        mPage=2;
+        int preSize=mMessage.size();
+        mMessage.clear();
+        notifyItemRangeRemoved(0,preSize);
+        load();
+        notifyItemRangeInserted(0,mMessage.size());
     }
 
     public static class NormalViewHolder extends RecyclerView.ViewHolder {
@@ -112,5 +122,25 @@ public class AskRecyclerViewAdapter extends RecyclerViewAdapter<AskRecyclerViewA
         public CardView getmCardView() {
             return mCardView;
         }
+    }
+
+    private void load(){
+        String url = OkHttpManager.API_GET_ALL_ASK_QUESTIONS;
+        String urlDetail = OkHttpManager.attachHttpGetParam(url,"page",String.valueOf(mPage));
+        OkHttpManager.DataCallBack dataCallBack = new OkHttpManager.DataCallBack() {
+            @Override
+            public void requestFailure(Request request, IOException e) {
+                Toast.makeText(mContext,"无法访问",Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void requestSuccess(String result) throws Exception {
+                AsksInMain asksInMain = GsonUtil.GsonToBean(result,AsksInMain.class);
+                List<AsksInMainMessage> messageList = asksInMain.getMessage();
+                mMessage.addAll(messageList);
+                Toast.makeText(mContext,"新增"+mMessage.size(),Toast.LENGTH_SHORT).show();
+            }
+        };
+        OkHttpManager.getAsync(urlDetail,dataCallBack,OkHttpManager.X_ACCESS_TOKEN,OkHttpManager.TEMP_X_ACCESS_TOKEN);
     }
 }

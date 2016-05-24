@@ -1,16 +1,20 @@
 
 package com.akari.quark.entity;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 public class User {
 
+    @SerializedName("name")
+    @Expose
     private String name;
+    @SerializedName("img_url")
+    @Expose
     private String imgUrl;
+    @SerializedName("introduction")
+    @Expose
     private String introduction;
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     /**
      * 
@@ -28,11 +32,6 @@ public class User {
      */
     public void setName(String name) {
         this.name = name;
-    }
-
-    public User withName(String name) {
-        this.name = name;
-        return this;
     }
 
     /**
@@ -53,11 +52,6 @@ public class User {
         this.imgUrl = imgUrl;
     }
 
-    public User withImgUrl(String imgUrl) {
-        this.imgUrl = imgUrl;
-        return this;
-    }
-
     /**
      * 
      * @return
@@ -74,24 +68,6 @@ public class User {
      */
     public void setIntroduction(String introduction) {
         this.introduction = introduction;
-    }
-
-    public User withIntroduction(String introduction) {
-        this.introduction = introduction;
-        return this;
-    }
-
-    public Map<String, Object> getAdditionalProperties() {
-        return this.additionalProperties;
-    }
-
-    public void setAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
-    }
-
-    public User withAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
-        return this;
     }
 
 }
