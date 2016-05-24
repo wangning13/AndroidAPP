@@ -1,14 +1,17 @@
 
 package com.akari.quark.entity;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 public class Answer {
 
+    @SerializedName("content")
+    @Expose
     private String content;
+    @SerializedName("user")
+    @Expose
     private User user;
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     /**
      * 
@@ -28,11 +31,6 @@ public class Answer {
         this.content = content;
     }
 
-    public Answer withContent(String content) {
-        this.content = content;
-        return this;
-    }
-
     /**
      * 
      * @return
@@ -49,24 +47,6 @@ public class Answer {
      */
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public Answer withUser(User user) {
-        this.user = user;
-        return this;
-    }
-
-    public Map<String, Object> getAdditionalProperties() {
-        return this.additionalProperties;
-    }
-
-    public void setAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
-    }
-
-    public Answer withAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
-        return this;
     }
 
 }

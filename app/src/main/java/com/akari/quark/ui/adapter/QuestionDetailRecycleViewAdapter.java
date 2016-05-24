@@ -103,8 +103,8 @@ public class QuestionDetailRecycleViewAdapter extends RecyclerView.Adapter<Quest
                     Message message = questinoDetail.getMessage();
                     String title = message.getTitle();
                     String context = message.getContent();
-                    int answerNum = message.getAnswerNum();
-                    int focusNum = message.getFocusNum();
+                    long answerNum = message.getAnswerNum();
+                    long focusNum = message.getFocusNum();
                     List<String> topics = message.getTopics();
                     List<Answer> answers = message.getAnswers();
                     holder.questionTitle.setText(title);

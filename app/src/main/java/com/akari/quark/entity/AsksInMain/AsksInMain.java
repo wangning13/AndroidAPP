@@ -1,14 +1,16 @@
 
-package com.akari.quark.entity;
+package com.akari.quark.entity.asksInMain;
 
+import java.util.ArrayList;
+import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class QuestinoDetail {
+public class AsksInMain {
 
     @SerializedName("message")
     @Expose
-    private Message message;
+    private List<AsksInMainMessage> message = new ArrayList<AsksInMainMessage>();
     @SerializedName("status")
     @Expose
     private Long status;
@@ -18,7 +20,7 @@ public class QuestinoDetail {
      * @return
      *     The message
      */
-    public Message getMessage() {
+    public List<AsksInMainMessage> getMessage() {
         return message;
     }
 
@@ -27,7 +29,7 @@ public class QuestinoDetail {
      * @param message
      *     The message
      */
-    public void setMessage(Message message) {
+    public void setMessage(List<AsksInMainMessage> message) {
         this.message = message;
     }
 

@@ -101,7 +101,7 @@ public class MessagePageFragment extends Fragment implements RefreshLayout.OnRef
                 mRecyclerView.scrollToPosition(0);
                 mSwipeLayout.setHeaderRefreshing(false);
             }
-        }, 3000);
+        }, 0);
     }
 
     @Override
@@ -112,6 +112,6 @@ public class MessagePageFragment extends Fragment implements RefreshLayout.OnRef
                 mRecyclerView.scrollToPosition(mRecyclerViewAdapter.loadMore());
                 mSwipeLayout.setFooterRefreshing(false);
             }
-        }, 3000);
+        }, 0);
     }
 }

@@ -2,19 +2,30 @@
 package com.akari.quark.entity;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 public class Message {
 
+    @SerializedName("title")
+    @Expose
     private String title;
+    @SerializedName("content")
+    @Expose
     private String content;
-    private int answerNum;
-    private int focusNum;
+    @SerializedName("answer_num")
+    @Expose
+    private Long answerNum;
+    @SerializedName("focus_num")
+    @Expose
+    private Long focusNum;
+    @SerializedName("topics")
+    @Expose
     private List<String> topics = new ArrayList<String>();
+    @SerializedName("answers")
+    @Expose
     private List<Answer> answers = new ArrayList<Answer>();
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     /**
      * 
@@ -32,11 +43,6 @@ public class Message {
      */
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public Message withTitle(String title) {
-        this.title = title;
-        return this;
     }
 
     /**
@@ -57,17 +63,12 @@ public class Message {
         this.content = content;
     }
 
-    public Message withContent(String content) {
-        this.content = content;
-        return this;
-    }
-
     /**
      * 
      * @return
      *     The answerNum
      */
-    public int getAnswerNum() {
+    public Long getAnswerNum() {
         return answerNum;
     }
 
@@ -76,13 +77,8 @@ public class Message {
      * @param answerNum
      *     The answer_num
      */
-    public void setAnswerNum(int answerNum) {
+    public void setAnswerNum(Long answerNum) {
         this.answerNum = answerNum;
-    }
-
-    public Message withAnswerNum(int answerNum) {
-        this.answerNum = answerNum;
-        return this;
     }
 
     /**
@@ -90,7 +86,7 @@ public class Message {
      * @return
      *     The focusNum
      */
-    public int getFocusNum() {
+    public Long getFocusNum() {
         return focusNum;
     }
 
@@ -99,13 +95,8 @@ public class Message {
      * @param focusNum
      *     The focus_num
      */
-    public void setFocusNum(int focusNum) {
+    public void setFocusNum(Long focusNum) {
         this.focusNum = focusNum;
-    }
-
-    public Message withFocusNum(int focusNum) {
-        this.focusNum = focusNum;
-        return this;
     }
 
     /**
@@ -126,11 +117,6 @@ public class Message {
         this.topics = topics;
     }
 
-    public Message withTopics(List<String> topics) {
-        this.topics = topics;
-        return this;
-    }
-
     /**
      * 
      * @return
@@ -147,24 +133,6 @@ public class Message {
      */
     public void setAnswers(List<Answer> answers) {
         this.answers = answers;
-    }
-
-    public Message withAnswers(List<Answer> answers) {
-        this.answers = answers;
-        return this;
-    }
-
-    public Map<String, Object> getAdditionalProperties() {
-        return this.additionalProperties;
-    }
-
-    public void setAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
-    }
-
-    public Message withAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
-        return this;
     }
 
 }
