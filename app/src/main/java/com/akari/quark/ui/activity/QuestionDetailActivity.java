@@ -21,7 +21,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.akari.quark.R;
-import com.akari.quark.data.DataDemo;
 import com.akari.quark.ui.adapter.QuestionDetailRecycleViewAdapter;
 import com.hippo.refreshlayout.RefreshLayout;
 
@@ -45,7 +44,7 @@ public class QuestionDetailActivity extends AppCompatActivity implements Refresh
         context = QuestionDetailActivity.this;
         mActivity = this;
         Toolbar toolbar = (Toolbar) findViewById(R.id.id_tool_bar);
-        toolbar.setTitle("");
+        toolbar.setTitle("6月5日创建");
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,7 +81,9 @@ public class QuestionDetailActivity extends AppCompatActivity implements Refresh
                 android.R.color.holo_red_light);
         mRefreshlayout.setOnRefreshListener(this);
         mLinearLayoutManager = new LinearLayoutManager(this);
-        mAdapter = new QuestionDetailRecycleViewAdapter(DataDemo.generateData(20));
+
+
+        mAdapter = new QuestionDetailRecycleViewAdapter(context);
         mRecyclerView.setAdapter(mAdapter);
         //每个item高度一致，可设置为true，提高性能
         mRecyclerView.setHasFixedSize(true);
@@ -90,7 +91,7 @@ public class QuestionDetailActivity extends AppCompatActivity implements Refresh
 
         View header = LayoutInflater.from(context).inflate(R.layout.question_headerview, mRecyclerView, false);
         final Button button = (Button) header.findViewById(R.id.concern_button);
-        TextView item_tag = (TextView) header.findViewById(R.id.item_tag);
+        TextView item_tag = (TextView) header.findViewById(R.id.topic);
         item_tag.setMovementMethod(ScrollingMovementMethod.getInstance());
         item_tag.setHorizontallyScrolling(true);
 
@@ -121,15 +122,15 @@ public class QuestionDetailActivity extends AppCompatActivity implements Refresh
 
 
         //为每个item增加响应事件
-        mAdapter.setOnItemClickListener(new QuestionDetailRecycleViewAdapter.OnItemClickListener()
-        {
-            @Override
-            public void OnItemClick(View view, String data)
-            {
-                Intent intent = new Intent(context,AnswerDetailActivity.class);
-                context.startActivity(intent);
-            }
-        });
+//        mAdapter.setOnItemClickListener(new QuestionDetailRecycleViewAdapter.OnItemClickListener()
+//        {
+//            @Override
+//            public void OnItemClick(View view, String data)
+//            {
+//                Intent intent = new Intent(context,AnswerDetailActivity.class);
+//                context.startActivity(intent);
+//            }
+//        });
 
 
     }

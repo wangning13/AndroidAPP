@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.akari.quark.R;
 
@@ -33,6 +34,8 @@ public class AnswerDetailActivity extends AppCompatActivity{
                 onBackPressed();
             }
         });
+        TextView content = (TextView) findViewById(R.id.content);
+
         final ImageView up = (ImageView) findViewById(R.id.up);
         LinearLayout up_layout = (LinearLayout)this.findViewById(R.id.up_layout);
         if (up != null) {

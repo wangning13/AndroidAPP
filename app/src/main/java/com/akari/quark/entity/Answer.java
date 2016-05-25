@@ -1,16 +1,9 @@
 
 package com.akari.quark.entity;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-
 public class Answer {
 
-    @SerializedName("content")
-    @Expose
     private String content;
-    @SerializedName("user")
-    @Expose
     private User user;
 
     /**

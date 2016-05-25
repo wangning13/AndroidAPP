@@ -1,17 +1,21 @@
 package com.akari.quark.ui.adapter;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.akari.quark.R;
 import com.akari.quark.entity.Answer;
 import com.akari.quark.entity.Message;
 import com.akari.quark.entity.QuestinoDetail;
 import com.akari.quark.network.OkHttpManager;
+import com.akari.quark.ui.activity.AnswerDetailActivity;
 import com.akari.quark.ui.view.CircleImageView;
 import com.akari.quark.util.GsonUtil;
 
@@ -20,6 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.Request;
+
+//import okhttp3.Request;
 
 /**
  * Created by motoon on 2016/5/12.
@@ -32,9 +38,12 @@ public class QuestionDetailRecycleViewAdapter extends RecyclerView.Adapter<Quest
     public static final int TYPE_HEADER = 0;
     public static final int TYPE_NORMAL = 1;
     private View mHeaderView;
-    private List<Answer> answerList = new ArrayList<>();
+    private List<Answer> answerList = new ArrayList<Answer>();
     private OnItemClickListener mListener;
     private Message message;
+    private Context mContext;
+    private LayoutInflater mLayoutInflater;
+
     public void setOnItemClickListener(OnItemClickListener listener)
     {
         this.mListener = listener;
@@ -46,8 +55,10 @@ public class QuestionDetailRecycleViewAdapter extends RecyclerView.Adapter<Quest
     public View getHeaderView() {
         return mHeaderView;
     }
-    public QuestionDetailRecycleViewAdapter()
+    public QuestionDetailRecycleViewAdapter(Context context)
     {
+        this.mContext = context;
+        mLayoutInflater=LayoutInflater.from(context);
     }
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
@@ -82,19 +93,13 @@ public class QuestionDetailRecycleViewAdapter extends RecyclerView.Adapter<Quest
     public void onBindViewHolder(final MyViewHolder holder, final int position)
     {
         int question_id = 1;
-//        message = QuestionDetailData.GetQuestionDetail(question_id);
-//        String s = datas.get(position);
-//        holder.bindData(s);
-//        holder.itemView.setTag(s);
-//        if(position!=0)
-//            holder.username.setText("djshf");
 
         String url = OkHttpManager.BASE_URL+API_QUESTION_DETAIL;
         String urlDetail = OkHttpManager.attachHttpGetParam(url,"question_id",String.valueOf(question_id));
         OkHttpManager.DataCallBack dataCallBack = new OkHttpManager.DataCallBack() {
             @Override
             public void requestFailure(Request request, IOException e) {
-                System.out.print("ERROR");
+                Toast.makeText(mContext,"无法访问",Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -106,29 +111,39 @@ public class QuestionDetailRecycleViewAdapter extends RecyclerView.Adapter<Quest
                 String focusNum = String.valueOf(message.getFocusNum())+"人关注";
                 String answerNum =  String.valueOf(message.getAnswerNum())+"人回答";
                 List<String> topics = message.getTopics();
+                answerList = message.getAnswers();
                 if(position==0){
-                    holder.questionTitle.setText(title);
+                    holder.questionTitle.setText(answerList.size()+"个数据");
                     holder.content.setText(content);
                     holder.focusNum.setText(focusNum);
                     holder.answerNum.setText(answerNum);
                     for (int i=0;i<topics.size();i++){
-                        if(i!=topics.size()-2){
+                        if(i!=topics.size()-1){
                             holder.topics.setText(topics.get(i) +"·");
                         }else {
                             holder.topics.setText(topics.get(i));
                         }
                     }
                 }else{
-                    answerList = message.getAnswers();
-                    holder.context.setText(answerList.get(position).getContent());
-                    holder.username.setText(answerList.get(position).getUser().getName());
-                    holder.introduction.setText(answerList.get(position).getUser().getIntroduction());
-
+                    notifyDataSetChanged();
+                    holder.context.setText(answerList.get(position-1).getContent());
+                    holder.username.setText(answerList.get(position-1).getUser().getName());
+                    holder.introduction.setText(answerList.get(position-1).getUser().getIntroduction());
                 }
+
             }
         };
         OkHttpManager.getAsync(urlDetail,dataCallBack,X_ACCESS_TOKEN,TEMP_X_ACCESS_TOKEN);
 
+        if(position!=0){
+            holder.context.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(mContext,AnswerDetailActivity.class);
+                    mContext.startActivity(intent);
+                }
+            });
+        }
 
     }
     public int getRealPosition(RecyclerView.ViewHolder holder) {
