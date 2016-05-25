@@ -82,7 +82,7 @@ public class QuestionDetailActivity extends AppCompatActivity implements Refresh
                 android.R.color.holo_red_light);
         mRefreshlayout.setOnRefreshListener(this);
         mLinearLayoutManager = new LinearLayoutManager(this);
-        mAdapter = new QuestionDetailRecycleViewAdapter(DataDemo.generateData(20));
+        mAdapter = new QuestionDetailRecycleViewAdapter();
         mRecyclerView.setAdapter(mAdapter);
         //每个item高度一致，可设置为true，提高性能
         mRecyclerView.setHasFixedSize(true);

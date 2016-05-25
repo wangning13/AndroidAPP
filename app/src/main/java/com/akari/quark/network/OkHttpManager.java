@@ -25,17 +25,17 @@ import okhttp3.Response;
 public class OkHttpManager {
     public static final String BASE_URL = "http://115.159.160.18:3000";
 
-    private static final String API_GET_ALL_ASK_QUESTIONS = BASE_URL + "/api/question/list/ask";
-    private static final String API_GET_ALL_ANSWER_QUESTIONS = BASE_URL + "/api/question/list/answer";
-    private static final String API_LOGIN = BASE_URL + "/api/user/login";
-    private static final String API_QUESTION_DETAIL = BASE_URL + "/api/question/detail";
-    private static final String API_ADD_QUESTION = BASE_URL + "/api/question/add";
-    private static final String API_WATCH_QUESTION = BASE_URL + "/api/question/focus";
-    private static final String API_ANSWER_DETAIL = BASE_URL + "/api/answer/detail";
-    private static final String API_ADD_ANSWER = BASE_URL + "/api/answer/add";
+    public static final String API_GET_ALL_ASK_QUESTIONS = BASE_URL + "/api/question/list/ask";
+    public static final String API_GET_ALL_ANSWER_QUESTIONS = BASE_URL + "/api/question/list/answer";
+    public static final String API_LOGIN = BASE_URL + "/api/user/login";
+    public static final String API_QUESTION_DETAIL = BASE_URL + "/api/question/detail";
+    public static final String API_ADD_QUESTION = BASE_URL + "/api/question/add";
+    public static final String API_WATCH_QUESTION = BASE_URL + "/api/question/focus";
+    public static final String API_ANSWER_DETAIL = BASE_URL + "/api/answer/detail";
+    public static final String API_ADD_ANSWER = BASE_URL + "/api/answer/add";
 
-    private static final String X_ACCESS_TOKEN="x-access-token";
-    private static final String TEMP_X_ACCESS_TOKEN="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZXhwIjoxNDY0MTkwOTc1NDYxfQ.5ejSZACMPlz3KXgQmBgINYYfgxULmEx2zVf-19TN34E";
+    public static final String X_ACCESS_TOKEN="x-access-token";
+    public static final String TEMP_X_ACCESS_TOKEN="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZXhwIjoxNDY0MTkwOTc1NDYxfQ.5ejSZACMPlz3KXgQmBgINYYfgxULmEx2zVf-19TN34E";
 
     /**
      * 静态实例
