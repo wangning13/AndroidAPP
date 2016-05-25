@@ -10,27 +10,28 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.akari.quark.R;
+import com.akari.quark.entity.answersInMain.AnswersInMainMessage;
 import com.akari.quark.ui.activity.QuestionDetailActivity;
-import com.akari.quark.ui.adapter.baseAdapter.RecyclerViewAdapter;
+import com.akari.quark.ui.adapter.baseAdapter.NewRecyclerViewAdapter;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Akari on 2016/5/14.
  */
-public class AnswerRecyclerViewAdapter extends RecyclerViewAdapter<AnswerRecyclerViewAdapter.NormalViewHolder> {
+public class AnswerRecyclerViewAdapter extends NewRecyclerViewAdapter<AnswerRecyclerViewAdapter.NormalViewHolder> {
     private LayoutInflater mLayoutInflater;
     private Context mContext;
-    private ArrayList<Integer> mInt = new ArrayList<>();
+    private List<AnswersInMainMessage> mData;
 
     public AnswerRecyclerViewAdapter(Context context){
         mContext=context;
         mLayoutInflater=LayoutInflater.from(context);
+        setHasStableIds(true);
     }
 
     @Override
     public NormalViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
         return new NormalViewHolder(mLayoutInflater.inflate(R.layout.item_answer_main, parent, false));
     }
 
@@ -40,68 +41,65 @@ public class AnswerRecyclerViewAdapter extends RecyclerViewAdapter<AnswerRecycle
      */
     @Override
     public void onBindViewHolder(NormalViewHolder holder, final int position) {
-        holder.item_title.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(mContext,QuestionDetailActivity.class);
-                mContext.startActivity(intent);
-            }
-        });
+        final AnswersInMainMessage answer = mData.get(position);
+        holder.fillData(answer);
+        holder.setListener(mContext);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return mData == null ? RecyclerView.NO_ID : mData.get(position).getId();
     }
 
     @Override
     public int getItemCount() {
-        return mInt == null ? 0 : mInt.size();
+        return mData == null ? 0 : mData.size();
     }
 
     @Override
-    public void add(int position) {
-        mInt.add(position, 1);
-        notifyItemInserted(position);
+    public int addDataSource(List<?> list) {
+        int pre = mData.size();
+
+        mData.addAll((List<AnswersInMainMessage>) list);
+
+        notifyItemRangeInserted(pre, list.size());
+
+        return pre;
     }
 
     @Override
-    public void remove(int position) {
-        mInt.remove(position);
-        notifyItemRemoved(position);
-    }
+    public void setDataSource(List<?> list) {
+        mData = (List<AnswersInMainMessage>) list;
 
-    @Override
-    public int loadMore() {
-        int pos = mInt.size();
-        mInt.add(mInt.size(), 1);
-        mInt.add(mInt.size(), 1);
-        mInt.add(mInt.size(), 1);
-        mInt.add(mInt.size(), 1);
-        mInt.add(mInt.size(), 1);
-        notifyItemRangeInserted(mInt.size() - 5, mInt.size());
-        return pos;
-    }
-
-    @Override
-    public void refresh() {
-        mInt.add(0, 1);
-        mInt.add(0, 1);
-        mInt.add(0, 1);
-        mInt.add(0, 1);
-        mInt.add(0, 1);
-        notifyItemRangeInserted(0, 5);
+        notifyDataSetChanged();
     }
 
     public static class NormalViewHolder extends RecyclerView.ViewHolder {
-        CardView mCardView;
-        TextView item_title;
-        TextView item_content;
+        private final CardView mCardView;
+        private final TextView mTitle;
+        private final TextView mTopic;
 
         public NormalViewHolder(View itemView) {
             super(itemView);
             mCardView = (CardView) itemView.findViewById(R.id.answer_card_view);
-            item_title = (TextView) mCardView.findViewById(R.id.answer_item_title);
-//            item_content = (TextView) mCardView.findViewById(R.id.item_content);
+            mTitle = (TextView) mCardView.findViewById(R.id.answer_item_title);
+            mTopic = (TextView) mCardView.findViewById(R.id.answer_item_tag);
         }
 
-        public CardView getmCardView() {
-            return mCardView;
+        public void fillData(AnswersInMainMessage ask) {
+            mCardView.setVisibility(View.VISIBLE);
+            mTitle.setText(ask.getTitle());
+            mTopic.setText(ask.getTopics().get(0));
+        }
+
+        public void setListener(final Context context) {
+            mTitle.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, QuestionDetailActivity.class);
+                    context.startActivity(intent);
+                }
+            });
         }
     }
 }

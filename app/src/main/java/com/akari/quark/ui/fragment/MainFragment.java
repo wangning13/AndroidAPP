@@ -13,44 +13,46 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.akari.quark.R;
-import com.akari.quark.entity.asksInMain.AsksInMainMessage;
 import com.akari.quark.ui.adapter.AnswerRecyclerViewAdapter;
 import com.akari.quark.ui.adapter.AskRecyclerViewAdapter;
-import com.akari.quark.ui.adapter.baseAdapter.RecyclerViewAdapter;
+import com.akari.quark.ui.adapter.baseAdapter.NewRecyclerViewAdapter;
 import com.akari.quark.ui.listener.OnVerticalScrollListener;
+import com.akari.quark.ui.loader.AnswersInMainListLoader;
 import com.akari.quark.ui.loader.AsksInMainListLoader;
 import com.akari.quark.ui.loader.AsyncTaskLoader;
 import com.hippo.refreshlayout.RefreshLayout;
 
 import java.util.List;
 
-public class PageFragment extends Fragment implements RefreshLayout.OnRefreshListener, LoaderManager.LoaderCallbacks<AsyncTaskLoader.LoaderResult<List<AsksInMainMessage>>> {
-    private static final String TAG = PageFragment.class.getSimpleName();
+public class MainFragment extends Fragment implements RefreshLayout.OnRefreshListener, LoaderManager.LoaderCallbacks<AsyncTaskLoader.LoaderResult<List<?>>> {
     public static final String ARG_PAGE = "ARG_PAGE";
+    private static final String TAG = MainFragment.class.getSimpleName();
+    private int mFragment;
 
     private int mPage;
 
-    private AskRecyclerViewAdapter mAdapter;
+    private NewRecyclerViewAdapter mAdapter;
     private RefreshLayout mLayout;
-    private AsksInMainListLoader mLoader;
+    private AsyncTaskLoader mLoader;
     private RecyclerView mRecyclerView;
 
-    public static PageFragment newInstance(int page) {
-        PageFragment fragment = new PageFragment();
+    public MainFragment() {
+        // Required empty public constructor
+    }
+
+    public static MainFragment newInstance(int page) {
+        MainFragment fragment = new MainFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_PAGE, page);
         fragment.setArguments(args);
         return fragment;
     }
 
-    public PageFragment() {
-        // Required empty public constructor
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPage = getArguments().getInt(ARG_PAGE);
+        mFragment = getArguments().getInt(ARG_PAGE);
+        mPage = 0;
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -76,14 +78,14 @@ public class PageFragment extends Fragment implements RefreshLayout.OnRefreshLis
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(layoutManager);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-//        switch (mPage){
-//            case 1:
+        switch (mFragment) {
+            case 1:
                 mRecyclerView.setAdapter(mAdapter = new AskRecyclerViewAdapter(getContext()));
-//                break;
-//            case 2:
-//                mRecyclerView.setAdapter(mAdapter = new AnswerRecyclerViewAdapter(getContext()));
-//                break;
-//        }
+                break;
+            case 2:
+                mRecyclerView.setAdapter(mAdapter = new AnswerRecyclerViewAdapter(getContext()));
+                break;
+        }
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.addOnScrollListener(new OnVerticalScrollListener() {
             @Override
@@ -115,6 +117,9 @@ public class PageFragment extends Fragment implements RefreshLayout.OnRefreshLis
 
     @Override
     public void onHeaderRefresh() {
+        mPage = 0;
+        getLoaderManager().restartLoader(0, null, this);
+
         final Loader<?> loader = getLoaderManager().getLoader(0);
         if (loader == null) {
             return;
@@ -126,33 +131,57 @@ public class PageFragment extends Fragment implements RefreshLayout.OnRefreshLis
 
     @Override
     public void onFooterRefresh() {
+        mPage++;
+        getLoaderManager().restartLoader(0, null, this);
+        final int pre = mAdapter.getItemCount();
+
         final Loader<?> loader = getLoaderManager().getLoader(0);
         if (loader == null) {
             return;
         }
+
         loader.forceLoad();
 
-        mRecyclerView.smoothScrollToPosition(0);
+        mRecyclerView.scrollToPosition(pre + 1);
     }
 
+
     @Override
-    public Loader<AsyncTaskLoader.LoaderResult<List<AsksInMainMessage>>> onCreateLoader(int id, Bundle args) {
-        mLoader = new AsksInMainListLoader(getActivity(), 0);
+    public Loader<AsyncTaskLoader.LoaderResult<List<?>>> onCreateLoader(int id, Bundle args) {
+        switch (mFragment) {
+            case 1:
+                mLoader = new AsksInMainListLoader(getActivity(), mPage);
+                break;
+            case 2:
+                mLoader = new AnswersInMainListLoader(getActivity(), mPage);
+                break;
+        }
         return mLoader;
     }
 
     @Override
-    public void onLoadFinished(Loader<AsyncTaskLoader.LoaderResult<List<AsksInMainMessage>>> loader, AsyncTaskLoader.LoaderResult<List<AsksInMainMessage>> data) {
-        mLayout.setHeaderRefreshing(false);
-        mLayout.setFooterRefreshing(false);
-        if (data.hasException()) {
-            return;
+    public void onLoadFinished(Loader<AsyncTaskLoader.LoaderResult<List<?>>> loader, AsyncTaskLoader.LoaderResult<List<?>> data) {
+        if (mPage == 0) {
+            mLayout.setHeaderRefreshing(false);
+            if (data.hasException()) {
+                return;
+            }
+            mAdapter.setDataSource(data.mResult);
+        } else {
+            mLayout.setFooterRefreshing(false);
+            if (data.hasException()) {
+                return;
+            }
+
+            int pre = mAdapter.addDataSource(data.mResult);
+
+            mRecyclerView.smoothScrollToPosition(pre);
+//            ((LinearLayoutManager)mRecyclerView.getLayoutManager()).scrollToPositionWithOffset(0,50);
         }
-        mAdapter.setDataSource(data.mResult);
     }
 
     @Override
-    public void onLoaderReset(Loader<AsyncTaskLoader.LoaderResult<List<AsksInMainMessage>>> loader) {
+    public void onLoaderReset(Loader<AsyncTaskLoader.LoaderResult<List<?>>> loader) {
 
     }
 }

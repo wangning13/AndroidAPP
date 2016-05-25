@@ -13,15 +13,14 @@ import com.akari.quark.R;
 import com.akari.quark.entity.asksInMain.AsksInMainMessage;
 import com.akari.quark.ui.activity.AnswerDetailActivity;
 import com.akari.quark.ui.activity.QuestionDetailActivity;
-import com.akari.quark.ui.adapter.baseAdapter.RecyclerViewAdapter;
+import com.akari.quark.ui.adapter.baseAdapter.NewRecyclerViewAdapter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Akari on 2016/5/5.
  */
-public class AskRecyclerViewAdapter extends RecyclerViewAdapter<AskRecyclerViewAdapter.NormalViewHolder> {
+public class AskRecyclerViewAdapter extends NewRecyclerViewAdapter<AskRecyclerViewAdapter.NormalViewHolder> {
     private LayoutInflater mLayoutInflater;
     private Context mContext;
     private List<AsksInMainMessage> mData;
@@ -29,22 +28,7 @@ public class AskRecyclerViewAdapter extends RecyclerViewAdapter<AskRecyclerViewA
     public AskRecyclerViewAdapter(Context context){
         mContext=context;
         mLayoutInflater=LayoutInflater.from(context);
-        mData=new ArrayList<AsksInMainMessage>();
         setHasStableIds(true);
-    }
-
-    public void setDataSource(List<AsksInMainMessage> data) {
-        mData = data;
-
-        notifyDataSetChanged();
-    }
-
-    public void addDataSource(List<AsksInMainMessage> data) {
-        int pre=mData.size();
-
-        mData.addAll(data);
-
-        notifyItemRangeChanged(pre,data.size());
     }
 
     @Override
@@ -74,35 +58,21 @@ public class AskRecyclerViewAdapter extends RecyclerViewAdapter<AskRecyclerViewA
     }
 
     @Override
-    public void add(int position) {
-//        mData.add(position, 1);
-//        notifyItemInserted(position);
+    public int addDataSource(List<?> list) {
+        int pre = mData.size();
+
+        mData.addAll((List<AsksInMainMessage>) list);
+
+        notifyItemRangeInserted(pre, list.size());
+
+        return pre;
     }
 
     @Override
-    public void remove(int position) {
-//        mData.remove(position);
-//        notifyItemRemoved(position);
-    }
+    public void setDataSource(List<?> list) {
+        mData = (List<AsksInMainMessage>) list;
 
-    @Override
-    public int loadMore() {
-//        mPage++;
-//        int preSize= mData.size();
-//        load();
-//        notifyItemRangeChanged(preSize, mData.size());
-//        return preSize+1;
-        return 0;
-    }
-
-    @Override
-    public void refresh() {
-//        mPage=2;
-//        int preSize= mData.size();
-//        mData.clear();
-//        notifyItemRangeRemoved(0,preSize);
-//        load();
-//        notifyItemRangeInserted(0, mData.size());
+        notifyDataSetChanged();
     }
 
     public static class NormalViewHolder extends RecyclerView.ViewHolder {
@@ -146,24 +116,4 @@ public class AskRecyclerViewAdapter extends RecyclerViewAdapter<AskRecyclerViewA
             });
         }
     }
-
-//    private void load(){
-//        String url = OkHttpManager.API_GET_ALL_ASK_QUESTIONS;
-//        String urlDetail = OkHttpManager.attachHttpGetParam(url,"page",String.valueOf(mPage));
-//        OkHttpManager.DataCallBack dataCallBack = new OkHttpManager.DataCallBack() {
-//            @Override
-//            public void requestFailure(Request request, IOException e) {
-//                Toast.makeText(mContext,"无法访问",Toast.LENGTH_SHORT).show();
-//            }
-//
-//            @Override
-//            public void requestSuccess(String result) throws Exception {
-//                AsksInMain asksInMain = GsonUtil.GsonToBean(result,AsksInMain.class);
-//                List<AsksInMainMessage> messageList = asksInMain.getMessage();
-//                mData.addAll(messageList);
-//                Toast.makeText(mContext,"新增"+ mData.size(),Toast.LENGTH_SHORT).show();
-//            }
-//        };
-//        OkHttpManager.getAsync(urlDetail,dataCallBack,OkHttpManager.X_ACCESS_TOKEN,OkHttpManager.TEMP_X_ACCESS_TOKEN);
-//    }
 }

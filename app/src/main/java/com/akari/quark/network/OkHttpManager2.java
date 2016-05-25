@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.ConnectException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -41,9 +40,7 @@ public class OkHttpManager2 {
 
     //okhttpclient实例
     private static final OkHttpClient mClient;
-
-    //因为我们请求数据一般都是子线程中请求，在这里我们使用了handler
-    private static Handler mHandler;
+    private static final String CHARSET_NAME = "UTF-8";
 
     //构造方法
 //    private OkHttpManager() {
@@ -63,6 +60,8 @@ public class OkHttpManager2 {
 //
 //
 //    }
+    //因为我们请求数据一般都是子线程中请求，在这里我们使用了handler
+    private static Handler mHandler;
 
     static {
         mClient = new OkHttpClient();
@@ -100,7 +99,7 @@ public class OkHttpManager2 {
     //-------------------------同步的方式请求数据--------------------------
     public static void main(String[] args) throws ConnectException,IOException,RemoteException{
         String response = getSyncString(
-                "http://115.159.160.18:3000/api/question/detail?question_id=1",
+                "http://115.159.160.18:3000/api/question/list/ask?page=0",
                 X_ACCESS_TOKEN,TEMP_X_ACCESS_TOKEN);
         System.out.print(response);
     }
@@ -132,7 +131,6 @@ public class OkHttpManager2 {
     public static String getSyncString(String url,String key,String token) {
         return inner_getSyncString(url,key,token);
     }
-
 
     //同步GET返回String内部逻辑
     private static String inner_getSyncString(String url,String key,String token) {
@@ -182,7 +180,6 @@ public class OkHttpManager2 {
         });
     }
 
-
     /**
      * 分发失败的时候调用
      *
@@ -226,15 +223,6 @@ public class OkHttpManager2 {
                 }
             }
         });
-    }
-
-    /**
-     * 数据回调接口
-     */
-    public interface DataCallBack {
-        void requestFailure(Request request, IOException e);
-
-        void requestSuccess(String result) throws Exception;
     }
 
     //-------------------------提交表单--------------------------
@@ -374,7 +362,17 @@ public class OkHttpManager2 {
         return path;
     }
 
-    private static final String CHARSET_NAME = "UTF-8";
+    /**
+     * 为HttpGet 的 url 方便的添加1个name value 参数。
+     *
+     * @param url
+     * @param name
+     * @param value
+     * @return
+     */
+    public static String attachHttpGetParam(String url, String name, String value) {
+        return url + "?" + name + "=" + value;
+    }
 //    /**
 //     * 这里使用了HttpClinet的API。只是为了方便
 //     * @param params
@@ -394,13 +392,11 @@ public class OkHttpManager2 {
 //    }
 
     /**
-     * 为HttpGet 的 url 方便的添加1个name value 参数。
-     * @param url
-     * @param name
-     * @param value
-     * @return
+     * 数据回调接口
      */
-    public static String attachHttpGetParam(String url, String name, String value){
-        return url + "?" + name + "=" + value;
+    public interface DataCallBack {
+        void requestFailure(Request request, IOException e);
+
+        void requestSuccess(String result) throws Exception;
     }
 }
