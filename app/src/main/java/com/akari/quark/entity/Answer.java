@@ -3,7 +3,9 @@ package com.akari.quark.entity;
 
 public class Answer {
 
+    private  int answerID;
     private String content;
+    private Long praiseNum;
     private User user;
 
     /**
@@ -42,4 +44,19 @@ public class Answer {
         this.user = user;
     }
 
+    public int getAnswerID() {
+        return answerID;
+    }
+
+    public void setAnswerID(int answerID) {
+        this.answerID = answerID;
+    }
+
+    public Long getPraiseNum() {
+        return praiseNum;
+    }
+
+    public void setPraiseNum(Long praiseNum) {
+        this.praiseNum = praiseNum;
+    }
 }

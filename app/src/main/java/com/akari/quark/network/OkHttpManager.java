@@ -3,12 +3,14 @@ package com.akari.quark.network;
 import android.os.Handler;
 import android.os.Looper;
 
+import com.akari.quark.common.exception.RemoteException;
 import com.akari.quark.util.AppCtx;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.ConnectException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -27,7 +29,7 @@ public class OkHttpManager {
 
     public static final String API_GET_ALL_ASK_QUESTIONS = BASE_URL + "/api/question/list/ask";
     public static final String API_GET_ALL_ANSWER_QUESTIONS = BASE_URL + "/api/question/list/answer";
-    public static final String API_LOGIN = BASE_URL + "/api/user/login";
+    public static final String API_LOGIN = BASE_URL + "/api/account/login";
     public static final String API_QUESTION_DETAIL = BASE_URL + "/api/question/detail";
     public static final String API_ADD_QUESTION = BASE_URL + "/api/question/add";
     public static final String API_WATCH_QUESTION = BASE_URL + "/api/question/focus";
@@ -35,14 +37,14 @@ public class OkHttpManager {
     public static final String API_ADD_ANSWER = BASE_URL + "/api/answer/add";
 
     public static final String X_ACCESS_TOKEN="x-access-token";
-    public static final String TEMP_X_ACCESS_TOKEN="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZXhwIjoxNDY0MTkwOTc1NDYxfQ.5ejSZACMPlz3KXgQmBgINYYfgxULmEx2zVf-19TN34E";
+    public static final String TEMP_X_ACCESS_TOKEN="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZXhwIjoxNDY0ODUyNzE2MDExfQ.1sJDUeBZS0O1-Tjru2V05K8SJTPWB_D5weRuUEL1Upw";
 
     /**
      * 静态实例
      */
     private static OkHttpManager sOkHttpManager;
     //okhttpclient实例
-    private OkHttpClient mClient;
+    private static OkHttpClient mClient;
 
     //因为我们请求数据一般都是子线程中请求，在这里我们使用了handler
     private Handler mHandler;
@@ -70,18 +72,18 @@ public class OkHttpManager {
         return sOkHttpManager;
     }
 
-//    static {
-//        mClient = new OkHttpClient();
-////        mClient.newBuilder().cache(buildCache());
-//        mClient.newBuilder().connectTimeout(10, TimeUnit.SECONDS);
-//        mClient.newBuilder().writeTimeout(10, TimeUnit.SECONDS);
-//        mClient.newBuilder().readTimeout(30, TimeUnit.SECONDS);
-//        mClient.newBuilder().followRedirects(false);
-//
-////        初始化handler
-////        mHandler = new Handler(Looper.getMainLooper());
-//
-//    }
+    static {
+        mClient = new OkHttpClient();
+//        mClient.newBuilder().cache(buildCache());
+        mClient.newBuilder().connectTimeout(10, TimeUnit.SECONDS);
+        mClient.newBuilder().writeTimeout(10, TimeUnit.SECONDS);
+        mClient.newBuilder().readTimeout(30, TimeUnit.SECONDS);
+        mClient.newBuilder().followRedirects(false);
+
+//        初始化handler
+//        mHandler = new Handler(Looper.getMainLooper());
+
+    }
 
     //建立缓存
     private static Cache buildCache() {
@@ -104,12 +106,12 @@ public class OkHttpManager {
 //    }
 
     //-------------------------同步的方式请求数据--------------------------
-//    public static void main(String[] args) throws ConnectException,IOException,RemoteException {
-//        String response = getSyncString(
-//                "http://115.159.160.18:3000/api/question/detail?question_id=1",
-//                X_ACCESS_TOKEN,TEMP_X_ACCESS_TOKEN);
-//        System.out.print(response);
-//    }
+    public static void main(String[] args) throws ConnectException,IOException,RemoteException {
+        String response = getSyncString(
+                "http://115.159.160.18:3000/api/question/detail?question_id=2",
+                X_ACCESS_TOKEN,TEMP_X_ACCESS_TOKEN);
+        System.out.print(response);
+    }
 
     //同步GET，返回Response
     public  Response getSync(String url,String key,String token) {
@@ -119,7 +121,7 @@ public class OkHttpManager {
     }
 
     //同步GET返回Response内部逻辑
-    private  Response inner_getSync(String url,String key,String token) {
+    private static   Response inner_getSync(String url,String key,String token) {
         Request request = new Request.Builder()
                 .url(url)
                 .header(key,token)
@@ -135,13 +137,13 @@ public class OkHttpManager {
     }
 
     //同步GET返回String
-    public  String getSyncString(String url,String key,String token) {
-        return sOkHttpManager.inner_getSyncString(url,key,token);
+    public static String getSyncString(String url,String key,String token) {
+        return inner_getSyncString(url,key,token);
     }
 
 
     //同步GET返回String内部逻辑
-    private  String inner_getSyncString(String url,String key,String token) {
+    private static String inner_getSyncString(String url,String key,String token) {
         String result = null;
         try {
             /**
