@@ -1,6 +1,7 @@
 package com.akari.quark.ui.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -24,6 +25,19 @@ public class AnswerDetailActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.answer_detail);
+        Intent intent = getIntent();
+        String content = intent.getStringExtra("content");
+        String username = intent.getStringExtra("username");
+        String introduction = intent.getStringExtra("introduction");
+
+        TextView contenttv = (TextView) findViewById(R.id.content);
+        TextView usernametv = (TextView)findViewById(R.id.username);
+        TextView introductiontv = (TextView) findViewById(R.id.introduction);
+
+        contenttv.setText(content);
+        usernametv.setText(username);
+        introductiontv.setText(introduction);
+
         context = AnswerDetailActivity.this;
         Toolbar toolbar = (Toolbar) findViewById(R.id.id_tool_bar);
         toolbar.setTitle("");
@@ -34,7 +48,7 @@ public class AnswerDetailActivity extends AppCompatActivity{
                 onBackPressed();
             }
         });
-        TextView content = (TextView) findViewById(R.id.content);
+
 
         final ImageView up = (ImageView) findViewById(R.id.up);
         LinearLayout up_layout = (LinearLayout)this.findViewById(R.id.up_layout);
