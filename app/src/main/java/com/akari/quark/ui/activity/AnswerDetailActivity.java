@@ -50,7 +50,7 @@ public class AnswerDetailActivity extends AppCompatActivity{
 
         Intent intent = getIntent();
         final String answerId = intent.getStringExtra("answerId");
-        final String answerTitle = intent.getStringExtra("answerTitle");
+        final String questionTitle = intent.getStringExtra("questionTitle");
         //创建OkHttpClient对象，用于稍后发起请求
         OkHttpClient client = new OkHttpClient();
 
@@ -117,7 +117,9 @@ public class AnswerDetailActivity extends AppCompatActivity{
                                 contenttv.setText(content);
 
                                 Toolbar toolbar = (Toolbar) findViewById(R.id.id_tool_bar);
-                                toolbar.setTitle(answerTitle);
+                                toolbar.setTitle("回答");
+                                Toolbar toolbar2 = (Toolbar) findViewById(R.id.id_tool_bar2);
+                                toolbar2.setTitle(questionTitle);
                                 setSupportActionBar(toolbar);
                                 toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                                     @Override
@@ -134,15 +136,6 @@ public class AnswerDetailActivity extends AppCompatActivity{
 
             }
         });
-
-//        TextView contenttv = (TextView) findViewById(R.id.content);
-//        TextView usernametv = (TextView)findViewById(R.id.username);
-//        TextView introductiontv = (TextView) findViewById(R.id.introduction);
-
-//        contenttv.setText(content);
-//        usernametv.setText(username);
-//        introductiontv.setText(introduction);
-
         context = AnswerDetailActivity.this;
 
 
@@ -175,7 +168,7 @@ public class AnswerDetailActivity extends AppCompatActivity{
 //                                Toast.makeText(context,result,Toast.LENGTH_SHORT).show();
                             }
                         };
-                        OkHttpManager.postAsync(url,params,callback,X_ACCESS_TOKEN,TEMP_X_ACCESS_TOKEN);
+                        OkHttpManager.postAsync(url,params,callback,OkHttpManager.X_ACCESS_TOKEN,OkHttpManager.TEMP_X_ACCESS_TOKEN);
                         //向服务器DELETE Down
                         String url2 = OkHttpManager.API_ANSWER_DOWN;
                         Map<String,String> params2 = new HashMap<String, String>();
@@ -257,7 +250,7 @@ public class AnswerDetailActivity extends AppCompatActivity{
 
                             @Override
                             public void requestSuccess(String result) throws Exception {
-                                Toast.makeText(context,result,Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(context,result,Toast.LENGTH_SHORT).show();
                             }
                         };
                         OkHttpManager.deleteAsync(url2,params2,callback2,X_ACCESS_TOKEN,TEMP_X_ACCESS_TOKEN);

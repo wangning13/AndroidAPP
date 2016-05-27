@@ -23,18 +23,7 @@
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/colorPrimary"
                 android:theme="@style/AppTheme.AppBarOverlay"
-                app:layout_scrollFlags="scroll|enterAlwaysCollapsed|snap"
                 app:navigationIcon="?attr/homeAsUpIndicator" >
-                <TextView
-                    android:id="@+id/toolbar_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="left"
-                    android:singleLine="true"
-                    android:text="回答"
-                    android:textColor="#ffffff"
-                    android:textSize="18sp"
-                    />
             </android.support.v7.widget.Toolbar>
 
             <android.support.v7.widget.Toolbar
@@ -44,17 +33,6 @@
                 android:background="?attr/colorPrimary"
                 android:theme="@style/AppTheme.AppBarOverlay"
                 app:layout_scrollFlags="scroll|enterAlways|snap">
-
-                <TextView
-                    android:id="@+id/question_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="left"
-                    android:singleLine="true"
-                    android:text="你见过哪些神一样的优化操作？"
-                    android:textColor="#ffffff"
-                    android:textSize="18sp"
-                    />
 
             </android.support.v7.widget.Toolbar>
 

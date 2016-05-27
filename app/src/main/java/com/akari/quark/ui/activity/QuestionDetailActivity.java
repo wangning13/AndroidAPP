@@ -20,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.akari.quark.R;
 import com.akari.quark.entity.questionDetail.Message;
@@ -30,6 +31,8 @@ import com.akari.quark.util.GsonUtil;
 import com.hippo.refreshlayout.RefreshLayout;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -56,15 +59,7 @@ public class QuestionDetailActivity extends AppCompatActivity implements Refresh
         setContentView(R.layout.question_detail);
         context = QuestionDetailActivity.this;
         mActivity = this;
-        Toolbar toolbar = (Toolbar) findViewById(R.id.id_tool_bar);
-        toolbar.setTitle("6月5日创建");
-        setSupportActionBar(toolbar);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_question_detail);
         if (fab != null) {
@@ -104,7 +99,9 @@ public class QuestionDetailActivity extends AppCompatActivity implements Refresh
         item_tag.setMovementMethod(ScrollingMovementMethod.getInstance());
         item_tag.setHorizontallyScrolling(true);
 
-        final boolean state = button.isSelected();
+        Intent intent = getIntent();
+        final String question_id = intent.getStringExtra("questionId");
+
         //为关注按钮设置响应事件
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,6 +113,22 @@ public class QuestionDetailActivity extends AppCompatActivity implements Refresh
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                         button.setBackground(context.getResources().getDrawable(R.drawable.shape));
                     }
+                    //向服务器post关注
+                    String url = OkHttpManager.API_QUESTION_FOCUS;
+                    Map<String,String> params = new HashMap<String, String>();
+                    params.put("question_id",question_id);
+                    OkHttpManager.DataCallBack callback = new OkHttpManager.DataCallBack() {
+                        @Override
+                        public void requestFailure(Request request, IOException e) {
+                            Toast.makeText(context,"关注失败",Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void requestSuccess(String result) throws Exception {
+//                                Toast.makeText(context,result,Toast.LENGTH_SHORT).show();
+                        }
+                    };
+                    OkHttpManager.postAsync(url,params,callback,OkHttpManager.X_ACCESS_TOKEN,OkHttpManager.TEMP_X_ACCESS_TOKEN);
                 }else {
                     button.setText("关注");
                     button.setBackgroundColor(Color.parseColor("#00A162"));
@@ -123,14 +136,27 @@ public class QuestionDetailActivity extends AppCompatActivity implements Refresh
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                         button.setBackground(context.getResources().getDrawable(R.drawable.shape));
                     }
+
+                    //向服务器delete关注
+                    String url = OkHttpManager.API_QUESTION_FOCUS;
+                    Map<String,String> params = new HashMap<String, String>();
+                    params.put("question_id",question_id);
+                    OkHttpManager.DataCallBack callback = new OkHttpManager.DataCallBack() {
+                        @Override
+                        public void requestFailure(Request request, IOException e) {
+                            Toast.makeText(context,"取消关注失败",Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void requestSuccess(String result) throws Exception {
+//                            Toast.makeText(context,result,Toast.LENGTH_SHORT).show();
+                        }
+                    };
+                    OkHttpManager.deleteAsync(url,params,callback,OkHttpManager.X_ACCESS_TOKEN,OkHttpManager.TEMP_X_ACCESS_TOKEN);
                 }
             }
         });
 
-
-        Intent intent = getIntent();
-
-        String question_id = intent.getStringExtra("questionId");
         String answer_page = "1";
         //创建OkHttpClient对象，用于稍后发起请求
         OkHttpClient client = new OkHttpClient();
@@ -163,25 +189,22 @@ public class QuestionDetailActivity extends AppCompatActivity implements Refresh
                             mAdapter = new QuestionDetailRecycleViewAdapter(context,message);
                             mRecyclerView.setAdapter(mAdapter);
                             mAdapter.setHeaderView(header);
+
+                            Toolbar toolbar = (Toolbar) findViewById(R.id.id_tool_bar);
+                            toolbar.setTitle("6月5日创建");
+                            setSupportActionBar(toolbar);
+                            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    onBackPressed();
+                                }
+                            });
                         }
                     }
                 });
 
             }
         });
-
-        //为每个item增加响应事件
-//        mAdapter.setOnItemClickListener(new QuestionDetailRecycleViewAdapter.OnItemClickListener()
-//        {
-//            @Override
-//            public void OnItemClick(View view, String data)
-//            {
-//                Intent intent = new Intent(context,AnswerDetailActivity.class);
-//                context.startActivity(intent);
-//            }
-//        });
-
-
     }
 
     @Override
