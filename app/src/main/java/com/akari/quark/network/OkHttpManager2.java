@@ -5,12 +5,16 @@ import android.os.RemoteException;
 
 import com.akari.quark.util.AppCtx;
 
+import org.apache.http.client.utils.URLEncodedUtils;
+import org.apache.http.message.BasicNameValuePair;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.ConnectException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -36,7 +40,7 @@ public class OkHttpManager2 {
     private static final String API_ADD_ANSWER = BASE_URL + "/api/answer/add";
 
     private static final String X_ACCESS_TOKEN="x-access-token";
-    private static final String TEMP_X_ACCESS_TOKEN="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZXhwIjoxNDY0MTkwOTc1NDYxfQ.5ejSZACMPlz3KXgQmBgINYYfgxULmEx2zVf-19TN34E";
+    private static final String TEMP_X_ACCESS_TOKEN="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MywiZXhwIjoxNDY0ODUyMTk5MzIyfQ.hV8c7R-HaSwLUIWUmcd_nbO7v4yxhrAA-0bLmRq2WM8";
 
     //okhttpclient实例
     private static final OkHttpClient mClient;
@@ -99,7 +103,7 @@ public class OkHttpManager2 {
     //-------------------------同步的方式请求数据--------------------------
     public static void main(String[] args) throws ConnectException,IOException,RemoteException{
         String response = getSyncString(
-                "http://115.159.160.18:3000/api/question/list/ask?page=0",
+                "http://115.159.160.18:3000/api/question/list/answer?page=0",
                 X_ACCESS_TOKEN,TEMP_X_ACCESS_TOKEN);
         System.out.print(response);
     }
@@ -113,10 +117,17 @@ public class OkHttpManager2 {
 
     //同步GET返回Response内部逻辑
     private static Response inner_getSync(String url,String key,String token) {
-        Request request = new Request.Builder()
-                .url(url)
-                .header(key,token)
-                .build();
+        Request request = null;
+        if(key==null&&token==null){
+            request = new Request.Builder()
+                    .url(url)
+                    .build();
+        }else{
+            request = new Request.Builder()
+                    .url(url)
+                    .header(key,token)
+                    .build();
+        }
         Response response = null;
         try {
             //同步请求返回的是response对象
@@ -282,8 +293,6 @@ public class OkHttpManager2 {
                 String result = response.body().string();
                 deliverDataSuccess(result, callBack);
             }
-
-
         });
     }
 
@@ -373,23 +382,36 @@ public class OkHttpManager2 {
     public static String attachHttpGetParam(String url, String name, String value) {
         return url + "?" + name + "=" + value;
     }
-//    /**
-//     * 这里使用了HttpClinet的API。只是为了方便
-//     * @param params
-//     * @return
-//     */
-//    public static String formatParams(List<BasicNameValuePair> params){
-//        return URLEncodedUtils.format(params, CHARSET_NAME);
-//    }
-//    /**
-//     * 为HttpGet 的 url 方便的添加多个name value 参数。
-//     * @param url
-//     * @param params
-//     * @return
-//     */
-//    public static String attachHttpGetParams(String url, List<BasicNameValuePair> params){
-//        return url + "?" + formatParams(params);
-//    }
+
+    /**
+     * 为HttpGet 的 url 方便的继续添加1个name value 参数。
+     *
+     * @param url
+     * @param name
+     * @param value
+     * @return
+     */
+    public static String addHttpGetParam(String url, String name, String value) {
+        return url + "&" + name + "=" + value;
+    }
+
+    /**
+     * 这里使用了HttpClinet的API。只是为了方便
+     * @param params
+     * @return
+     */
+    public static String formatParams(List<BasicNameValuePair> params){
+        return URLEncodedUtils.format(params, CHARSET_NAME);
+    }
+    /**
+     * 为HttpGet 的 url 方便的添加多个name value 参数。
+     * @param url
+     * @param params
+     * @return
+     */
+    public static String attachHttpGetParams(String url, List<BasicNameValuePair> params){
+        return url + "?" + formatParams(params);
+    }
 
     /**
      * 数据回调接口

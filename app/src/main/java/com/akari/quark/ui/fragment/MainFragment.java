@@ -52,7 +52,7 @@ public class MainFragment extends Fragment implements RefreshLayout.OnRefreshLis
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mFragment = getArguments().getInt(ARG_PAGE);
-        mPage = 0;
+        mPage = 1;
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -161,7 +161,7 @@ public class MainFragment extends Fragment implements RefreshLayout.OnRefreshLis
 
     @Override
     public void onLoadFinished(Loader<AsyncTaskLoader.LoaderResult<List<?>>> loader, AsyncTaskLoader.LoaderResult<List<?>> data) {
-        if (mPage == 0) {
+        if (mPage == 1) {
             mLayout.setHeaderRefreshing(false);
             if (data.hasException()) {
                 return;

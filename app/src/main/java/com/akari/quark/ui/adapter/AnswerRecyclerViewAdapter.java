@@ -89,7 +89,7 @@ public class AnswerRecyclerViewAdapter extends NewRecyclerViewAdapter<AnswerRecy
         public void fillData(AnswersInMainMessage ask) {
             mCardView.setVisibility(View.VISIBLE);
             mTitle.setText(ask.getTitle());
-            mTopic.setText(ask.getTopics().get(0));
+//            mTopic.setText(ask.getTopics().get(0));
         }
 
         public void setListener(final Context context) {
