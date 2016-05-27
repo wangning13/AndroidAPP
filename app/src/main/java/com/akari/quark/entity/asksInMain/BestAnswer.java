@@ -12,7 +12,7 @@ public class BestAnswer {
     @SerializedName("content")
     @Expose
     private String content;
-    @SerializedName("answerer_id")
+    @SerializedName("id")
     @Expose
     private Long answererId;
     @SerializedName("create_time")
