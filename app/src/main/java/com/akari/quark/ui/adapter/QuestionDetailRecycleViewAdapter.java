@@ -2,8 +2,6 @@ package com.akari.quark.ui.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Handler;
-import android.os.Looper;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,23 +10,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.akari.quark.R;
-import com.akari.quark.entity.Answer;
-import com.akari.quark.entity.Message;
-import com.akari.quark.entity.QuestinoDetail;
-import com.akari.quark.network.OkHttpManager;
+import com.akari.quark.entity.questionDetail.Answer;
+import com.akari.quark.entity.questionDetail.Message;
 import com.akari.quark.ui.activity.AnswerDetailActivity;
 import com.akari.quark.ui.view.CircleImageView;
-import com.akari.quark.util.GsonUtil;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 //import okhttp3.Request;
 
@@ -57,28 +45,24 @@ public class QuestionDetailRecycleViewAdapter extends RecyclerView.Adapter<Quest
     public View getHeaderView() {
         return mHeaderView;
     }
-    public QuestionDetailRecycleViewAdapter(Context context)
+    public QuestionDetailRecycleViewAdapter(Context context,Message message)
     {
         this.mContext = context;
+        this.message = message;
+        answerList = message.getAnswers();
         mLayoutInflater=LayoutInflater.from(context);
     }
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+    public MyViewHolder onCreateViewHolder(ViewGroup parent, int position)
     {
-        if(mHeaderView != null && viewType == TYPE_HEADER) return new MyViewHolder(mHeaderView);
-        final View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_answer, parent, false);
-//        itemView.setOnClickListener(new View.OnClickListener()
-//        {
-//            @Override
-//            public void onClick(View v)
-//            {
-//                if(mListener != null)
-//                {
-//                    mListener.OnItemClick(v, (String) itemView.getTag());
-//                }
-//            }
-//        });
-        return new MyViewHolder(itemView);
+        if(mHeaderView != null && position == 0)
+        {
+            return new MyViewHolder(mHeaderView);
+
+        }else {
+            final View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_answer, parent, false);
+            return new MyViewHolder(itemView);
+        }
     }
 
     @Override
@@ -87,77 +71,37 @@ public class QuestionDetailRecycleViewAdapter extends RecyclerView.Adapter<Quest
         if(position == 0) return TYPE_HEADER;
         return TYPE_NORMAL;
     }
-//    public void addDatas(List<String> mdatas) {
-//        datas.addAll(mdatas);
-//        notifyDataSetChanged();
-//    }
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position)
     {
-        int question_id = 1;
-        //创建OkHttpClient对象，用于稍后发起请求
-        OkHttpClient client = new OkHttpClient();
-
-        String url = OkHttpManager.API_QUESTION_DETAIL;
-        String urlDetail = OkHttpManager.attachHttpGetParam(url,"question_id",String.valueOf(question_id));
-        //根据请求URL创建一个Request对象
-        Request request = new Request.
-                Builder().url(urlDetail)
-                .header(OkHttpManager.X_ACCESS_TOKEN,OkHttpManager.TEMP_X_ACCESS_TOKEN)
-                .build();
-        final Handler mHandler = new Handler(Looper.getMainLooper());
-        //根据Request对象发起Get异步Http请求，并添加请求回调
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-//                Toast.makeText(mContext,"无法访问", Toast.LENGTH_SHORT).show();
+        if(position==0){
+            holder.questionTitle.setText(message.getTitle());
+            holder.content.setText(message.getContent());
+            holder.focusNum.setText(message.getFocusNum()+"人关注");
+            holder.answerNum.setText(message.getAnswerNum()+"人回答");
+            for (int i=0;i<message.getTopics().size();i++){
+                if(i!=message.getTopics().size()-1){
+                    holder.topics.setText(message.getTopics().get(i) +"·");
+                }else {
+                    holder.topics.setText(message.getTopics().get(i));
+                }
             }
+        }else{
+            holder.context.setText(answerList.get(position-1).getContent());
+            holder.username.setText(answerList.get(position-1).getUser().getName());
+            holder.introduction.setText(answerList.get(position-1).getUser().getIntroduction());
+            holder.praiseNum.setText(answerList.get(position-1).getPraiseNum()+"");
+            final Long answerID = answerList.get(position-1).getId();
+            holder.context.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(mContext,AnswerDetailActivity.class);
+                    intent.putExtra("answerID",String.valueOf(answerID));
+                    mContext.startActivity(intent);
+                }
+            });
+        }
 
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                final String result = response.body().string();
-                mHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        QuestinoDetail questinoDetail = GsonUtil.GsonToBean(result,QuestinoDetail.class);
-                        Message message = questinoDetail.getMessage();
-                        String title = message.getTitle();
-                        String content = message.getContent();
-                        String focusNum = String.valueOf(message.getFocusNum())+"人关注";
-                        String answerNum =  String.valueOf(message.getAnswerNum())+"人回答";
-                        List<String> topics = message.getTopics();
-                        answerList = message.getAnswers();
-                        if(position==0){
-                            holder.questionTitle.setText(title);
-                            holder.content.setText(content);
-                            holder.focusNum.setText(focusNum);
-                            holder.answerNum.setText(answerNum);
-                            for (int i=0;i<topics.size();i++){
-                                if(i!=topics.size()-1){
-                                    holder.topics.setText(topics.get(i) +"·");
-                                }else {
-                                    holder.topics.setText(topics.get(i));
-                                }
-                            }
-                        }else{
-                            notifyDataSetChanged();
-                            holder.context.setText(answerList.get(position-1).getContent());
-                            holder.username.setText(answerList.get(position-1).getUser().getName());
-                            holder.introduction.setText(answerList.get(position-1).getUser().getIntroduction());
-                            holder.praiseNum.setText(answerList.get(position-1).getPraiseNum()+"");
-                            holder.context.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    Intent intent = new Intent(mContext,AnswerDetailActivity.class);
-                                    mContext.startActivity(intent);
-                                }
-                            });
-                        }
-                    }
-                });
-
-            }
-        });
 //        OkHttpManager.DataCallBack dataCallBack = new OkHttpManager.DataCallBack() {
 //            @Override
 //            public void requestFailure(Request request, IOException e) {

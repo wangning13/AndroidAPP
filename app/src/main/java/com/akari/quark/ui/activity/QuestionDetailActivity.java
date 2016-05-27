@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,8 +22,20 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.akari.quark.R;
+import com.akari.quark.entity.questionDetail.Message;
+import com.akari.quark.entity.questionDetail.QuestinoDetail;
+import com.akari.quark.network.OkHttpManager;
 import com.akari.quark.ui.adapter.QuestionDetailRecycleViewAdapter;
+import com.akari.quark.util.GsonUtil;
 import com.hippo.refreshlayout.RefreshLayout;
+
+import java.io.IOException;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 /**
  * Created by motoon on 2016/5/6.
@@ -70,7 +83,6 @@ public class QuestionDetailActivity extends AppCompatActivity implements Refresh
             });
         }
 
-
         mRecyclerView = (RecyclerView) findViewById(R.id.answer_list);
         mRefreshlayout = (RefreshLayout) findViewById(R.id.swipe_container);
         mRefreshlayout.setHeaderColorSchemeResources(android.R.color.holo_blue_bright,
@@ -82,14 +94,11 @@ public class QuestionDetailActivity extends AppCompatActivity implements Refresh
         mRefreshlayout.setOnRefreshListener(this);
         mLinearLayoutManager = new LinearLayoutManager(this);
 
-
-        mAdapter = new QuestionDetailRecycleViewAdapter(context);
-        mRecyclerView.setAdapter(mAdapter);
         //每个item高度一致，可设置为true，提高性能
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
 
-        View header = LayoutInflater.from(context).inflate(R.layout.question_headerview, mRecyclerView, false);
+        final View header = LayoutInflater.from(context).inflate(R.layout.question_headerview, mRecyclerView, false);
         final Button button = (Button) header.findViewById(R.id.concern_button);
         TextView item_tag = (TextView) header.findViewById(R.id.topic);
         item_tag.setMovementMethod(ScrollingMovementMethod.getInstance());
@@ -118,8 +127,44 @@ public class QuestionDetailActivity extends AppCompatActivity implements Refresh
             }
         });
 
-        mAdapter.setHeaderView(header);
 
+        int question_id = 6;
+        //创建OkHttpClient对象，用于稍后发起请求
+        OkHttpClient client = new OkHttpClient();
+
+        String url = OkHttpManager.API_QUESTION_DETAIL;
+        String urlDetail = OkHttpManager.attachHttpGetParam(url,"question_id",String.valueOf(question_id));
+        //根据请求URL创建一个Request对象
+        Request request = new Request.
+                Builder().url(urlDetail)
+                .header(OkHttpManager.X_ACCESS_TOKEN,OkHttpManager.TEMP_X_ACCESS_TOKEN)
+                .build();
+        final Handler mHandler = new Handler(Looper.getMainLooper());
+        //根据Request对象发起Get异步Http请求，并添加请求回调
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+//                Toast.makeText(mContext,"无法访问", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onResponse(final Call call, Response response) throws IOException {
+                final String result = response.body().string();
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(call!=null){
+                            QuestinoDetail questinoDetail = GsonUtil.GsonToBean(result,QuestinoDetail.class);
+                            Message message = questinoDetail.getMessage();
+                            mAdapter = new QuestionDetailRecycleViewAdapter(context,message);
+                            mRecyclerView.setAdapter(mAdapter);
+                            mAdapter.setHeaderView(header);
+                        }
+                    }
+                });
+
+            }
+        });
 
         //为每个item增加响应事件
 //        mAdapter.setOnItemClickListener(new QuestionDetailRecycleViewAdapter.OnItemClickListener()

@@ -1,7 +1,10 @@
 package com.akari.quark.ui.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -12,6 +15,19 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.akari.quark.R;
+import com.akari.quark.entity.answerDetail.Answer;
+import com.akari.quark.entity.answerDetail.AnswerDetail;
+import com.akari.quark.entity.answerDetail.User;
+import com.akari.quark.network.OkHttpManager;
+import com.akari.quark.util.GsonUtil;
+
+import java.io.IOException;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 /**
  * Created by motoon on 2016/5/13.
@@ -24,6 +40,82 @@ public class AnswerDetailActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.answer_detail);
+
+        Intent intent = getIntent();
+        final String answerID = intent.getStringExtra("answerID");
+        //创建OkHttpClient对象，用于稍后发起请求
+        OkHttpClient client = new OkHttpClient();
+
+        String url = OkHttpManager.API_ANSWER_DETAIL;
+        String urlDetail = OkHttpManager.attachHttpGetParam(url,"answer_id",answerID);
+        //根据请求URL创建一个Request对象
+        Request request = new Request.
+                Builder().url(urlDetail)
+                .header(OkHttpManager.X_ACCESS_TOKEN,OkHttpManager.TEMP_X_ACCESS_TOKEN)
+                .build();
+        final Handler mHandler = new Handler(Looper.getMainLooper());
+        //根据Request对象发起Get异步Http请求，并添加请求回调
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+//                Toast.makeText(mContext,"无法访问", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onResponse(final Call call, Response response) throws IOException {
+                final String result = response.body().string();
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(call!=null){
+                            AnswerDetail answerDetail = GsonUtil.GsonToBean(result,AnswerDetail.class);
+                            Long status = answerDetail.getStatus();
+                            if(status!=0){
+                                String message = answerDetail.getMessage();
+                                User user = answerDetail.getUser();
+                                Long UserId = user.getId();
+                                String username = user.getName();
+                                String userImgUrl = user.getImgUrl();
+                                String introduction = user.getIntroduction();
+                                Answer answer = answerDetail.getAnswer();
+                                Long Id = answer.getId();
+                                String content = answer.getContent();
+                                Long questionId = answer.getQuestionId();
+                                Long answererId = answer.getAnswererId();
+                                String create_time = String.valueOf(answer.getCreateTime());
+                                Long delete_flag = answer.getDeleteFlag();
+                                Long praiseNum = answer.getPariseNum();
+                                Long commentNum = answer.getCommentNum();
+                                Long downNum = answer.getDownNum();
+                                Long collectNum = answer.getCollectNum();
+                                Long readNum = answer.getReadNum();
+
+                                TextView usernametv = (TextView) findViewById(R.id.username);
+                                usernametv.setText(username);
+                                TextView introductiontv = (TextView) findViewById(R.id.introduction);
+                                introductiontv.setText(introduction);
+                                TextView contenttv = (TextView) findViewById(R.id.content);
+                                contenttv.setText(content);
+                                TextView createTimetv = (TextView) findViewById(R.id.create_time);
+                                createTimetv.setText("创建于"+create_time);
+
+                            }
+
+                        }
+                    }
+                });
+
+            }
+        });
+
+//        TextView contenttv = (TextView) findViewById(R.id.content);
+//        TextView usernametv = (TextView)findViewById(R.id.username);
+//        TextView introductiontv = (TextView) findViewById(R.id.introduction);
+
+//        contenttv.setText(content);
+//        usernametv.setText(username);
+//        introductiontv.setText(introduction);
+
         context = AnswerDetailActivity.this;
         Toolbar toolbar = (Toolbar) findViewById(R.id.id_tool_bar);
         toolbar.setTitle("");
@@ -34,7 +126,7 @@ public class AnswerDetailActivity extends AppCompatActivity{
                 onBackPressed();
             }
         });
-        TextView content = (TextView) findViewById(R.id.content);
+
 
         final ImageView up = (ImageView) findViewById(R.id.up);
         LinearLayout up_layout = (LinearLayout)this.findViewById(R.id.up_layout);
