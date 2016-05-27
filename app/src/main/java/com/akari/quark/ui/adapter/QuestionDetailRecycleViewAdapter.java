@@ -91,12 +91,12 @@ public class QuestionDetailRecycleViewAdapter extends RecyclerView.Adapter<Quest
             holder.username.setText(answerList.get(position-1).getUser().getName());
             holder.introduction.setText(answerList.get(position-1).getUser().getIntroduction());
             holder.praiseNum.setText(answerList.get(position-1).getPraiseNum()+"");
-            final Long answerID = answerList.get(position-1).getId();
+            final Long answerId = answerList.get(position-1).getId();
             holder.context.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(mContext,AnswerDetailActivity.class);
-                    intent.putExtra("answerID",String.valueOf(answerID));
+                    intent.putExtra("answerId",String.valueOf(answerId));
                     mContext.startActivity(intent);
                 }
             });

@@ -44,7 +44,9 @@ public class AskRecyclerViewAdapter extends NewRecyclerViewAdapter<AskRecyclerVi
     public void onBindViewHolder(NormalViewHolder holder, final int position) {
         final AsksInMainMessage ask=mData.get(position);
         holder.fillData(ask);
-        holder.setListener(mContext);
+        String questionId = String.valueOf(ask.getId());
+        String answerId = String.valueOf(ask.getBestAnswer().getAnswererId());
+        holder.setListener(mContext,questionId,answerId);
     }
 
     @Override
@@ -99,11 +101,12 @@ public class AskRecyclerViewAdapter extends NewRecyclerViewAdapter<AskRecyclerVi
             mTopic.setText(ask.getTopics().get(0));
         }
 
-        public void setListener(final Context context){
+        public void setListener(final Context context, final String questionId,final String answerId){
             mTitle.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(context,QuestionDetailActivity.class);
+                    intent.putExtra("questionId",questionId);
                     context.startActivity(intent);
                 }
             });
@@ -111,6 +114,7 @@ public class AskRecyclerViewAdapter extends NewRecyclerViewAdapter<AskRecyclerVi
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(context,AnswerDetailActivity.class);
+                    intent.putExtra("answerId",answerId);
                     context.startActivity(intent);
                 }
             });

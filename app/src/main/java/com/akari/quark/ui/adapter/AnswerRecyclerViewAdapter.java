@@ -43,7 +43,8 @@ public class AnswerRecyclerViewAdapter extends NewRecyclerViewAdapter<AnswerRecy
     public void onBindViewHolder(NormalViewHolder holder, final int position) {
         final AnswersInMainMessage answer = mData.get(position);
         holder.fillData(answer);
-        holder.setListener(mContext);
+        String questionId = String.valueOf(answer.getId());
+        holder.setListener(mContext,questionId);
     }
 
     @Override
@@ -92,11 +93,12 @@ public class AnswerRecyclerViewAdapter extends NewRecyclerViewAdapter<AnswerRecy
 //            mTopic.setText(ask.getTopics().get(0));
         }
 
-        public void setListener(final Context context) {
+        public void setListener(final Context context, final String questionId) {
             mTitle.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(context, QuestionDetailActivity.class);
+                    intent.putExtra("questionId",questionId);
                     context.startActivity(intent);
                 }
             });

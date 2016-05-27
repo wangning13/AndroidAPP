@@ -43,12 +43,12 @@ public class AnswerDetailActivity extends AppCompatActivity{
         setContentView(R.layout.answer_detail);
 
         Intent intent = getIntent();
-        final String answerID = intent.getStringExtra("answerID");
+        final String answerId = intent.getStringExtra("answerId");
         //创建OkHttpClient对象，用于稍后发起请求
         OkHttpClient client = new OkHttpClient();
 
         String url = OkHttpManager.API_ANSWER_DETAIL;
-        String urlDetail = OkHttpManager.attachHttpGetParam(url,"answer_id",answerID);
+        String urlDetail = OkHttpManager.attachHttpGetParam(url,"answer_id",answerId);
         //根据请求URL创建一个Request对象
         Request request = new Request.
                 Builder().url(urlDetail)
