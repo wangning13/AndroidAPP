@@ -128,7 +128,7 @@ public class QuestionDetailActivity extends AppCompatActivity implements Refresh
         });
 
 
-        int question_id = 6;
+        int question_id = 2;
         //创建OkHttpClient对象，用于稍后发起请求
         OkHttpClient client = new OkHttpClient();
 

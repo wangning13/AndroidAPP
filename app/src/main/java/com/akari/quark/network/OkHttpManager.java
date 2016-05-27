@@ -47,7 +47,7 @@ public class OkHttpManager {
     private static OkHttpClient mClient;
 
     //因为我们请求数据一般都是子线程中请求，在这里我们使用了handler
-    private Handler mHandler;
+    private static Handler mHandler;
 
     //构造方法
     public OkHttpManager() {
@@ -215,7 +215,7 @@ public class OkHttpManager {
      * @param e
      * @param callBack
      */
-    private void deliverDataFailure(final Request request, final IOException e, final DataCallBack callBack) {
+    private static void deliverDataFailure(final Request request, final IOException e, final DataCallBack callBack) {
         /**
          * 在这里使用异步处理
          */
@@ -235,7 +235,7 @@ public class OkHttpManager {
      * @param result
      * @param callBack
      */
-    private void deliverDataSuccess(final String result, final DataCallBack callBack) {
+    private static void deliverDataSuccess(final String result, final DataCallBack callBack) {
         /**
          * 在这里使用异步线程处理
          */
@@ -265,11 +265,11 @@ public class OkHttpManager {
     //-------------------------提交表单--------------------------
     //异步POST
 
-    public void postAsync(String url, Map<String, String> params, DataCallBack callBack) {
+    public static void postAsync(String url, Map<String, String> params, DataCallBack callBack) {
         inner_postAsync(url, params, callBack);
     }
 
-    private void inner_postAsync(String url, Map<String, String> params, final DataCallBack callBack) {
+    private static void inner_postAsync(String url, Map<String, String> params, final DataCallBack callBack) {
 
         RequestBody requestBody = null;
         if (params == null) {

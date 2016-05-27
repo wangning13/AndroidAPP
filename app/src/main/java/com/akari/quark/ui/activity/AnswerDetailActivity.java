@@ -22,6 +22,8 @@ import com.akari.quark.network.OkHttpManager;
 import com.akari.quark.util.GsonUtil;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -34,7 +36,6 @@ import okhttp3.Response;
  */
 public class AnswerDetailActivity extends AppCompatActivity{
     private Context context;
-    private  boolean isdown = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,13 +83,24 @@ public class AnswerDetailActivity extends AppCompatActivity{
                                 String content = answer.getContent();
                                 Long questionId = answer.getQuestionId();
                                 Long answererId = answer.getAnswererId();
-                                String create_time = String.valueOf(answer.getCreateTime());
+                                Long create_time = answer.getCreateTime();
                                 Long delete_flag = answer.getDeleteFlag();
                                 Long praiseNum = answer.getPariseNum();
                                 Long commentNum = answer.getCommentNum();
                                 Long downNum = answer.getDownNum();
                                 Long collectNum = answer.getCollectNum();
-                                Long readNum = answer.getReadNum();
+
+                                SimpleDateFormat sdf= null;
+                                Date date = null;
+                                try {
+                                    sdf = new SimpleDateFormat("yyyy-MM-dd");
+                                    date = new Date(create_time);
+                                    System.out.println(sdf.format(date));
+                                    TextView createTimetv = (TextView) findViewById(R.id.create_time);
+                                    createTimetv.setText("创建于"+sdf.format(date));
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
 
                                 TextView usernametv = (TextView) findViewById(R.id.username);
                                 usernametv.setText(username);
@@ -96,8 +108,7 @@ public class AnswerDetailActivity extends AppCompatActivity{
                                 introductiontv.setText(introduction);
                                 TextView contenttv = (TextView) findViewById(R.id.content);
                                 contenttv.setText(content);
-                                TextView createTimetv = (TextView) findViewById(R.id.create_time);
-                                createTimetv.setText("创建于"+create_time);
+
 
                             }
 
@@ -130,34 +141,43 @@ public class AnswerDetailActivity extends AppCompatActivity{
 
         final ImageView up = (ImageView) findViewById(R.id.up);
         LinearLayout up_layout = (LinearLayout)this.findViewById(R.id.up_layout);
+        final ImageView down = (ImageView) findViewById(R.id.down);
+        LinearLayout down_layout = (LinearLayout)this.findViewById(R.id.down_layout);
         if (up != null) {
             up_layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    up.setImageResource(R.drawable.up2);
+                    if(up.isSelected()==false){
+                        up.setImageResource(R.drawable.up2);
+                        up.setSelected(true);
+                        down.setSelected(false);
+                        down.setImageResource(R.drawable.down);
+                    }else{
+                        up.setImageResource(R.drawable.up);
+                        up.setSelected(false);
+                    }
+
                 }
             });
         }
-        final ImageView down = (ImageView) findViewById(R.id.down);
-        LinearLayout down_layout = (LinearLayout)this.findViewById(R.id.down_layout);
+
         if (down != null) {
-            if(isdown==true){
-                down_layout.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
+            down_layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(down.isSelected()==false){
                         down.setImageResource(R.drawable.down2);
-                        isdown = false;
-                    }
-                });
-            }else{
-                down_layout.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
+                        down.setSelected(true);
+                        up.setSelected(false);
+                        up.setImageResource(R.drawable.up);
+                    }else{
                         down.setImageResource(R.drawable.down);
-                        isdown = true;
+                        down.setSelected(false);
                     }
-                });
-            }
+
+                }
+            });
+
 
         }
         final ImageView mark = (ImageView) findViewById(R.id.mark);
@@ -166,7 +186,14 @@ public class AnswerDetailActivity extends AppCompatActivity{
             mark_layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mark.setImageResource(R.drawable.mark2);
+                    if(mark.isSelected()==false){
+                        mark.setSelected(true);
+                        mark.setImageResource(R.drawable.mark2);
+                    }else{
+                        mark.setSelected(false);
+                        mark.setImageResource(R.drawable.mark);
+                    }
+
                 }
             });
         }
