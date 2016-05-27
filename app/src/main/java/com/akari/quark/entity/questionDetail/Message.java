@@ -1,10 +1,11 @@
 
-package com.akari.quark.entity;
+package com.akari.quark.entity.questionDetail;
+
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 import java.util.List;
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 
 public class Message {
 

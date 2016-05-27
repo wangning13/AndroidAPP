@@ -22,8 +22,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.akari.quark.R;
-import com.akari.quark.entity.Message;
-import com.akari.quark.entity.QuestinoDetail;
+import com.akari.quark.entity.questionDetail.Message;
+import com.akari.quark.entity.questionDetail.QuestinoDetail;
 import com.akari.quark.network.OkHttpManager;
 import com.akari.quark.ui.adapter.QuestionDetailRecycleViewAdapter;
 import com.akari.quark.util.GsonUtil;

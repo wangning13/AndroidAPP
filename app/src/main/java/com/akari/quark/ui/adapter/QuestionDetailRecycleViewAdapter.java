@@ -10,8 +10,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.akari.quark.R;
-import com.akari.quark.entity.Answer;
-import com.akari.quark.entity.Message;
+import com.akari.quark.entity.questionDetail.Answer;
+import com.akari.quark.entity.questionDetail.Message;
 import com.akari.quark.ui.activity.AnswerDetailActivity;
 import com.akari.quark.ui.view.CircleImageView;
 
@@ -75,7 +75,7 @@ public class QuestionDetailRecycleViewAdapter extends RecyclerView.Adapter<Quest
     public void onBindViewHolder(final MyViewHolder holder, final int position)
     {
         if(position==0){
-            holder.questionTitle.setText(answerList.size()+"条回答");
+            holder.questionTitle.setText(message.getTitle());
             holder.content.setText(message.getContent());
             holder.focusNum.setText(message.getFocusNum()+"人关注");
             holder.answerNum.setText(message.getAnswerNum()+"人回答");
@@ -91,15 +91,12 @@ public class QuestionDetailRecycleViewAdapter extends RecyclerView.Adapter<Quest
             holder.username.setText(answerList.get(position-1).getUser().getName());
             holder.introduction.setText(answerList.get(position-1).getUser().getIntroduction());
             holder.praiseNum.setText(answerList.get(position-1).getPraiseNum()+"");
-            final int answerID = answerList.get(position-1).getAnswerID();
+            final Long answerID = answerList.get(position-1).getId();
             holder.context.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(mContext,AnswerDetailActivity.class);
-                    intent.putExtra("answerID",answerID);
-                    intent.putExtra("content",answerList.get(position-1).getContent());
-                    intent.putExtra("username",answerList.get(position-1).getUser().getName());
-                    intent.putExtra("introduction",answerList.get(position-1).getUser().getIntroduction());
+                    intent.putExtra("answerID",String.valueOf(answerID));
                     mContext.startActivity(intent);
                 }
             });

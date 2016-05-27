@@ -1,5 +1,5 @@
 
-package com.akari.quark.entity;
+package com.akari.quark.entity.questionDetail;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
