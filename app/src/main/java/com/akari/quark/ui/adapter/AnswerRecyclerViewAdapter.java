@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,7 +64,7 @@ public class AnswerRecyclerViewAdapter extends NewRecyclerViewAdapter<AnswerRecy
 
         mData.addAll((List<AnswersInMainMessage>) list);
 
-        notifyItemRangeInserted(pre, list.size());
+        notifyDataSetChanged();
 
         return pre;
     }
@@ -78,19 +79,28 @@ public class AnswerRecyclerViewAdapter extends NewRecyclerViewAdapter<AnswerRecy
     public static class NormalViewHolder extends RecyclerView.ViewHolder {
         private final CardView mCardView;
         private final TextView mTitle;
+        private final TextView mAttentionCount;
+        private final TextView mAnswerCount;
         private final TextView mTopic;
 
         public NormalViewHolder(View itemView) {
             super(itemView);
             mCardView = (CardView) itemView.findViewById(R.id.answer_card_view);
             mTitle = (TextView) mCardView.findViewById(R.id.answer_item_title);
+            mAttentionCount = (TextView) mCardView.findViewById(R.id.attention_count);
+            mAnswerCount = (TextView) mCardView.findViewById(R.id.answer_count);
             mTopic = (TextView) mCardView.findViewById(R.id.answer_item_tag);
         }
 
         public void fillData(AnswersInMainMessage ask) {
             mCardView.setVisibility(View.VISIBLE);
             mTitle.setText(ask.getTitle());
-//            mTopic.setText(ask.getTopics().get(0));
+            mAttentionCount.setText(ask.getFocusNum()+"人关注");
+            mAnswerCount.setText(ask.getAnswerNum()+"个回答");
+            if(ask.getTopics()!=null){
+                if(!ask.getTopics().isEmpty())
+                    mTopic.setText(ask.getTopics().get(0));
+            }
         }
 
         public void setListener(final Context context, final String questionId) {

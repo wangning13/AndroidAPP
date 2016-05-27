@@ -1,11 +1,10 @@
 
 package com.akari.quark.entity.answersInMain;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-
 import java.util.ArrayList;
 import java.util.List;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 public class AnswersInMain {
 
@@ -17,28 +16,36 @@ public class AnswersInMain {
     private Long status;
 
     /**
-     * @return The message
+     * 
+     * @return
+     *     The message
      */
     public List<AnswersInMainMessage> getMessage() {
         return message;
     }
 
     /**
-     * @param message The message
+     * 
+     * @param message
+     *     The message
      */
     public void setMessage(List<AnswersInMainMessage> message) {
         this.message = message;
     }
 
     /**
-     * @return The status
+     * 
+     * @return
+     *     The status
      */
     public Long getStatus() {
         return status;
     }
 
     /**
-     * @param status The status
+     * 
+     * @param status
+     *     The status
      */
     public void setStatus(Long status) {
         this.status = status;

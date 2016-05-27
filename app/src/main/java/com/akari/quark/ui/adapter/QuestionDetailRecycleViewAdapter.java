@@ -111,7 +111,7 @@ public class QuestionDetailRecycleViewAdapter extends RecyclerView.Adapter<Quest
 //            @Override
 //            public void requestSuccess(String result) throws Exception {
 //                QuestinoDetail questinoDetail = GsonUtil.GsonToBean(result,QuestinoDetail.class);
-//                Message message = questinoDetail.getMessage();
+//                AnswersInMainMessage message = questinoDetail.getMessage();
 //                String title = message.getTitle();
 //                String content = message.getContent();
 //                String focusNum = String.valueOf(message.getFocusNum())+"人关注";

@@ -117,7 +117,7 @@ public class MainFragment extends Fragment implements RefreshLayout.OnRefreshLis
 
     @Override
     public void onHeaderRefresh() {
-        mPage = 0;
+        mPage = 1;
         getLoaderManager().restartLoader(0, null, this);
 
         final Loader<?> loader = getLoaderManager().getLoader(0);
@@ -141,8 +141,6 @@ public class MainFragment extends Fragment implements RefreshLayout.OnRefreshLis
         }
 
         loader.forceLoad();
-
-        mRecyclerView.scrollToPosition(pre + 1);
     }
 
 
@@ -172,10 +170,12 @@ public class MainFragment extends Fragment implements RefreshLayout.OnRefreshLis
             if (data.hasException()) {
                 return;
             }
-
-            int pre = mAdapter.addDataSource(data.mResult);
-
-            mRecyclerView.smoothScrollToPosition(pre);
+            if(data.mResult.isEmpty()){
+                mPage--;
+            }else{
+                int pre = mAdapter.addDataSource(data.mResult);
+                mRecyclerView.smoothScrollToPosition(pre);
+            }
 //            ((LinearLayoutManager)mRecyclerView.getLayoutManager()).scrollToPositionWithOffset(0,50);
         }
     }

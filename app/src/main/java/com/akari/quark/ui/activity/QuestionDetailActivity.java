@@ -127,10 +127,7 @@ public class QuestionDetailActivity extends AppCompatActivity implements Refresh
             }
         });
 
-
-        Intent intent = getIntent();
-
-        String question_id = intent.getStringExtra("questionId");
+        String question_id = getIntent().getStringExtra("questionId");
         //创建OkHttpClient对象，用于稍后发起请求
         OkHttpClient client = new OkHttpClient();
 
