@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -76,6 +77,7 @@ public class CreatQuestionActivity extends AppCompatActivity {
             item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(MenuItem menuItem) {
+
                     Toast.makeText(getApplicationContext(),"发表成功！",Toast.LENGTH_SHORT).show();
                     return false;
                 }
@@ -84,6 +86,19 @@ public class CreatQuestionActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void postQuestion(){
+//        if (TextUtils.isEmpty(mTitle.getText())) {
+//            mTitle.setError(getString(R.string.error_field_required));
+//            return;
+//        }
+//
+//        ViewUtils.hideInputMethod(mContent);
+//
+//        final String title = mTitle.getText().toString();
+//        final String content = mContent.getText().toString();
+
     }
 
 

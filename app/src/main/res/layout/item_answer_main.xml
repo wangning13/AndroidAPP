@@ -22,7 +22,7 @@
             android:id="@+id/answer_item_tag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Material Design"
+            android:text="无标签"
             android:textColor="#3C84C1"
             android:textSize="14sp" />
 
@@ -48,7 +48,7 @@
                 android:layout_width="0dp"
                 android:layout_weight="3"
                 android:layout_height="wrap_content"
-                android:text="611次浏览"
+                android:text="0次浏览"
                 android:textColor="#6B6B6B"
                 android:textSize="14sp" />
 
@@ -57,7 +57,7 @@
                 android:layout_width="0dp"
                 android:layout_weight="3"
                 android:layout_height="wrap_content"
-                android:text="52人关注"
+                android:text="0人关注"
                 android:textColor="#6B6B6B"
                 android:textSize="14sp" />
 
@@ -66,7 +66,7 @@
                 android:layout_width="0dp"
                 android:layout_weight="4"
                 android:layout_height="wrap_content"
-                android:text="6个回答"
+                android:text="0个回答"
                 android:textColor="#6B6B6B"
                 android:textSize="14sp" />
 
