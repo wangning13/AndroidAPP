@@ -36,6 +36,8 @@ public class OkHttpManager {
     public static final String API_ANSWER_DETAIL = BASE_URL + "/api/answer/detail";
     public static final String API_ADD_ANSWER = BASE_URL + "/api/answer/add";
     public static final String API_ANSWER_PRAISE = BASE_URL + "/api/answer/praise";
+    public static final String API_ANSWER_DOWN = BASE_URL + "/api/answer/down";
+    public static final String API_ANSWER_MARK = BASE_URL + "/api/answer/collect";
 
     public static final String X_ACCESS_TOKEN="x-access-token";
     public static final String TEMP_X_ACCESS_TOKEN="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZXhwIjoxNDY0ODUyNzE2MDExfQ.1sJDUeBZS0O1-Tjru2V05K8SJTPWB_D5weRuUEL1Upw";

@@ -207,9 +207,41 @@ public class AnswerDetailActivity extends AppCompatActivity{
                         down.setSelected(true);
                         up.setSelected(false);
                         up.setImageResource(R.drawable.up);
+
+                        String url = OkHttpManager.API_ANSWER_DOWN;
+                        Map<String,String> params = new HashMap<String, String>();
+                        params.put("answer_id",answerId);
+                        OkHttpManager.DataCallBack callback = new OkHttpManager.DataCallBack() {
+                            @Override
+                            public void requestFailure(Request request, IOException e) {
+                                Toast.makeText(context,"Down失败",Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void requestSuccess(String result) throws Exception {
+//                                Toast.makeText(context,result,Toast.LENGTH_SHORT).show();
+                            }
+                        };
+                        OkHttpManager.postAsync(url,params,callback,X_ACCESS_TOKEN,TEMP_X_ACCESS_TOKEN);
                     }else{
                         down.setImageResource(R.drawable.down);
                         down.setSelected(false);
+
+                        String url = OkHttpManager.API_ANSWER_DOWN;
+                        Map<String,String> params = new HashMap<String, String>();
+                        params.put("answer_id",answerId);
+                        OkHttpManager.DataCallBack callback = new OkHttpManager.DataCallBack() {
+                            @Override
+                            public void requestFailure(Request request, IOException e) {
+                                Toast.makeText(context,"取消Down失败",Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void requestSuccess(String result) throws Exception {
+//                                Toast.makeText(context,result,Toast.LENGTH_SHORT).show();
+                            }
+                        };
+                        OkHttpManager.deleteAsync(url,params,callback,X_ACCESS_TOKEN,TEMP_X_ACCESS_TOKEN);
                     }
 
                 }
@@ -226,9 +258,41 @@ public class AnswerDetailActivity extends AppCompatActivity{
                     if(mark.isSelected()==false){
                         mark.setSelected(true);
                         mark.setImageResource(R.drawable.mark2);
+
+                        String url = OkHttpManager.API_ANSWER_MARK;
+                        Map<String,String> params = new HashMap<String, String>();
+                        params.put("answer_id",answerId);
+                        OkHttpManager.DataCallBack callback = new OkHttpManager.DataCallBack() {
+                            @Override
+                            public void requestFailure(Request request, IOException e) {
+                                Toast.makeText(context,"收藏失败",Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void requestSuccess(String result) throws Exception {
+//                                Toast.makeText(context,result,Toast.LENGTH_SHORT).show();
+                            }
+                        };
+                        OkHttpManager.postAsync(url,params,callback,X_ACCESS_TOKEN,TEMP_X_ACCESS_TOKEN);
                     }else{
                         mark.setSelected(false);
                         mark.setImageResource(R.drawable.mark);
+
+                        String url = OkHttpManager.API_ANSWER_MARK;
+                        Map<String,String> params = new HashMap<String, String>();
+                        params.put("answer_id",answerId);
+                        OkHttpManager.DataCallBack callback = new OkHttpManager.DataCallBack() {
+                            @Override
+                            public void requestFailure(Request request, IOException e) {
+                                Toast.makeText(context,"取消收藏失败",Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void requestSuccess(String result) throws Exception {
+//                                Toast.makeText(context,result,Toast.LENGTH_SHORT).show();
+                            }
+                        };
+                        OkHttpManager.deleteAsync(url,params,callback,X_ACCESS_TOKEN,TEMP_X_ACCESS_TOKEN);
                     }
 
                 }
