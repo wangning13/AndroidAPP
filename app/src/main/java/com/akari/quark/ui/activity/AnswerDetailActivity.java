@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.akari.quark.R;
 import com.akari.quark.entity.answerDetail.Answer;
@@ -24,6 +25,8 @@ import com.akari.quark.util.GsonUtil;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -36,6 +39,9 @@ import okhttp3.Response;
  */
 public class AnswerDetailActivity extends AppCompatActivity{
     private Context context;
+    public static final String X_ACCESS_TOKEN="x-access-token";
+    public static final String TEMP_X_ACCESS_TOKEN="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZXhwIjoxNDY0ODUyNzE2MDExfQ.1sJDUeBZS0O1-Tjru2V05K8SJTPWB_D5weRuUEL1Upw";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,9 +158,40 @@ public class AnswerDetailActivity extends AppCompatActivity{
                         up.setSelected(true);
                         down.setSelected(false);
                         down.setImageResource(R.drawable.down);
+                        String url = OkHttpManager.API_ANSWER_PRAISE;
+                        Map<String,String> params = new HashMap<String, String>();
+                        params.put("answer_id",answerId);
+                        OkHttpManager.DataCallBack callback = new OkHttpManager.DataCallBack() {
+                            @Override
+                            public void requestFailure(Request request, IOException e) {
+                                Toast.makeText(context,"点赞失败",Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void requestSuccess(String result) throws Exception {
+//                                Toast.makeText(context,result,Toast.LENGTH_SHORT).show();
+                            }
+                        };
+                        OkHttpManager.postAsync(url,params,callback,X_ACCESS_TOKEN,TEMP_X_ACCESS_TOKEN);
                     }else{
                         up.setImageResource(R.drawable.up);
                         up.setSelected(false);
+                        String url = OkHttpManager.API_ANSWER_PRAISE;
+                        Map<String,String> params = new HashMap<String, String>();
+                        params.put("answer_id",answerId);
+                        OkHttpManager.DataCallBack callback = new OkHttpManager.DataCallBack() {
+                            @Override
+                            public void requestFailure(Request request, IOException e) {
+                                Toast.makeText(context,"取消点赞失败",Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void requestSuccess(String result) throws Exception {
+//                                Toast.makeText(context,result,Toast.LENGTH_SHORT).show();
+                            }
+                        };
+                        OkHttpManager.deleteAsync(url,params,callback,X_ACCESS_TOKEN,TEMP_X_ACCESS_TOKEN);
+
                     }
 
                 }

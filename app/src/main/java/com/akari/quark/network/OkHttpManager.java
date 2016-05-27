@@ -35,6 +35,7 @@ public class OkHttpManager {
     public static final String API_WATCH_QUESTION = BASE_URL + "/api/question/focus";
     public static final String API_ANSWER_DETAIL = BASE_URL + "/api/answer/detail";
     public static final String API_ADD_ANSWER = BASE_URL + "/api/answer/add";
+    public static final String API_ANSWER_PRAISE = BASE_URL + "/api/answer/praise";
 
     public static final String X_ACCESS_TOKEN="x-access-token";
     public static final String TEMP_X_ACCESS_TOKEN="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZXhwIjoxNDY0ODUyNzE2MDExfQ.1sJDUeBZS0O1-Tjru2V05K8SJTPWB_D5weRuUEL1Upw";
@@ -65,7 +66,9 @@ public class OkHttpManager {
     }
 
     public static OkHttpManager getInstance() {
-
+        mClient = new OkHttpClient();
+        //初始化handler
+        mHandler = new Handler(Looper.getMainLooper());
         if (sOkHttpManager == null) {
             sOkHttpManager = new OkHttpManager();
         }
@@ -80,8 +83,8 @@ public class OkHttpManager {
         mClient.newBuilder().readTimeout(30, TimeUnit.SECONDS);
         mClient.newBuilder().followRedirects(false);
 
-//        初始化handler
-//        mHandler = new Handler(Looper.getMainLooper());
+        //初始化handler
+        mHandler = new Handler(Looper.getMainLooper());
 
     }
 
@@ -265,11 +268,11 @@ public class OkHttpManager {
     //-------------------------提交表单--------------------------
     //异步POST
 
-    public static void postAsync(String url, Map<String, String> params, DataCallBack callBack) {
-        inner_postAsync(url, params, callBack);
+    public static void postAsync(String url, Map<String, String> params, DataCallBack callBack,String token,String tokenValue) {
+        inner_postAsync(url, params, callBack,token,tokenValue);
     }
 
-    private static void inner_postAsync(String url, Map<String, String> params, final DataCallBack callBack) {
+    private static void inner_postAsync(String url, Map<String, String> params, final DataCallBack callBack,String token,String tokenValue) {
 
         RequestBody requestBody = null;
         if (params == null) {
@@ -307,7 +310,76 @@ public class OkHttpManager {
         }
         requestBody = builder.build();
         //结果返回
-        final Request request = new Request.Builder().url(url).post(requestBody).build();
+        final Request request = new Request.Builder()
+                .url(url)
+                .header(token,tokenValue)
+                .post(requestBody)
+                .build();
+        mClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                deliverDataFailure(request, e, callBack);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String result = response.body().string();
+                deliverDataSuccess(result, callBack);
+            }
+
+
+        });
+    }
+
+    //异步DELETE
+
+    public static void deleteAsync(String url, Map<String, String> params, DataCallBack callBack,String token,String tokenValue) {
+        inner_deleteAsync(url, params, callBack,token,tokenValue);
+    }
+
+    private static void inner_deleteAsync(String url, Map<String, String> params, final DataCallBack callBack,String token,String tokenValue) {
+
+        RequestBody requestBody = null;
+        if (params == null) {
+            params = new HashMap<>();
+        }
+
+        /**
+         * 如果是3.0之前版本的，构建表单数据是下面的一句
+         */
+        //FormEncodingBuilder builder = new FormEncodingBuilder();
+
+        /**
+         * 3.0之后版本
+         */
+        FormBody.Builder builder = new FormBody.Builder();
+
+        /**
+         * 在这对添加的参数进行遍历，map遍历有四种方式，如果想要了解的可以网上查找
+         */
+        for (Map.Entry<String, String> map : params.entrySet()) {
+            String key = map.getKey().toString();
+            String value = null;
+            /**
+             * 判断值是否是空的
+             */
+            if (map.getValue() == null) {
+                value = "";
+            } else {
+                value = map.getValue();
+            }
+            /**
+             * 把key和value添加到formbody中
+             */
+            builder.add(key, value);
+        }
+        requestBody = builder.build();
+        //结果返回
+        final Request request = new Request.Builder()
+                .url(url)
+                .header(token,tokenValue)
+                .delete(requestBody)
+                .build();
         mClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
