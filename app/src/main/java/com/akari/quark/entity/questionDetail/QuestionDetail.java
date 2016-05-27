@@ -4,7 +4,7 @@ package com.akari.quark.entity.questionDetail;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class QuestinoDetail {
+public class QuestionDetail {
 
     @SerializedName("message")
     @Expose

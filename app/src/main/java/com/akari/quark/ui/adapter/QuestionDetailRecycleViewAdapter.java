@@ -97,6 +97,7 @@ public class QuestionDetailRecycleViewAdapter extends RecyclerView.Adapter<Quest
                 public void onClick(View view) {
                     Intent intent = new Intent(mContext,AnswerDetailActivity.class);
                     intent.putExtra("answerId",String.valueOf(answerId));
+                    intent.putExtra("questionTitle",message.getTitle());
                     mContext.startActivity(intent);
                 }
             });

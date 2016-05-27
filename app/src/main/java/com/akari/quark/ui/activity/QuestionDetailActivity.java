@@ -23,7 +23,7 @@ import android.widget.TextView;
 
 import com.akari.quark.R;
 import com.akari.quark.entity.questionDetail.Message;
-import com.akari.quark.entity.questionDetail.QuestinoDetail;
+import com.akari.quark.entity.questionDetail.QuestionDetail;
 import com.akari.quark.network.OkHttpManager;
 import com.akari.quark.ui.adapter.QuestionDetailRecycleViewAdapter;
 import com.akari.quark.util.GsonUtil;
@@ -131,13 +131,15 @@ public class QuestionDetailActivity extends AppCompatActivity implements Refresh
         Intent intent = getIntent();
 
         String question_id = intent.getStringExtra("questionId");
+        String answer_page = "1";
         //创建OkHttpClient对象，用于稍后发起请求
         OkHttpClient client = new OkHttpClient();
 
         String url = OkHttpManager.API_QUESTION_DETAIL;
-        String urlDetail = OkHttpManager.attachHttpGetParam(url,"question_id",String.valueOf(question_id));
+        String url1 = OkHttpManager.attachHttpGetParam(url,"question_id",question_id);
+        String urlDetail = url1+"&answer_page="+answer_page;
         //根据请求URL创建一个Request对象
-        Request request = new Request.
+        final Request request = new Request.
                 Builder().url(urlDetail)
                 .header(OkHttpManager.X_ACCESS_TOKEN,OkHttpManager.TEMP_X_ACCESS_TOKEN)
                 .build();
@@ -156,7 +158,7 @@ public class QuestionDetailActivity extends AppCompatActivity implements Refresh
                     @Override
                     public void run() {
                         if(call!=null){
-                            QuestinoDetail questinoDetail = GsonUtil.GsonToBean(result,QuestinoDetail.class);
+                            QuestionDetail questinoDetail = GsonUtil.GsonToBean(result,QuestionDetail.class);
                             Message message = questinoDetail.getMessage();
                             mAdapter = new QuestionDetailRecycleViewAdapter(context,message);
                             mRecyclerView.setAdapter(mAdapter);

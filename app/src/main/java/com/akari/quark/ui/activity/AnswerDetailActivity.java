@@ -50,6 +50,7 @@ public class AnswerDetailActivity extends AppCompatActivity{
 
         Intent intent = getIntent();
         final String answerId = intent.getStringExtra("answerId");
+        final String answerTitle = intent.getStringExtra("answerTitle");
         //创建OkHttpClient对象，用于稍后发起请求
         OkHttpClient client = new OkHttpClient();
 
@@ -115,6 +116,15 @@ public class AnswerDetailActivity extends AppCompatActivity{
                                 TextView contenttv = (TextView) findViewById(R.id.content);
                                 contenttv.setText(content);
 
+                                Toolbar toolbar = (Toolbar) findViewById(R.id.id_tool_bar);
+                                toolbar.setTitle(answerTitle);
+                                setSupportActionBar(toolbar);
+                                toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        onBackPressed();
+                                    }
+                                });
 
                             }
 
@@ -134,15 +144,7 @@ public class AnswerDetailActivity extends AppCompatActivity{
 //        introductiontv.setText(introduction);
 
         context = AnswerDetailActivity.this;
-        Toolbar toolbar = (Toolbar) findViewById(R.id.id_tool_bar);
-        toolbar.setTitle("");
-        setSupportActionBar(toolbar);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+
 
 
         final ImageView up = (ImageView) findViewById(R.id.up);
@@ -158,6 +160,7 @@ public class AnswerDetailActivity extends AppCompatActivity{
                         up.setSelected(true);
                         down.setSelected(false);
                         down.setImageResource(R.drawable.down);
+                        //向服务器post点赞
                         String url = OkHttpManager.API_ANSWER_PRAISE;
                         Map<String,String> params = new HashMap<String, String>();
                         params.put("answer_id",answerId);
@@ -173,7 +176,24 @@ public class AnswerDetailActivity extends AppCompatActivity{
                             }
                         };
                         OkHttpManager.postAsync(url,params,callback,X_ACCESS_TOKEN,TEMP_X_ACCESS_TOKEN);
+                        //向服务器DELETE Down
+                        String url2 = OkHttpManager.API_ANSWER_DOWN;
+                        Map<String,String> params2 = new HashMap<String, String>();
+                        params.put("answer_id",answerId);
+                        OkHttpManager.DataCallBack callback2 = new OkHttpManager.DataCallBack() {
+                            @Override
+                            public void requestFailure(Request request, IOException e) {
+                                Toast.makeText(context,"取消Down失败",Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void requestSuccess(String result) throws Exception {
+//                                Toast.makeText(context,result,Toast.LENGTH_SHORT).show();
+                            }
+                        };
+                        OkHttpManager.deleteAsync(url2,params2,callback2,X_ACCESS_TOKEN,TEMP_X_ACCESS_TOKEN);
                     }else{
+                        //向服务器delete点赞
                         up.setImageResource(R.drawable.up);
                         up.setSelected(false);
                         String url = OkHttpManager.API_ANSWER_PRAISE;
@@ -207,7 +227,7 @@ public class AnswerDetailActivity extends AppCompatActivity{
                         down.setSelected(true);
                         up.setSelected(false);
                         up.setImageResource(R.drawable.up);
-
+                        //向服务器post Down
                         String url = OkHttpManager.API_ANSWER_DOWN;
                         Map<String,String> params = new HashMap<String, String>();
                         params.put("answer_id",answerId);
@@ -223,10 +243,28 @@ public class AnswerDetailActivity extends AppCompatActivity{
                             }
                         };
                         OkHttpManager.postAsync(url,params,callback,X_ACCESS_TOKEN,TEMP_X_ACCESS_TOKEN);
+                        //向服务器delete点赞
+                        up.setImageResource(R.drawable.up);
+                        up.setSelected(false);
+                        String url2 = OkHttpManager.API_ANSWER_PRAISE;
+                        Map<String,String> params2 = new HashMap<String, String>();
+                        params.put("answer_id",answerId);
+                        OkHttpManager.DataCallBack callback2 = new OkHttpManager.DataCallBack() {
+                            @Override
+                            public void requestFailure(Request request, IOException e) {
+                                Toast.makeText(context,"取消点赞失败",Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void requestSuccess(String result) throws Exception {
+                                Toast.makeText(context,result,Toast.LENGTH_SHORT).show();
+                            }
+                        };
+                        OkHttpManager.deleteAsync(url2,params2,callback2,X_ACCESS_TOKEN,TEMP_X_ACCESS_TOKEN);
                     }else{
                         down.setImageResource(R.drawable.down);
                         down.setSelected(false);
-
+                        //向服务器DELETE Down
                         String url = OkHttpManager.API_ANSWER_DOWN;
                         Map<String,String> params = new HashMap<String, String>();
                         params.put("answer_id",answerId);
