@@ -21,6 +21,9 @@ public class Message {
     @SerializedName("focus_num")
     @Expose
     private Long focusNum;
+    @SerializedName("create_time")
+    @Expose
+    private Long createTime;
     @SerializedName("topics")
     @Expose
     private List<String> topics = new ArrayList<String>();
@@ -136,4 +139,11 @@ public class Message {
         this.answers = answers;
     }
 
+    public Long getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Long createTime) {
+        this.createTime = createTime;
+    }
 }

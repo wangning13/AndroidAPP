@@ -102,7 +102,6 @@ public class AnswerDetailActivity extends AppCompatActivity{
                                 try {
                                     sdf = new SimpleDateFormat("yyyy-MM-dd");
                                     date = new Date(create_time);
-                                    System.out.println(sdf.format(date));
                                     TextView createTimetv = (TextView) findViewById(R.id.create_time);
                                     createTimetv.setText("创建于"+sdf.format(date));
                                 } catch (Exception e) {

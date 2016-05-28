@@ -31,6 +31,8 @@ import com.akari.quark.util.GsonUtil;
 import com.hippo.refreshlayout.RefreshLayout;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -190,15 +192,25 @@ public class QuestionDetailActivity extends AppCompatActivity implements Refresh
                             mRecyclerView.setAdapter(mAdapter);
                             mAdapter.setHeaderView(header);
 
-                            Toolbar toolbar = (Toolbar) findViewById(R.id.id_tool_bar);
-                            toolbar.setTitle("6月5日创建");
-                            setSupportActionBar(toolbar);
-                            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    onBackPressed();
-                                }
-                            });
+                            Long create_time = message.getCreateTime();
+                            SimpleDateFormat sdf= null;
+                            Date date = null;
+                            try {
+                                sdf = new SimpleDateFormat("MM月dd日创建");
+                                date = new Date(create_time);
+                                Toolbar toolbar = (Toolbar) findViewById(R.id.id_tool_bar);
+                                toolbar.setTitle(sdf.format(date));
+                                setSupportActionBar(toolbar);
+                                toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        onBackPressed();
+                                    }
+                                });
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+
                         }
                     }
                 });
