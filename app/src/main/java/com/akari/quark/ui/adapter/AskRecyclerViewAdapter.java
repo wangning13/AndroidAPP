@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.akari.quark.R;
 import com.akari.quark.entity.asksInMain.AsksInMainMessage;
@@ -111,15 +112,19 @@ public class AskRecyclerViewAdapter extends NewRecyclerViewAdapter<AskRecyclerVi
                     context.startActivity(intent);
                 }
             });
-            mContent.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(context,AnswerDetailActivity.class);
-                    intent.putExtra("answerId",answerId);
-                    intent.putExtra("questionTitle",questionTitle);
-                    context.startActivity(intent);
-                }
-            });
+            if(answerId.equals(null)){
+                mContent.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Toast.makeText(context,answerId,Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(context,AnswerDetailActivity.class);
+                        intent.putExtra("answerId",answerId);
+                        intent.putExtra("questionTitle",questionTitle);
+                        context.startActivity(intent);
+                    }
+                });
+            }
+
         }
     }
 }
