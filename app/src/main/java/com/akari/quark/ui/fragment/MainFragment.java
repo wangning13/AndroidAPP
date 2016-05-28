@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.akari.quark.R;
 import com.akari.quark.ui.adapter.AnswerRecyclerViewAdapter;
@@ -161,7 +162,8 @@ public class MainFragment extends Fragment implements RefreshLayout.OnRefreshLis
     public void onLoadFinished(Loader<AsyncTaskLoader.LoaderResult<List<?>>> loader, AsyncTaskLoader.LoaderResult<List<?>> data) {
         if (mPage == 1) {
             mLayout.setHeaderRefreshing(false);
-            if (data.hasException()) {
+            if (data.hasException()||data.mResult.isEmpty()) {
+                Toast.makeText(getContext(),"无法完成加载，请检查网络...",Toast.LENGTH_SHORT).show();
                 return;
             }
             mAdapter.setDataSource(data.mResult);
@@ -171,9 +173,11 @@ public class MainFragment extends Fragment implements RefreshLayout.OnRefreshLis
                 return;
             }
             if(data.mResult.isEmpty()){
+                Toast.makeText(getContext(),"没有更多了...",Toast.LENGTH_SHORT).show();
                 mPage--;
             }else{
-                int pre = mAdapter.addDataSource(data.mResult);
+                int pre;
+                pre = mAdapter.addDataSource(data.mResult);
                 mRecyclerView.smoothScrollToPosition(pre);
             }
 //            ((LinearLayoutManager)mRecyclerView.getLayoutManager()).scrollToPositionWithOffset(0,50);

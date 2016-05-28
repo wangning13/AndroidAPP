@@ -22,7 +22,7 @@
             android:id="@+id/item_tag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Material Design"
+            android:text="无话题"
             android:textColor="#3C84C1"
             android:textSize="14sp" />
 
@@ -33,7 +33,7 @@
             android:layout_marginTop="5dp"
             android:lineSpacingExtra="1dp"
             android:maxLines="2"
-            android:text="为什么国内的Android APP都不愿意遵循Google推出的Material Design设计规范？"
+            android:text="无标题"
             android:textColor="#1F1F1F"
             android:textSize="16sp" />
 
@@ -65,7 +65,7 @@
                     android:layout_centerHorizontal="true"
                     android:background="@drawable/corners_bg"
                     android:gravity="center"
-                    android:text="99.9K"
+                    android:text="0"
                     android:textColor="#ffffff"
                     android:textSize="12sp" />
 
@@ -79,7 +79,7 @@
                 android:lineSpacingExtra="1dp"
                 android:maxLines="3"
                 android:minLines="3"
-                android:text="Android 5.0采用了全新的Material Design设计语言，整个操作界面有了较大的变化。它相比以前更为简约，图标与操作方式都有所改进，整体更加扁平化，纸片儿风很多地方都可见"
+                android:text="无答案"
                 android:textColor="#6B6B6B"
                 android:textSize="14sp"
                 android:gravity="left|top" />

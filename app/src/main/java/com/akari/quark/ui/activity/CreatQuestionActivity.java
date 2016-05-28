@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -37,16 +38,17 @@ public class CreatQuestionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.creat_question);
         context = CreatQuestionActivity.this;
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.id_tool_bar);
         toolbar.setTitle("一句话概括你的问题");
         setSupportActionBar(toolbar);
-        toolbar.inflateMenu(R.menu.editor_menu);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
             }
         });
+
         EditScroll();
     }
 
@@ -79,17 +81,10 @@ public class CreatQuestionActivity extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
+        Log.d("ID",id+"");
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_send) {
-            item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem menuItem) {
-                    postQuestion();
-                    return false;
-                }
-            });
-            return true;
+            postQuestion();
         }
 
         return super.onOptionsItemSelected(item);

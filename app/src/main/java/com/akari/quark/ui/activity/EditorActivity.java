@@ -58,7 +58,6 @@ public class EditorActivity extends AppCompatActivity implements EditorFragmentL
         setContentView(R.layout.activity_editor);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.editor_toolbar);
-        toolbar.inflateMenu(R.menu.editor_menu);
         toolbar.setTitle("撰写回答");
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -330,14 +329,7 @@ public class EditorActivity extends AppCompatActivity implements EditorFragmentL
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_send) {
-            item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem menuItem) {
-                    postAnswer();
-                    return false;
-                }
-            });
-            return true;
+            postAnswer();
         }
 
         return super.onOptionsItemSelected(item);

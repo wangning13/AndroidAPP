@@ -98,7 +98,8 @@ public class AskRecyclerViewAdapter extends NewRecyclerViewAdapter<AskRecyclerVi
         public void fillData(AsksInMainMessage ask) {
             mCardView.setVisibility(View.VISIBLE);
             mTitle.setText(ask.getTitle());
-            mPraise.setText(ask.getBestAnswer().getPraiseNum()+"");
+            if(ask.getBestAnswer().getPraiseNum()!=null)
+                mPraise.setText(ask.getBestAnswer().getPraiseNum()+"");
             mContent.setText(ask.getBestAnswer().getContent());
             mTopic.setText(ask.getTopics().get(0));
         }
