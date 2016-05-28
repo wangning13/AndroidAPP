@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,10 +47,10 @@ public class AskRecyclerViewAdapter extends NewRecyclerViewAdapter<AskRecyclerVi
     public void onBindViewHolder(NormalViewHolder holder, final int position) {
         final AsksInMainMessage ask=mData.get(position);
         holder.fillData(ask);
-        String questionId = String.valueOf(ask.getId());
-        String answerId = String.valueOf(ask.getBestAnswer().getAnswererId());
-        String questionTitle = ask.getTitle();
-        holder.setListener(mContext,questionId,answerId,questionTitle);
+//        String questionId = String.valueOf(ask.getId());
+//        String answerId = String.valueOf(ask.getBestAnswer().getAnswererId());
+//        String questionTitle = ask.getTitle();
+        holder.setListener(mContext,ask);
     }
 
     @Override
@@ -104,23 +106,23 @@ public class AskRecyclerViewAdapter extends NewRecyclerViewAdapter<AskRecyclerVi
             mTopic.setText(ask.getTopics().get(0));
         }
 
-        public void setListener(final Context context, final String questionId, final String answerId, final String questionTitle){
+        public void setListener(final Context context, final AsksInMainMessage ask){
             mTitle.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(context,QuestionDetailActivity.class);
-                    intent.putExtra("questionId",questionId);
+                    intent.putExtra("questionId",ask.getId()+"");
                     context.startActivity(intent);
                 }
             });
-            if(answerId.equals(null)){
+            Log.d("BESTANSWER",ask.getBestAnswer().toString());
+            if(!TextUtils.isEmpty(ask.getBestAnswer().getContent())){
                 mContent.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Toast.makeText(context,answerId,Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(context,AnswerDetailActivity.class);
-                        intent.putExtra("answerId",answerId);
-                        intent.putExtra("questionTitle",questionTitle);
+                        intent.putExtra("answerId",ask.getBestAnswer().getAnswererId()+"");
+                        intent.putExtra("questionTitle",ask.getTitle());
                         context.startActivity(intent);
                     }
                 });
