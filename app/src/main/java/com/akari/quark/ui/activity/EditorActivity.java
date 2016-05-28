@@ -6,11 +6,16 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.ContextMenu;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.akari.quark.R;
+import com.akari.quark.data.DataPostHelper;
+import com.akari.quark.network.OkHttpManager;
 
 import org.wordpress.android.editor.EditorFragmentAbstract;
 import org.wordpress.android.editor.EditorFragmentAbstract.EditorFragmentListener;
@@ -21,8 +26,11 @@ import org.wordpress.android.util.AppLog;
 import org.wordpress.android.util.AppLog.T;
 import org.wordpress.android.util.helpers.MediaFile;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
+import okhttp3.Request;
 
 public class EditorActivity extends AppCompatActivity implements EditorFragmentListener {
     public static final String EDITOR_PARAM = "EDITOR_PARAM";
@@ -52,6 +60,13 @@ public class EditorActivity extends AppCompatActivity implements EditorFragmentL
         Toolbar toolbar = (Toolbar) findViewById(R.id.editor_toolbar);
         toolbar.inflateMenu(R.menu.editor_menu);
         toolbar.setTitle("撰写回答");
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
         mFailedUploads = new HashMap<>();
     }
@@ -297,5 +312,63 @@ public class EditorActivity extends AppCompatActivity implements EditorFragmentL
         };
 
         thread.start();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.editor_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_send) {
+            item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem menuItem) {
+                    postAnswer();
+                    return false;
+                }
+            });
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void postAnswer(){
+        if(TextUtils.isEmpty(mEditorFragment.getContent())){
+            Toast.makeText(getApplicationContext(),"回答不能为空",Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        final String content = mEditorFragment.getContent().toString();
+
+        String url = DataPostHelper.API_ADD_ANSWER;
+        Map<String,String> params = new HashMap<String, String>();
+        params.put("question_id",getIntent().getStringExtra("questionId"));
+        params.put("answer_content",content);
+
+        OkHttpManager.DataCallBack callback = new OkHttpManager.DataCallBack() {
+            @Override
+            public void requestFailure(Request request, IOException e) {
+                Toast.makeText(getApplicationContext(),"回答创建失败",Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void requestSuccess(String result) throws Exception {
+                finish();
+                Toast.makeText(getApplicationContext(),"回答创建成功",Toast.LENGTH_SHORT).show();
+            }
+        };
+
+        OkHttpManager.postAsync(url,params,callback,DataPostHelper.X_ACCESS_TOKEN,DataPostHelper.TEMP_X_ACCESS_TOKEN);
     }
 }

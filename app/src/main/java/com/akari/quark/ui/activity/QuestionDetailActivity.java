@@ -52,7 +52,6 @@ public class QuestionDetailActivity extends AppCompatActivity implements Refresh
     private Activity mActivity;
     public static Handler sHandler = new Handler();
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,6 +71,7 @@ public class QuestionDetailActivity extends AppCompatActivity implements Refresh
                     bundle.putString(EditorActivity.CONTENT_PLACEHOLDER_PARAM,
                             getString(R.string.example_post_content_placeholder));
                     bundle.putInt(EditorActivity.EDITOR_PARAM, EditorActivity.USE_NEW_EDITOR);
+                    bundle.putString("questionId",getIntent().getStringExtra("questionId"));
                     intent.putExtras(bundle);
                     startActivity(intent);
                 }

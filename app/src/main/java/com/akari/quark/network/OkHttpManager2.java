@@ -1,10 +1,17 @@
 package com.akari.quark.network;
 
 import android.os.Handler;
-import android.os.RemoteException;
 
+import com.akari.quark.BuildConfig;
+import com.akari.quark.common.DeviceStatus;
+import com.akari.quark.common.exception.ConnectionException;
+import com.akari.quark.common.exception.RemoteException;
+import com.akari.quark.common.exception.RequestException;
+import com.akari.quark.common.exception.UnauthorizedException;
 import com.akari.quark.util.AppCtx;
+import com.google.common.net.HttpHeaders;
 
+import org.apache.http.HttpStatus;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.message.BasicNameValuePair;
 
@@ -16,6 +23,7 @@ import java.net.ConnectException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Cache;
@@ -26,6 +34,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 public class OkHttpManager2 {
     public static final String BASE_URL = "http://115.159.160.18:3000";
@@ -45,6 +54,8 @@ public class OkHttpManager2 {
     //okhttpclient实例
     private static final OkHttpClient mClient;
     private static final String CHARSET_NAME = "UTF-8";
+
+    private static final int SERVER_ERROR_CODE = 500;
 
     //构造方法
 //    private OkHttpManager() {
@@ -89,9 +100,9 @@ public class OkHttpManager2 {
     }
 
     //使用token进行访问
-    static Request.Builder newRequest() {
+    public static Request.Builder newRequest(String key,String value) {
         Request.Builder builder = new Request.Builder();
-        builder.header(X_ACCESS_TOKEN, TEMP_X_ACCESS_TOKEN);
+        builder.header(key, value);
 
         return builder;
     }
@@ -420,5 +431,39 @@ public class OkHttpManager2 {
         void requestFailure(Request request, IOException e);
 
         void requestSuccess(String result) throws Exception;
+    }
+
+    public static Response sendRequest(Request request) throws ConnectionException, RemoteException {
+        return sendRequest(request, true);
+    }
+
+    static Response sendRequest(Request request, boolean checkResponse) throws ConnectionException, RemoteException {
+//        if (!DeviceStatus.getInstance().isNetworkConnected()) {
+//            throw new ConnectionException("network not connected");
+//        }
+//
+//        if (BuildConfig.DEBUG && new Random().nextInt(100) > 95) {
+//            throw new ConnectionException("debug network test");
+//        }
+
+        final Response response;
+        try {
+            response = mClient.newCall(request).execute();
+        } catch (IOException e) {
+            throw new ConnectionException(e);
+        }
+        if (checkResponse) {
+            checkResponse(response);
+        }
+
+        return response;
+    }
+
+    private static void checkResponse(Response response) throws RemoteException, RequestException, ConnectionException {
+        if (response.isSuccessful()) {
+            return;
+        }else{
+            throw new RequestException(response);
+        }
     }
 }

@@ -2,16 +2,20 @@ package com.akari.quark.ui.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.akari.quark.R;
 import com.akari.quark.entity.answersInMain.AnswersInMainMessage;
+import com.akari.quark.ui.activity.EditorActivity;
 import com.akari.quark.ui.activity.QuestionDetailActivity;
 import com.akari.quark.ui.adapter.baseAdapter.NewRecyclerViewAdapter;
 
@@ -82,6 +86,7 @@ public class AnswerRecyclerViewAdapter extends NewRecyclerViewAdapter<AnswerRecy
         private final TextView mAttentionCount;
         private final TextView mAnswerCount;
         private final TextView mTopic;
+        private final LinearLayout mToAnswer;
 
         public NormalViewHolder(View itemView) {
             super(itemView);
@@ -90,6 +95,7 @@ public class AnswerRecyclerViewAdapter extends NewRecyclerViewAdapter<AnswerRecy
             mAttentionCount = (TextView) mCardView.findViewById(R.id.attention_count);
             mAnswerCount = (TextView) mCardView.findViewById(R.id.answer_count);
             mTopic = (TextView) mCardView.findViewById(R.id.answer_item_tag);
+            mToAnswer= (LinearLayout) mCardView.findViewById(R.id.wanna_answer);
         }
 
         public void fillData(AnswersInMainMessage ask) {
@@ -109,6 +115,21 @@ public class AnswerRecyclerViewAdapter extends NewRecyclerViewAdapter<AnswerRecy
                 public void onClick(View view) {
                     Intent intent = new Intent(context, QuestionDetailActivity.class);
                     intent.putExtra("questionId",questionId);
+                    context.startActivity(intent);
+                }
+            });
+
+            mToAnswer.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, EditorActivity.class);
+                    intent.putExtra("questionId", questionId);
+                    Bundle bundle = new Bundle();
+                    bundle.putString(EditorActivity.CONTENT_PARAM, "");
+                    bundle.putString(EditorActivity.CONTENT_PLACEHOLDER_PARAM,
+                            context.getString(R.string.example_post_content_placeholder));
+                    bundle.putInt(EditorActivity.EDITOR_PARAM, EditorActivity.USE_NEW_EDITOR);
+                    intent.putExtras(bundle);
                     context.startActivity(intent);
                 }
             });

@@ -13,6 +13,14 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.akari.quark.R;
+import com.akari.quark.data.DataPostHelper;
+import com.akari.quark.network.OkHttpManager;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+import okhttp3.Request;
 
 /**
  * Created by motoon on 2016/5/6.
@@ -20,6 +28,9 @@ import com.akari.quark.R;
 public class CreatQuestionActivity extends AppCompatActivity {
 
     private Context context;
+    private EditText newTitleText;
+    private EditText newTitleTopic;
+    private EditText newQuestionDescription;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,23 +48,20 @@ public class CreatQuestionActivity extends AppCompatActivity {
             }
         });
         EditScroll();
-
-
-
     }
 
     //设置滚动
     private void EditScroll() {
 
-        EditText newTitleText = (EditText) findViewById(R.id.newTitleText);
+        newTitleText = (EditText) findViewById(R.id.newTitleText);
         newTitleText.setMovementMethod(ScrollingMovementMethod.getInstance());
         newTitleText.setSelection(newTitleText.getText().length(),newTitleText.getText().length());
 
-        EditText newTitleTopic = (EditText) findViewById(R.id.newTitleTopic);
+        newTitleTopic = (EditText) findViewById(R.id.newTitleTopic);
         newTitleTopic.setMovementMethod(ScrollingMovementMethod.getInstance());
         newTitleTopic.setSelection(newTitleTopic.getText().length(),newTitleTopic.getText().length());
 
-        EditText newQuestionDescription = (EditText) findViewById(R.id.newQuestionDescription);
+        newQuestionDescription = (EditText) findViewById(R.id.newQuestionDescription);
         newQuestionDescription.setMovementMethod(ScrollingMovementMethod.getInstance());
         newQuestionDescription.setSelection(newQuestionDescription.getText().length(),newQuestionDescription.getText().length());
     }
@@ -77,8 +85,7 @@ public class CreatQuestionActivity extends AppCompatActivity {
             item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(MenuItem menuItem) {
-
-                    Toast.makeText(getApplicationContext(),"发表成功！",Toast.LENGTH_SHORT).show();
+                    postQuestion();
                     return false;
                 }
             });
@@ -89,16 +96,42 @@ public class CreatQuestionActivity extends AppCompatActivity {
     }
 
     private void postQuestion(){
-//        if (TextUtils.isEmpty(mTitle.getText())) {
-//            mTitle.setError(getString(R.string.error_field_required));
-//            return;
-//        }
-//
-//        ViewUtils.hideInputMethod(mContent);
-//
-//        final String title = mTitle.getText().toString();
-//        final String content = mContent.getText().toString();
+        if (TextUtils.isEmpty(newTitleText.getText())) {
+            newTitleText.setError("此处不能为空");
+            return;
+        }
+        if (TextUtils.isEmpty(newTitleTopic.getText())) {
+            newTitleTopic.setError("此处不能为空");
+            return;
+        }
+        if (TextUtils.isEmpty(newQuestionDescription.getText())) {
+            newQuestionDescription.setError("此处不能为空");
+            return;
+        }
 
+        final String title = newTitleText.getText().toString();
+        final String content = newQuestionDescription.getText().toString();
+
+        String url = DataPostHelper.API_ADD_QUESTION;
+        Map<String,String> params = new HashMap<String, String>();
+        params.put("question_title",title);
+        params.put("description",content);
+        params.put("tags","1-6");
+
+        OkHttpManager.DataCallBack callback = new OkHttpManager.DataCallBack() {
+            @Override
+            public void requestFailure(Request request, IOException e) {
+                Toast.makeText(context,"问题创建失败",Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void requestSuccess(String result) throws Exception {
+                finish();
+                Toast.makeText(context,"问题创建成功",Toast.LENGTH_SHORT).show();
+            }
+        };
+
+        OkHttpManager.postAsync(url,params,callback,DataPostHelper.X_ACCESS_TOKEN,DataPostHelper.TEMP_X_ACCESS_TOKEN);
     }
 
 

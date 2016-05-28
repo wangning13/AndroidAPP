@@ -1,6 +1,5 @@
 package com.akari.quark.common.exception;
 
-
 import com.google.common.base.Strings;
 import com.google.common.net.HttpHeaders;
 

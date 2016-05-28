@@ -2,37 +2,40 @@ package com.akari.quark.util;
 
 import android.app.Application;
 
-import java.util.List;
+import com.google.common.eventbus.AsyncEventBus;
+import com.google.common.eventbus.EventBus;
 
-/**
- * Created by Akari on 16/5/21.
- */
 public class AppCtx extends Application {
     private static final String TAG = AppCtx.class.getSimpleName();
 
     private static AppCtx mInstance;
+    private EventBus mEventBus;
     private volatile boolean mIsInited;
-
-    private static class AppCtxHolder {
-        private static final AppCtx mInstance = new AppCtx();
-    }
-
-    private AppCtx() {
-    }
-
-    public static final AppCtx getInstance() {
-        return AppCtxHolder.mInstance;
-    }
 
     @Override
     public void onCreate() {
         super.onCreate();
 
         mInstance = this;
+        init();
     }
 
     public boolean isInited() {
         return mIsInited;
+    }
+
+    private void init() {
+        // event bus is the first
+        mEventBus = new AsyncEventBus(new HandlerExecutor());
+        mEventBus.register(this);
+    }
+
+    public static EventBus getEventBus() {
+        return mInstance.mEventBus;
+    }
+
+    public static AppCtx getInstance() {
+        return mInstance;
     }
 
 }
