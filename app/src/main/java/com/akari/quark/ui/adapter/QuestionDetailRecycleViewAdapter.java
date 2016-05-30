@@ -102,55 +102,6 @@ public class QuestionDetailRecycleViewAdapter extends RecyclerView.Adapter<Quest
                 }
             });
         }
-
-//        OkHttpManager.DataCallBack dataCallBack = new OkHttpManager.DataCallBack() {
-//            @Override
-//            public void requestFailure(Request request, IOException e) {
-//                Toast.makeText(mContext,"无法访问",Toast.LENGTH_SHORT).show();
-//            }
-//
-//            @Override
-//            public void requestSuccess(String result) throws Exception {
-//                QuestinoDetail questinoDetail = GsonUtil.GsonToBean(result,QuestinoDetail.class);
-//                AnswersInMainMessage message = questinoDetail.getMessage();
-//                String title = message.getTitle();
-//                String content = message.getContent();
-//                String focusNum = String.valueOf(message.getFocusNum())+"人关注";
-//                String answerNum =  String.valueOf(message.getAnswerNum())+"人回答";
-//                List<String> topics = message.getTopics();
-//                answerList = message.getAnswers();
-//                if(position==0){
-//                    holder.questionTitle.setText(answerList.size()+"个数据");
-//                    holder.content.setText(content);
-//                    holder.focusNum.setText(focusNum);
-//                    holder.answerNum.setText(answerNum);
-//                    for (int i=0;i<topics.size();i++){
-//                        if(i!=topics.size()-1){
-//                            holder.topics.setText(topics.get(i) +"·");
-//                        }else {
-//                            holder.topics.setText(topics.get(i));
-//                        }
-//                    }
-//                }else{
-//                    notifyDataSetChanged();
-//                    holder.context.setText(answerList.get(position-1).getContent());
-//                    holder.username.setText(answerList.get(position-1).getUser().getName());
-//                    holder.introduction.setText(answerList.get(position-1).getUser().getIntroduction());
-//                    holder.praiseNum.setText(answerList.get(position-1).getPraiseNum()+"");
-//                    holder.context.setOnClickListener(new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View view) {
-//                            Intent intent = new Intent(mContext,AnswerDetailActivity.class);
-//                            mContext.startActivity(intent);
-//                        }
-//                    });
-//                }
-//
-//            }
-//        };
-//        OkHttpManager.getAsync(urlDetail,dataCallBack,OkHttpManager.X_ACCESS_TOKEN,OkHttpManager.TEMP_X_ACCESS_TOKEN);
-
-
     }
     public int getRealPosition(RecyclerView.ViewHolder holder) {
         int position = holder.getLayoutPosition();

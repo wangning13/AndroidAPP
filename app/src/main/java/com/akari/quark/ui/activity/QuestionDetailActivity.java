@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -36,11 +35,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.Response;
 
 /**
  * Created by motoon on 2016/5/6.
@@ -52,6 +47,8 @@ public class QuestionDetailActivity extends AppCompatActivity implements Refresh
     private LinearLayoutManager mLinearLayoutManager;
     private QuestionDetailRecycleViewAdapter mAdapter;
     private Activity mActivity;
+    private int mPage;
+    String question_id;
     public static Handler sHandler = new Handler();
 
     @Override
@@ -60,6 +57,7 @@ public class QuestionDetailActivity extends AppCompatActivity implements Refresh
         setContentView(R.layout.question_detail);
         context = QuestionDetailActivity.this;
         mActivity = this;
+        mPage = 1;
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_question_detail);
@@ -102,7 +100,7 @@ public class QuestionDetailActivity extends AppCompatActivity implements Refresh
         item_tag.setHorizontallyScrolling(true);
 
         Intent intent = getIntent();
-        final String question_id = intent.getStringExtra("questionId");
+        question_id = intent.getStringExtra("questionId");
 
         //为关注按钮设置响应事件
         button.setOnClickListener(new View.OnClickListener() {
@@ -159,64 +157,48 @@ public class QuestionDetailActivity extends AppCompatActivity implements Refresh
             }
         });
 
-        String answer_page = "1";
-        //创建OkHttpClient对象，用于稍后发起请求
-        OkHttpClient client = new OkHttpClient();
 
         String url = OkHttpManager.API_QUESTION_DETAIL;
         String url1 = OkHttpManager.attachHttpGetParam(url,"question_id",question_id);
-        String urlDetail = url1+"&answer_page="+answer_page;
-        //根据请求URL创建一个Request对象
-        final Request request = new Request.
-                Builder().url(urlDetail)
-                .header(OkHttpManager.X_ACCESS_TOKEN,OkHttpManager.TEMP_X_ACCESS_TOKEN)
-                .build();
-        final Handler mHandler = new Handler(Looper.getMainLooper());
-        //根据Request对象发起Get异步Http请求，并添加请求回调
-        client.newCall(request).enqueue(new Callback() {
+        String urlDetail = url1+"&answer_page="+mPage;
+        String key = OkHttpManager.X_ACCESS_TOKEN;
+        String token = OkHttpManager.TEMP_X_ACCESS_TOKEN;
+        OkHttpManager.DataCallBack datacallback = new OkHttpManager.DataCallBack() {
             @Override
-            public void onFailure(Call call, IOException e) {
-//                Toast.makeText(mContext,"无法访问", Toast.LENGTH_SHORT).show();
+            public void requestFailure(Request request, IOException e){
+                Toast.makeText(context,"无法访问", Toast.LENGTH_SHORT).show();
             }
 
             @Override
-            public void onResponse(final Call call, Response response) throws IOException {
-                final String result = response.body().string();
-                mHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        if(call!=null){
-                            QuestionDetail questinoDetail = GsonUtil.GsonToBean(result,QuestionDetail.class);
-                            Message message = questinoDetail.getMessage();
-                            mAdapter = new QuestionDetailRecycleViewAdapter(context,message);
-                            mRecyclerView.setAdapter(mAdapter);
-                            mAdapter.setHeaderView(header);
+            public void requestSuccess(String result) throws Exception {
+                QuestionDetail questinoDetail = GsonUtil.GsonToBean(result,QuestionDetail.class);
+                Message message = questinoDetail.getMessage();
+                mAdapter = new QuestionDetailRecycleViewAdapter(context,message);
+                mRecyclerView.setAdapter(mAdapter);
+                mAdapter.setHeaderView(header);
 
-                            Long create_time = message.getCreateTime();
-                            SimpleDateFormat sdf= null;
-                            Date date = null;
-                            try {
-                                sdf = new SimpleDateFormat("MM月dd日创建");
-                                date = new Date(create_time);
-                                Toolbar toolbar = (Toolbar) findViewById(R.id.id_tool_bar);
-                                toolbar.setTitle(sdf.format(date));
-                                setSupportActionBar(toolbar);
-                                toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        onBackPressed();
-                                    }
-                                });
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-
+                Long create_time = message.getCreateTime();
+                SimpleDateFormat sdf= null;
+                Date date = null;
+                try {
+                    sdf = new SimpleDateFormat("MM月dd日创建");
+                    date = new Date(create_time);
+                    Toolbar toolbar = (Toolbar) findViewById(R.id.id_tool_bar);
+                    toolbar.setTitle(sdf.format(date));
+                    setSupportActionBar(toolbar);
+                    toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            onBackPressed();
                         }
-                    }
-                });
-
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
-        });
+        };
+        OkHttpManager.getAsync(urlDetail,datacallback,key,token);
+
     }
 
     @Override
@@ -224,8 +206,52 @@ public class QuestionDetailActivity extends AppCompatActivity implements Refresh
         sHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
+                mPage = 1;
                 mRecyclerView.scrollToPosition(0);
                 mRefreshlayout.setHeaderRefreshing(false);
+
+                final View header = LayoutInflater.from(context).inflate(R.layout.question_headerview, mRecyclerView, false);
+                String url = OkHttpManager.API_QUESTION_DETAIL;
+                String url1 = OkHttpManager.attachHttpGetParam(url,"question_id",question_id);
+                String urlDetail = url1+"&answer_page="+mPage;
+                String key = OkHttpManager.X_ACCESS_TOKEN;
+                String token = OkHttpManager.TEMP_X_ACCESS_TOKEN;
+                OkHttpManager.DataCallBack datacallback = new OkHttpManager.DataCallBack() {
+                    @Override
+                    public void requestFailure(Request request, IOException e){
+                        Toast.makeText(context,"无法访问", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void requestSuccess(String result) throws Exception {
+                        QuestionDetail questinoDetail = GsonUtil.GsonToBean(result,QuestionDetail.class);
+                        Message message = questinoDetail.getMessage();
+                        mAdapter.notifyDataSetChanged();
+                        mAdapter = new QuestionDetailRecycleViewAdapter(context,message);
+                        mRecyclerView.setAdapter(mAdapter);
+                        mAdapter.setHeaderView(header);
+
+                        Long create_time = message.getCreateTime();
+                        SimpleDateFormat sdf= null;
+                        Date date = null;
+                        try {
+                            sdf = new SimpleDateFormat("MM月dd日创建");
+                            date = new Date(create_time);
+                            Toolbar toolbar = (Toolbar) findViewById(R.id.id_tool_bar);
+                            toolbar.setTitle(sdf.format(date));
+                            setSupportActionBar(toolbar);
+                            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    onBackPressed();
+                                }
+                            });
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                };
+                OkHttpManager.getAsync(urlDetail,datacallback,key,token);
             }
         }, 3000);
     }
