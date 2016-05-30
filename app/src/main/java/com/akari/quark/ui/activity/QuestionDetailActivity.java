@@ -49,6 +49,7 @@ public class QuestionDetailActivity extends AppCompatActivity implements Refresh
     private Activity mActivity;
     private int mPage;
     String question_id;
+    View header;
     public static Handler sHandler = new Handler();
 
     @Override
@@ -93,7 +94,7 @@ public class QuestionDetailActivity extends AppCompatActivity implements Refresh
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
 
-        final View header = LayoutInflater.from(context).inflate(R.layout.question_headerview, mRecyclerView, false);
+        header = LayoutInflater.from(context).inflate(R.layout.question_headerview, mRecyclerView, false);
         final Button button = (Button) header.findViewById(R.id.concern_button);
         TextView item_tag = (TextView) header.findViewById(R.id.topic);
         item_tag.setMovementMethod(ScrollingMovementMethod.getInstance());
@@ -203,6 +204,11 @@ public class QuestionDetailActivity extends AppCompatActivity implements Refresh
 
     @Override
     public void onHeaderRefresh() {
+        int times = 3000;
+        refreshData(times);
+    }
+
+    private void refreshData(int times) {
         sHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -210,7 +216,6 @@ public class QuestionDetailActivity extends AppCompatActivity implements Refresh
                 mRecyclerView.scrollToPosition(0);
                 mRefreshlayout.setHeaderRefreshing(false);
 
-                final View header = LayoutInflater.from(context).inflate(R.layout.question_headerview, mRecyclerView, false);
                 String url = OkHttpManager.API_QUESTION_DETAIL;
                 String url1 = OkHttpManager.attachHttpGetParam(url,"question_id",question_id);
                 String urlDetail = url1+"&answer_page="+mPage;
@@ -253,8 +258,9 @@ public class QuestionDetailActivity extends AppCompatActivity implements Refresh
                 };
                 OkHttpManager.getAsync(urlDetail,datacallback,key,token);
             }
-        }, 3000);
+        }, times);
     }
+
 
     @Override
     public void onFooterRefresh() {
