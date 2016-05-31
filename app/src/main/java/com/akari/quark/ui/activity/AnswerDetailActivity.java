@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.v4.view.NestedScrollingChild;
+import android.support.v4.view.NestedScrollingParent;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -21,6 +23,7 @@ import com.akari.quark.entity.answerDetail.AnswerDetail;
 import com.akari.quark.entity.answerDetail.User;
 import com.akari.quark.network.OkHttpManager;
 import com.akari.quark.util.GsonUtil;
+import com.hippo.refreshlayout.RefreshLayout;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -37,8 +40,10 @@ import okhttp3.Response;
 /**
  * Created by motoon on 2016/5/13.
  */
-public class AnswerDetailActivity extends AppCompatActivity{
+public class AnswerDetailActivity extends AppCompatActivity implements NestedScrollingParent, NestedScrollingChild,RefreshLayout.OnRefreshListener {
     private Context context;
+    private RefreshLayout mRefreshlayout;
+    public static Handler sHandler = new Handler();
     public static final String X_ACCESS_TOKEN="x-access-token";
     public static final String TEMP_X_ACCESS_TOKEN="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZXhwIjoxNDY0ODUyNzE2MDExfQ.1sJDUeBZS0O1-Tjru2V05K8SJTPWB_D5weRuUEL1Upw";
 
@@ -47,6 +52,15 @@ public class AnswerDetailActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.answer_detail);
+
+        mRefreshlayout = (RefreshLayout) findViewById(R.id.swipe_container);
+        mRefreshlayout.setHeaderColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light, android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+        mRefreshlayout.setFooterColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light, android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+        mRefreshlayout.setOnRefreshListener(this);
 
         Intent intent = getIntent();
         final String answerId = intent.getStringExtra("answerId");
@@ -360,5 +374,114 @@ public class AnswerDetailActivity extends AppCompatActivity{
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void setNestedScrollingEnabled(boolean enabled) {
+
+    }
+
+    @Override
+    public boolean isNestedScrollingEnabled() {
+        return false;
+    }
+
+    @Override
+    public boolean startNestedScroll(int axes) {
+        return false;
+    }
+
+    @Override
+    public void stopNestedScroll() {
+
+    }
+
+    @Override
+    public boolean hasNestedScrollingParent() {
+        return false;
+    }
+
+    @Override
+    public boolean dispatchNestedScroll(int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed, int[] offsetInWindow) {
+        return false;
+    }
+
+    @Override
+    public boolean dispatchNestedPreScroll(int dx, int dy, int[] consumed, int[] offsetInWindow) {
+        return false;
+    }
+
+    @Override
+    public boolean dispatchNestedFling(float velocityX, float velocityY, boolean consumed) {
+        return false;
+    }
+
+    @Override
+    public boolean dispatchNestedPreFling(float velocityX, float velocityY) {
+        return false;
+    }
+
+    @Override
+    public boolean onStartNestedScroll(View child, View target, int nestedScrollAxes) {
+        return false;
+    }
+
+    @Override
+    public void onNestedScrollAccepted(View child, View target, int nestedScrollAxes) {
+
+    }
+
+    @Override
+    public void onStopNestedScroll(View target) {
+
+    }
+
+    @Override
+    public void onNestedScroll(View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed) {
+
+    }
+
+    @Override
+    public void onNestedPreScroll(View target, int dx, int dy, int[] consumed) {
+
+    }
+
+    @Override
+    public boolean onNestedFling(View target, float velocityX, float velocityY, boolean consumed) {
+        return false;
+    }
+
+    @Override
+    public boolean onNestedPreFling(View target, float velocityX, float velocityY) {
+        return false;
+    }
+
+    @Override
+    public int getNestedScrollAxes() {
+        return 0;
+    }
+
+    @Override
+    public void onHeaderRefresh() {
+        sHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mRefreshlayout.setFooterRefreshing(false);
+                mRefreshlayout.setHeaderRefreshing(false);
+            }
+        }, 3000);
+
+    }
+
+    @Override
+    public void onFooterRefresh() {
+        sHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mRefreshlayout.setFooterRefreshing(false);
+                mRefreshlayout.setHeaderRefreshing(false);
+            }
+        }, 3000);
+
     }
 }
