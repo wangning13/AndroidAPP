@@ -41,7 +41,7 @@ public class OkHttpManager {
     public static final String API_QUESTION_FOCUS = BASE_URL + "/api/question/focus";
 
     public static final String X_ACCESS_TOKEN="x-access-token";
-    public static final String TEMP_X_ACCESS_TOKEN="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZXhwIjoxNDY0ODUyNzE2MDExfQ.1sJDUeBZS0O1-Tjru2V05K8SJTPWB_D5weRuUEL1Upw";
+    public static final String TEMP_X_ACCESS_TOKEN="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZXhwIjoxNDY0MDE0NTg4ODE1fQ.6ney0SK3o5FJehcZNMmBOVDrV22tX_kbmgrJUxsLTsE";
 
     /**
      * 静态实例
