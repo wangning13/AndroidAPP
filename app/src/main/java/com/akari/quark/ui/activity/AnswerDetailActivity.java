@@ -18,9 +18,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.akari.quark.R;
-import com.akari.quark.entity.answerdetail.AnswerDetail;
-import com.akari.quark.entity.answerdetail.Message;
-import com.akari.quark.entity.answerdetail.Writer;
+import com.akari.quark.entity.answerDetail.AnswerDetail;
+import com.akari.quark.entity.answerDetail.Message;
+import com.akari.quark.entity.answerDetail.Writer;
 import com.akari.quark.entity.post.Post;
 import com.akari.quark.network.OkHttpManager;
 import com.akari.quark.util.GsonUtil;
@@ -212,7 +212,7 @@ public class AnswerDetailActivity extends AppCompatActivity implements NestedScr
                                                     down.setSelected(false);
                                                     String url2 = OkHttpManager.API_ANSWER_DOWN;
                                                     Map<String,String> params2 = new HashMap<String, String>();
-                                                    params2.put("answer_id",id.toString());
+                                                    params.put("answer_id",id.toString());
                                                     OkHttpManager.DataCallBack callback2 = new OkHttpManager.DataCallBack() {
                                                         @Override
                                                         public void requestFailure(Request request, IOException e) {
@@ -306,7 +306,7 @@ public class AnswerDetailActivity extends AppCompatActivity implements NestedScr
                                                     up.setSelected(false);
                                                     String url2 = OkHttpManager.API_ANSWER_PRAISE;
                                                     Map<String,String> params2 = new HashMap<String, String>();
-                                                    params2.put("answer_id",id.toString());
+                                                    params.put("answer_id",id.toString());
                                                     OkHttpManager.DataCallBack callback2 = new OkHttpManager.DataCallBack() {
                                                         @Override
                                                         public void requestFailure(Request request, IOException e) {
