@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.akari.quark.R;
+import com.akari.quark.entity.post.Post;
 import com.akari.quark.entity.questionDetail.Message;
 import com.akari.quark.entity.questionDetail.QuestionDetail;
 import com.akari.quark.network.OkHttpManager;
@@ -103,62 +104,6 @@ public class QuestionDetailActivity extends AppCompatActivity implements Refresh
         Intent intent = getIntent();
         question_id = intent.getStringExtra("questionId");
 
-        //为关注按钮设置响应事件
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(button.isSelected()==false){
-                    button.setText("已关注");
-                    button.setBackgroundColor(Color.parseColor("#D1D1D1"));
-                    button.setSelected(true);
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                        button.setBackground(context.getResources().getDrawable(R.drawable.shape));
-                    }
-                    //向服务器post关注
-                    String url = OkHttpManager.API_QUESTION_FOCUS;
-                    Map<String,String> params = new HashMap<String, String>();
-                    params.put("question_id",question_id);
-                    OkHttpManager.DataCallBack callback = new OkHttpManager.DataCallBack() {
-                        @Override
-                        public void requestFailure(Request request, IOException e) {
-                            Toast.makeText(context,"关注失败",Toast.LENGTH_SHORT).show();
-                        }
-
-                        @Override
-                        public void requestSuccess(String result) throws Exception {
-//                                Toast.makeText(context,result,Toast.LENGTH_SHORT).show();
-                        }
-                    };
-                    OkHttpManager.postAsync(url,params,callback,OkHttpManager.X_ACCESS_TOKEN,OkHttpManager.TEMP_X_ACCESS_TOKEN);
-                }else {
-                    button.setText("关注");
-                    button.setBackgroundColor(Color.parseColor("#00A162"));
-                    button.setSelected(false);
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                        button.setBackground(context.getResources().getDrawable(R.drawable.shape));
-                    }
-
-                    //向服务器delete关注
-                    String url = OkHttpManager.API_QUESTION_FOCUS;
-                    Map<String,String> params = new HashMap<String, String>();
-                    params.put("question_id",question_id);
-                    OkHttpManager.DataCallBack callback = new OkHttpManager.DataCallBack() {
-                        @Override
-                        public void requestFailure(Request request, IOException e) {
-                            Toast.makeText(context,"取消关注失败",Toast.LENGTH_SHORT).show();
-                        }
-
-                        @Override
-                        public void requestSuccess(String result) throws Exception {
-//                            Toast.makeText(context,result,Toast.LENGTH_SHORT).show();
-                        }
-                    };
-                    OkHttpManager.deleteAsync(url,params,callback,OkHttpManager.X_ACCESS_TOKEN,OkHttpManager.TEMP_X_ACCESS_TOKEN);
-                }
-            }
-        });
-
-
         String url = OkHttpManager.API_QUESTION_DETAIL;
         String url1 = OkHttpManager.attachHttpGetParam(url,"question_id",question_id);
         String urlDetail = url1+"&answer_page="+mPage;
@@ -173,29 +118,145 @@ public class QuestionDetailActivity extends AppCompatActivity implements Refresh
             @Override
             public void requestSuccess(String result) throws Exception {
                 QuestionDetail questinoDetail = GsonUtil.GsonToBean(result,QuestionDetail.class);
-                Message message = questinoDetail.getMessage();
-                mAdapter = new QuestionDetailRecycleViewAdapter(context,message);
-                mRecyclerView.setAdapter(mAdapter);
-                mAdapter.setHeaderView(header);
+                Long status = questinoDetail.getStatus();
+                String errorCode = questinoDetail.getError_code();
+                if(status!=1){
+                    Toast.makeText(context,"网络不佳或者服务器返回数据失败",Toast.LENGTH_SHORT).show();
+                }else {
+                    if(errorCode.equals(null)){
+                        Message message = questinoDetail.getMessage();
+                        mAdapter = new QuestionDetailRecycleViewAdapter(context,message);
+                        mRecyclerView.setAdapter(mAdapter);
+                        mAdapter.setHeaderView(header);
 
-                Long create_time = message.getCreateTime();
-                SimpleDateFormat sdf= null;
-                Date date = null;
-                try {
-                    sdf = new SimpleDateFormat("MM月dd日创建");
-                    date = new Date(create_time);
-                    Toolbar toolbar = (Toolbar) findViewById(R.id.id_tool_bar);
-                    toolbar.setTitle(sdf.format(date));
-                    setSupportActionBar(toolbar);
-                    toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            onBackPressed();
+                        Long create_time = message.getCreateTime();
+                        SimpleDateFormat sdf= null;
+                        Date date = null;
+                        try {
+                            sdf = new SimpleDateFormat("MM月dd日创建");
+                            date = new Date(create_time);
+                            Toolbar toolbar = (Toolbar) findViewById(R.id.id_tool_bar);
+                            toolbar.setTitle(sdf.format(date));
+                            setSupportActionBar(toolbar);
+                            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    onBackPressed();
+                                }
+                            });
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
-                    });
-                } catch (Exception e) {
-                    e.printStackTrace();
+                        Boolean isFocused = message.getFocused();
+                        if(isFocused==true){
+                            button.setText("已关注");
+                            button.setBackgroundColor(Color.parseColor("#D1D1D1"));
+                            button.setSelected(true);
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                                button.setBackground(context.getResources().getDrawable(R.drawable.shape));
+                            }
+                        }else{
+                            button.setText("关注");
+                            button.setBackgroundColor(Color.parseColor("#00A162"));
+                            button.setSelected(false);
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                                button.setBackground(context.getResources().getDrawable(R.drawable.shape));
+                            }
+                        }
+                        //为关注按钮设置响应事件
+                        button.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                if(button.isSelected()==false){
+                                    button.setText("已关注");
+                                    button.setBackgroundColor(Color.parseColor("#D1D1D1"));
+                                    button.setSelected(true);
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                                        button.setBackground(context.getResources().getDrawable(R.drawable.shape));
+                                    }
+                                    //向服务器post关注
+                                    String url = OkHttpManager.API_QUESTION_FOCUS;
+                                    Map<String,String> params = new HashMap<String, String>();
+                                    params.put("question_id",question_id);
+                                    OkHttpManager.DataCallBack callback = new OkHttpManager.DataCallBack() {
+                                        @Override
+                                        public void requestFailure(Request request, IOException e) {
+                                            Toast.makeText(context,"关注失败",Toast.LENGTH_SHORT).show();
+                                        }
+
+                                        @Override
+                                        public void requestSuccess(String result) throws Exception {
+//                                          Toast.makeText(context,result,Toast.LENGTH_SHORT).show();
+                                            Post post = GsonUtil.GsonToBean(result,Post.class);
+                                            Long status = post.getStatus();
+                                            String errorCode = post.getErrorCode();
+                                            if(status==1&&errorCode.equals(null)){
+
+                                            }else {
+                                                Toast.makeText(context,"关注失败",Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    };
+                                    OkHttpManager.postAsync(url,params,callback,OkHttpManager.X_ACCESS_TOKEN,OkHttpManager.TEMP_X_ACCESS_TOKEN);
+                                }else {
+                                    button.setText("关注");
+                                    button.setBackgroundColor(Color.parseColor("#00A162"));
+                                    button.setSelected(false);
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                                        button.setBackground(context.getResources().getDrawable(R.drawable.shape));
+                                    }
+
+                                    //向服务器delete关注
+                                    String url = OkHttpManager.API_QUESTION_FOCUS;
+                                    Map<String,String> params = new HashMap<String, String>();
+                                    params.put("question_id",question_id);
+                                    OkHttpManager.DataCallBack callback = new OkHttpManager.DataCallBack() {
+                                        @Override
+                                        public void requestFailure(Request request, IOException e) {
+                                            Toast.makeText(context,"取消关注失败",Toast.LENGTH_SHORT).show();
+                                        }
+
+                                        @Override
+                                        public void requestSuccess(String result) throws Exception {
+//                                          Toast.makeText(context,result,Toast.LENGTH_SHORT).show();
+                                            Post post = GsonUtil.GsonToBean(result,Post.class);
+                                            Long status = post.getStatus();
+                                            String errorCode = post.getErrorCode();
+                                            if(status==1&&errorCode.equals(null)){
+
+                                            }else {
+                                                Toast.makeText(context,"取消关注失败",Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    };
+                                    OkHttpManager.deleteAsync(url,params,callback,OkHttpManager.X_ACCESS_TOKEN,OkHttpManager.TEMP_X_ACCESS_TOKEN);
+                                }
+                            }
+                        });
+                    }else{
+                        switch (errorCode){
+                            case "1000":
+                                Toast.makeText(context,"参数缺失",Toast.LENGTH_SHORT).show();
+                                break;
+                            case "1001":
+                                Toast.makeText(context,"数据库错误",Toast.LENGTH_SHORT).show();
+                                break;
+                            case "2003":
+                                Toast.makeText(context,"Token超时(需要重新请求)",Toast.LENGTH_SHORT).show();
+                                break;
+                            case "2004":
+                                Toast.makeText(context,"该账户不存在",Toast.LENGTH_SHORT).show();
+                                break;
+                            case "3000":
+                                Toast.makeText(context,"问题不存在",Toast.LENGTH_SHORT).show();
+                                break;
+                            case "6000":
+                                Toast.makeText(context,"话题不存在",Toast.LENGTH_SHORT).show();
+                                break;
+                        }
+                    }
                 }
+
             }
         };
         OkHttpManager.getAsync(urlDetail,datacallback,key,token);

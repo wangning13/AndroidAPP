@@ -27,6 +27,9 @@ public class Message {
     @SerializedName("topics")
     @Expose
     private List<String> topics = new ArrayList<String>();
+    @SerializedName("is_focused")
+    @Expose
+    private Boolean isFocused;
     @SerializedName("answers")
     @Expose
     private List<Answer> answers = new ArrayList<Answer>();
@@ -145,5 +148,13 @@ public class Message {
 
     public void setCreateTime(Long createTime) {
         this.createTime = createTime;
+    }
+
+    public Boolean getFocused() {
+        return isFocused;
+    }
+
+    public void setFocused(Boolean focused) {
+        isFocused = focused;
     }
 }

@@ -1,10 +1,10 @@
 
-package com.akari.quark.entity.answerdetail;
+package com.akari.quark.entity.post;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class AnswerDetail {
+public class Post {
 
     @SerializedName("status")
     @Expose
@@ -14,7 +14,7 @@ public class AnswerDetail {
     private String errorCode;
     @SerializedName("message")
     @Expose
-    private Message message;
+    private String message;
 
     /**
      * 
@@ -57,7 +57,7 @@ public class AnswerDetail {
      * @return
      *     The message
      */
-    public Message getMessage() {
+    public String getMessage() {
         return message;
     }
 
@@ -66,7 +66,7 @@ public class AnswerDetail {
      * @param message
      *     The message
      */
-    public void setMessage(Message message) {
+    public void setMessage(String message) {
         this.message = message;
     }
 

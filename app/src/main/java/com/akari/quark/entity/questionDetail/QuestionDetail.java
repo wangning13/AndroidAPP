@@ -12,6 +12,9 @@ public class QuestionDetail {
     @SerializedName("status")
     @Expose
     private Long status;
+    @SerializedName("error_code")
+    @Expose
+    private String error_code;
 
     /**
      * 
@@ -49,4 +52,11 @@ public class QuestionDetail {
         this.status = status;
     }
 
+    public String getError_code() {
+        return error_code;
+    }
+
+    public void setError_code(String error_code) {
+        this.error_code = error_code;
+    }
 }

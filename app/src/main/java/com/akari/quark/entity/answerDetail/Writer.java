@@ -1,10 +1,10 @@
 
-package com.akari.quark.entity.answerDetail;
+package com.akari.quark.entity.answerdetail;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class User {
+public class Writer {
 
     @SerializedName("id")
     @Expose

@@ -1,10 +1,10 @@
 
-package com.akari.quark.entity.answerDetail;
+package com.akari.quark.entity.answerdetail;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Answer {
+public class Message {
 
     @SerializedName("id")
     @Expose
@@ -39,6 +39,18 @@ public class Answer {
     @SerializedName("read_num")
     @Expose
     private Long readNum;
+    @SerializedName("writer")
+    @Expose
+    private Writer writer;
+    @SerializedName("is_collected")
+    @Expose
+    private Boolean isCollected;
+    @SerializedName("is_down")
+    @Expose
+    private Boolean isDown;
+    @SerializedName("is_praised")
+    @Expose
+    private Boolean isPraised;
 
     /**
      * 
@@ -236,6 +248,78 @@ public class Answer {
      */
     public void setReadNum(Long readNum) {
         this.readNum = readNum;
+    }
+
+    /**
+     * 
+     * @return
+     *     The writer
+     */
+    public Writer getWriter() {
+        return writer;
+    }
+
+    /**
+     * 
+     * @param writer
+     *     The writer
+     */
+    public void setWriter(Writer writer) {
+        this.writer = writer;
+    }
+
+    /**
+     * 
+     * @return
+     *     The isCollected
+     */
+    public Boolean getIsCollected() {
+        return isCollected;
+    }
+
+    /**
+     * 
+     * @param isCollected
+     *     The is_collected
+     */
+    public void setIsCollected(Boolean isCollected) {
+        this.isCollected = isCollected;
+    }
+
+    /**
+     * 
+     * @return
+     *     The isDown
+     */
+    public Boolean getIsDown() {
+        return isDown;
+    }
+
+    /**
+     * 
+     * @param isDown
+     *     The is_down
+     */
+    public void setIsDown(Boolean isDown) {
+        this.isDown = isDown;
+    }
+
+    /**
+     * 
+     * @return
+     *     The isPraised
+     */
+    public Boolean getIsPraised() {
+        return isPraised;
+    }
+
+    /**
+     * 
+     * @param isPraised
+     *     The is_praised
+     */
+    public void setIsPraised(Boolean isPraised) {
+        this.isPraised = isPraised;
     }
 
 }

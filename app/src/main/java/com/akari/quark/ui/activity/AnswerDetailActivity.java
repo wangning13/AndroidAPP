@@ -18,9 +18,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.akari.quark.R;
-import com.akari.quark.entity.answerDetail.Answer;
-import com.akari.quark.entity.answerDetail.AnswerDetail;
-import com.akari.quark.entity.answerDetail.User;
+import com.akari.quark.entity.answerdetail.AnswerDetail;
+import com.akari.quark.entity.answerdetail.Message;
+import com.akari.quark.entity.answerdetail.Writer;
+import com.akari.quark.entity.post.Post;
 import com.akari.quark.network.OkHttpManager;
 import com.akari.quark.util.GsonUtil;
 import com.hippo.refreshlayout.RefreshLayout;
@@ -52,8 +53,16 @@ public class AnswerDetailActivity extends AppCompatActivity implements NestedScr
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.answer_detail);
-
+        context = AnswerDetailActivity.this;
         mRefreshlayout = (RefreshLayout) findViewById(R.id.swipe_container);
+        final ImageView up = (ImageView) findViewById(R.id.up);
+        final LinearLayout up_layout = (LinearLayout)this.findViewById(R.id.up_layout);
+        final ImageView down = (ImageView) findViewById(R.id.down);
+        final LinearLayout down_layout = (LinearLayout)this.findViewById(R.id.down_layout);
+        final ImageView mark = (ImageView) findViewById(R.id.mark);
+        final LinearLayout mark_layout = (LinearLayout)this.findViewById(R.id.mark_layout);
+        final ImageView comment = (ImageView) findViewById(R.id.comment);
+        final LinearLayout comment_layout = (LinearLayout)this.findViewById(R.id.comment_layout);
         mRefreshlayout.setHeaderColorSchemeResources(android.R.color.holo_blue_bright,
                 android.R.color.holo_green_light, android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
@@ -92,55 +101,353 @@ public class AnswerDetailActivity extends AppCompatActivity implements NestedScr
                         if(call!=null){
                             AnswerDetail answerDetail = GsonUtil.GsonToBean(result,AnswerDetail.class);
                             Long status = answerDetail.getStatus();
-                            if(status!=0){
-                                String message = answerDetail.getMessage();
-                                User user = answerDetail.getUser();
-                                Long UserId = user.getId();
-                                String username = user.getName();
-                                String userImgUrl = user.getImgUrl();
-                                String introduction = user.getIntroduction();
-                                Answer answer = answerDetail.getAnswer();
-                                Long Id = answer.getId();
-                                String content = answer.getContent();
-                                Long questionId = answer.getQuestionId();
-                                Long answererId = answer.getAnswererId();
-                                Long create_time = answer.getCreateTime();
-                                Long delete_flag = answer.getDeleteFlag();
-                                Long praiseNum = answer.getPariseNum();
-                                Long commentNum = answer.getCommentNum();
-                                Long downNum = answer.getDownNum();
-                                Long collectNum = answer.getCollectNum();
-
-                                SimpleDateFormat sdf= null;
-                                Date date = null;
-                                try {
-                                    sdf = new SimpleDateFormat("yyyy-MM-dd");
-                                    date = new Date(create_time);
-                                    TextView createTimetv = (TextView) findViewById(R.id.create_time);
-                                    createTimetv.setText("创建于"+sdf.format(date));
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-
-                                TextView usernametv = (TextView) findViewById(R.id.username);
-                                usernametv.setText(username);
-                                TextView introductiontv = (TextView) findViewById(R.id.introduction);
-                                introductiontv.setText(introduction);
-                                TextView contenttv = (TextView) findViewById(R.id.content);
-                                contenttv.setText(content);
-
-                                Toolbar toolbar = (Toolbar) findViewById(R.id.id_tool_bar);
-                                toolbar.setTitle("回答");
-                                Toolbar toolbar2 = (Toolbar) findViewById(R.id.id_tool_bar2);
-                                toolbar2.setTitle(questionTitle);
-                                setSupportActionBar(toolbar);
-                                toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        onBackPressed();
+                            String errorCode = answerDetail.getErrorCode();
+                            if(status!=1){
+                                Toast.makeText(context,"网络不佳或者服务器返回数据失败",Toast.LENGTH_SHORT).show();
+                            }else {
+                                if(errorCode.equals(null)){
+                                    Message message = answerDetail.getMessage();
+                                    final Long id = message.getId();
+                                    String content = message.getContent();
+                                    Long questionId = message.getQuestionId();
+                                    final Long answerId = message.getAnswererId();
+                                    Long createTime = message.getCreateTime();
+                                    Long deleteFlag = message.getDeleteFlag();
+                                    Long praiseNum = message.getPariseNum();
+                                    Long commentNum = message.getCommentNum();
+                                    Long downNum = message.getDownNum();
+                                    Long collectNum = message.getCollectNum();
+                                    Long readNum = message.getReadNum();
+                                    Writer writer = message.getWriter();
+                                    Boolean isCollected = message.getIsCollected();
+                                    Boolean isDown = message.getIsDown();
+                                    Boolean isPraised = message.getIsPraised();
+                                    SimpleDateFormat sdf= null;
+                                    Date date = null;
+                                    try {
+                                        sdf = new SimpleDateFormat("yyyy-MM-dd");
+                                        date = new Date(createTime);
+                                        TextView createTimetv = (TextView) findViewById(R.id.create_time);
+                                        createTimetv.setText("创建于"+sdf.format(date));
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
                                     }
-                                });
+                                    TextView usernametv = (TextView) findViewById(R.id.username);
+                                    usernametv.setText(writer.getName());
+                                    TextView introductiontv = (TextView) findViewById(R.id.introduction);
+                                    introductiontv.setText(writer.getIntroduction());
+                                    TextView contenttv = (TextView) findViewById(R.id.content);
+                                    contenttv.setText(content);
 
+                                    Toolbar toolbar = (Toolbar) findViewById(R.id.id_tool_bar);
+                                    toolbar.setTitle("回答");
+                                    Toolbar toolbar2 = (Toolbar) findViewById(R.id.id_tool_bar2);
+                                    toolbar2.setTitle(questionTitle);
+                                    setSupportActionBar(toolbar);
+                                    toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            onBackPressed();
+                                        }
+                                    });
+                                    if (up != null) {
+                                        if(isPraised==true){
+                                            up.setImageResource(R.drawable.up2);
+                                            up.setSelected(true);
+                                        }else{
+                                            up.setImageResource(R.drawable.up);
+                                            up.setSelected(false);
+                                        }
+                                        up_layout.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View view) {
+                                                if(up.isSelected()==false){
+                                                    up.setImageResource(R.drawable.up2);
+                                                    up.setSelected(true);
+                                                    down.setSelected(false);
+                                                    down.setImageResource(R.drawable.down);
+                                                    //向服务器post点赞
+                                                    String url = OkHttpManager.API_ANSWER_PRAISE;
+                                                    Map<String,String> params = new HashMap<String, String>();
+                                                    params.put("answer_id",id.toString());
+                                                    OkHttpManager.DataCallBack callback = new OkHttpManager.DataCallBack() {
+                                                        @Override
+                                                        public void requestFailure(Request request, IOException e) {
+                                                            Toast.makeText(context,"点赞失败",Toast.LENGTH_SHORT).show();
+                                                        }
+
+                                                        @Override
+                                                        public void requestSuccess(String result) throws Exception {
+//                                                          Toast.makeText(context,result,Toast.LENGTH_SHORT).show();
+                                                            Post post = GsonUtil.GsonToBean(result,Post.class);
+                                                            Long status = post.getStatus();
+                                                            String errorCode = post.getErrorCode();
+                                                            if(status==1&&errorCode.equals(null)){
+
+                                                            }else {
+                                                                Toast.makeText(context,"点赞失败",Toast.LENGTH_SHORT).show();
+                                                            }
+                                                        }
+                                                    };
+                                                    OkHttpManager.postAsync(url,params,callback,OkHttpManager.X_ACCESS_TOKEN,OkHttpManager.TEMP_X_ACCESS_TOKEN);
+                                                    //向服务器DELETE Down
+                                                    String url2 = OkHttpManager.API_ANSWER_DOWN;
+                                                    Map<String,String> params2 = new HashMap<String, String>();
+                                                    params.put("answer_id",id.toString());
+                                                    OkHttpManager.DataCallBack callback2 = new OkHttpManager.DataCallBack() {
+                                                        @Override
+                                                        public void requestFailure(Request request, IOException e) {
+                                                            Toast.makeText(context,"取消Down失败",Toast.LENGTH_SHORT).show();
+                                                        }
+
+                                                        @Override
+                                                        public void requestSuccess(String result) throws Exception {
+//                                                          Toast.makeText(context,result,Toast.LENGTH_SHORT).show();
+                                                            Post post = GsonUtil.GsonToBean(result,Post.class);
+                                                            Long status = post.getStatus();
+                                                            String errorCode = post.getErrorCode();
+                                                            if(status==1&&errorCode.equals(null)){
+
+                                                            }else {
+                                                                Toast.makeText(context,"取消Down失败",Toast.LENGTH_SHORT).show();
+                                                            }
+                                                        }
+                                                    };
+                                                    OkHttpManager.deleteAsync(url2,params2,callback2,X_ACCESS_TOKEN,TEMP_X_ACCESS_TOKEN);
+                                                }else{
+                                                    //向服务器delete点赞
+                                                    up.setImageResource(R.drawable.up);
+                                                    up.setSelected(false);
+                                                    String url = OkHttpManager.API_ANSWER_PRAISE;
+                                                    Map<String,String> params = new HashMap<String, String>();
+                                                    params.put("answer_id",id.toString());
+                                                    OkHttpManager.DataCallBack callback = new OkHttpManager.DataCallBack() {
+                                                        @Override
+                                                        public void requestFailure(Request request, IOException e) {
+                                                            Toast.makeText(context,"取消点赞失败",Toast.LENGTH_SHORT).show();
+                                                        }
+
+                                                        @Override
+                                                        public void requestSuccess(String result) throws Exception {
+//                                                          Toast.makeText(context,result,Toast.LENGTH_SHORT).show();
+                                                            Post post = GsonUtil.GsonToBean(result,Post.class);
+                                                            Long status = post.getStatus();
+                                                            String errorCode = post.getErrorCode();
+                                                            if(status==1&&errorCode.equals(null)){
+
+                                                            }else {
+                                                                Toast.makeText(context,"取消点赞失败",Toast.LENGTH_SHORT).show();
+                                                            }
+                                                        }
+                                                    };
+                                                    OkHttpManager.deleteAsync(url,params,callback,X_ACCESS_TOKEN,TEMP_X_ACCESS_TOKEN);
+
+                                                }
+
+                                            }
+                                        });
+                                    }
+
+                                    if (down != null) {
+                                        if(isDown==true){
+                                            down.setImageResource(R.drawable.down2);
+                                            down.setSelected(true);
+                                        }else{
+                                            down.setImageResource(R.drawable.down);
+                                            down.setSelected(false);
+                                        }
+                                        down_layout.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View view) {
+                                                if(down.isSelected()==false){
+                                                    down.setImageResource(R.drawable.down2);
+                                                    down.setSelected(true);
+                                                    up.setSelected(false);
+                                                    up.setImageResource(R.drawable.up);
+                                                    //向服务器post Down
+                                                    String url = OkHttpManager.API_ANSWER_DOWN;
+                                                    Map<String,String> params = new HashMap<String, String>();
+                                                    params.put("answer_id",id.toString());
+                                                    OkHttpManager.DataCallBack callback = new OkHttpManager.DataCallBack() {
+                                                        @Override
+                                                        public void requestFailure(Request request, IOException e) {
+                                                            Toast.makeText(context,"Down失败",Toast.LENGTH_SHORT).show();
+                                                        }
+
+                                                        @Override
+                                                        public void requestSuccess(String result) throws Exception {
+//                                                          Toast.makeText(context,result,Toast.LENGTH_SHORT).show();
+                                                            Post post = GsonUtil.GsonToBean(result,Post.class);
+                                                            Long status = post.getStatus();
+                                                            String errorCode = post.getErrorCode();
+                                                            if(status==1&&errorCode.equals(null)){
+
+                                                            }else {
+                                                                Toast.makeText(context,"Down失败",Toast.LENGTH_SHORT).show();
+                                                            }
+                                                        }
+                                                    };
+                                                    OkHttpManager.postAsync(url,params,callback,X_ACCESS_TOKEN,TEMP_X_ACCESS_TOKEN);
+                                                    //向服务器delete点赞
+                                                    up.setImageResource(R.drawable.up);
+                                                    up.setSelected(false);
+                                                    String url2 = OkHttpManager.API_ANSWER_PRAISE;
+                                                    Map<String,String> params2 = new HashMap<String, String>();
+                                                    params.put("answer_id",id.toString());
+                                                    OkHttpManager.DataCallBack callback2 = new OkHttpManager.DataCallBack() {
+                                                        @Override
+                                                        public void requestFailure(Request request, IOException e) {
+                                                            Toast.makeText(context,"取消点赞失败",Toast.LENGTH_SHORT).show();
+                                                        }
+
+                                                        @Override
+                                                        public void requestSuccess(String result) throws Exception {
+//                                                          Toast.makeText(context,result,Toast.LENGTH_SHORT).show();
+                                                            Post post = GsonUtil.GsonToBean(result,Post.class);
+                                                            Long status = post.getStatus();
+                                                            String errorCode = post.getErrorCode();
+                                                            if(status==1&&errorCode.equals(null)){
+
+                                                            }else {
+                                                                Toast.makeText(context,"取消点赞失败",Toast.LENGTH_SHORT).show();
+                                                            }
+                                                        }
+                                                    };
+                                                    OkHttpManager.deleteAsync(url2,params2,callback2,X_ACCESS_TOKEN,TEMP_X_ACCESS_TOKEN);
+                                                }else{
+                                                    down.setImageResource(R.drawable.down);
+                                                    down.setSelected(false);
+                                                    //向服务器DELETE Down
+                                                    String url = OkHttpManager.API_ANSWER_DOWN;
+                                                    Map<String,String> params = new HashMap<String, String>();
+                                                    params.put("answer_id",id.toString());
+                                                    OkHttpManager.DataCallBack callback = new OkHttpManager.DataCallBack() {
+                                                        @Override
+                                                        public void requestFailure(Request request, IOException e) {
+                                                            Toast.makeText(context,"取消Down失败",Toast.LENGTH_SHORT).show();
+                                                        }
+
+                                                        @Override
+                                                        public void requestSuccess(String result) throws Exception {
+//                                                          Toast.makeText(context,result,Toast.LENGTH_SHORT).show();
+                                                            Post post = GsonUtil.GsonToBean(result,Post.class);
+                                                            Long status = post.getStatus();
+                                                            String errorCode = post.getErrorCode();
+                                                            if(status==1&&errorCode.equals(null)){
+
+                                                            }else {
+                                                                Toast.makeText(context,"取消Down失败",Toast.LENGTH_SHORT).show();
+                                                            }
+                                                        }
+                                                    };
+                                                    OkHttpManager.deleteAsync(url,params,callback,X_ACCESS_TOKEN,TEMP_X_ACCESS_TOKEN);
+                                                }
+
+                                            }
+                                        });
+
+
+                                    }
+
+                                    if (mark != null) {
+                                        if(isCollected==true){
+                                            mark.setSelected(true);
+                                            mark.setImageResource(R.drawable.mark2);
+                                        }else{
+                                            mark.setSelected(false);
+                                            mark.setImageResource(R.drawable.mark);
+                                        }
+
+                                        mark_layout.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View view) {
+                                                if(mark.isSelected()==false){
+                                                    mark.setSelected(true);
+                                                    mark.setImageResource(R.drawable.mark2);
+
+                                                    String url = OkHttpManager.API_ANSWER_MARK;
+                                                    Map<String,String> params = new HashMap<String, String>();
+                                                    params.put("answer_id",id.toString());
+                                                    OkHttpManager.DataCallBack callback = new OkHttpManager.DataCallBack() {
+                                                        @Override
+                                                        public void requestFailure(Request request, IOException e) {
+                                                            Toast.makeText(context,"收藏失败",Toast.LENGTH_SHORT).show();
+                                                        }
+
+                                                        @Override
+                                                        public void requestSuccess(String result) throws Exception {
+//                                                          Toast.makeText(context,result,Toast.LENGTH_SHORT).show();
+                                                            Post post = GsonUtil.GsonToBean(result,Post.class);
+                                                            Long status = post.getStatus();
+                                                            String errorCode = post.getErrorCode();
+                                                            if(status==1&&errorCode.equals(null)){
+
+                                                            }else {
+                                                                Toast.makeText(context,"收藏失败",Toast.LENGTH_SHORT).show();
+                                                            }
+                                                        }
+                                                    };
+                                                    OkHttpManager.postAsync(url,params,callback,X_ACCESS_TOKEN,TEMP_X_ACCESS_TOKEN);
+                                                }else{
+                                                    mark.setSelected(false);
+                                                    mark.setImageResource(R.drawable.mark);
+
+                                                    String url = OkHttpManager.API_ANSWER_MARK;
+                                                    Map<String,String> params = new HashMap<String, String>();
+                                                    params.put("answer_id",id.toString());
+                                                    OkHttpManager.DataCallBack callback = new OkHttpManager.DataCallBack() {
+                                                        @Override
+                                                        public void requestFailure(Request request, IOException e) {
+                                                            Toast.makeText(context,"取消收藏失败",Toast.LENGTH_SHORT).show();
+                                                        }
+
+                                                        @Override
+                                                        public void requestSuccess(String result) throws Exception {
+//                                                          Toast.makeText(context,result,Toast.LENGTH_SHORT).show();
+                                                            Post post = GsonUtil.GsonToBean(result,Post.class);
+                                                            Long status = post.getStatus();
+                                                            String errorCode = post.getErrorCode();
+                                                            if(status==1&&errorCode.equals(null)){
+
+                                                            }else {
+                                                                Toast.makeText(context,"取消收藏失败",Toast.LENGTH_SHORT).show();
+                                                            }
+                                                        }
+                                                    };
+                                                    OkHttpManager.deleteAsync(url,params,callback,X_ACCESS_TOKEN,TEMP_X_ACCESS_TOKEN);
+                                                }
+
+                                            }
+                                        });
+                                    }
+
+                                    if (comment != null) {
+                                        comment_layout.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View view) {
+
+                                            }
+                                        });
+                                    }
+                                }else{
+                                    switch (errorCode){
+                                        case "1000":
+                                            Toast.makeText(context,"参数缺失",Toast.LENGTH_SHORT).show();
+                                            break;
+                                        case "1001":
+                                            Toast.makeText(context,"数据库错误",Toast.LENGTH_SHORT).show();
+                                            break;
+                                        case "2003":
+                                            Toast.makeText(context,"Token超时(需要重新请求)",Toast.LENGTH_SHORT).show();
+                                            break;
+                                        case "2004":
+                                            Toast.makeText(context,"该账户不存在",Toast.LENGTH_SHORT).show();
+                                            break;
+                                        case "4000":
+                                            Toast.makeText(context,"回答不存在",Toast.LENGTH_SHORT).show();
+                                            break;
+                                    }
+                                }
                             }
 
                         }
@@ -149,209 +456,7 @@ public class AnswerDetailActivity extends AppCompatActivity implements NestedScr
 
             }
         });
-        context = AnswerDetailActivity.this;
 
-
-
-        final ImageView up = (ImageView) findViewById(R.id.up);
-        LinearLayout up_layout = (LinearLayout)this.findViewById(R.id.up_layout);
-        final ImageView down = (ImageView) findViewById(R.id.down);
-        LinearLayout down_layout = (LinearLayout)this.findViewById(R.id.down_layout);
-        if (up != null) {
-            up_layout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if(up.isSelected()==false){
-                        up.setImageResource(R.drawable.up2);
-                        up.setSelected(true);
-                        down.setSelected(false);
-                        down.setImageResource(R.drawable.down);
-                        //向服务器post点赞
-                        String url = OkHttpManager.API_ANSWER_PRAISE;
-                        Map<String,String> params = new HashMap<String, String>();
-                        params.put("answer_id",answerId);
-                        OkHttpManager.DataCallBack callback = new OkHttpManager.DataCallBack() {
-                            @Override
-                            public void requestFailure(Request request, IOException e) {
-                                Toast.makeText(context,"点赞失败",Toast.LENGTH_SHORT).show();
-                            }
-
-                            @Override
-                            public void requestSuccess(String result) throws Exception {
-//                                Toast.makeText(context,result,Toast.LENGTH_SHORT).show();
-                            }
-                        };
-                        OkHttpManager.postAsync(url,params,callback,OkHttpManager.X_ACCESS_TOKEN,OkHttpManager.TEMP_X_ACCESS_TOKEN);
-                        //向服务器DELETE Down
-                        String url2 = OkHttpManager.API_ANSWER_DOWN;
-                        Map<String,String> params2 = new HashMap<String, String>();
-                        params.put("answer_id",answerId);
-                        OkHttpManager.DataCallBack callback2 = new OkHttpManager.DataCallBack() {
-                            @Override
-                            public void requestFailure(Request request, IOException e) {
-                                Toast.makeText(context,"取消Down失败",Toast.LENGTH_SHORT).show();
-                            }
-
-                            @Override
-                            public void requestSuccess(String result) throws Exception {
-//                                Toast.makeText(context,result,Toast.LENGTH_SHORT).show();
-                            }
-                        };
-                        OkHttpManager.deleteAsync(url2,params2,callback2,X_ACCESS_TOKEN,TEMP_X_ACCESS_TOKEN);
-                    }else{
-                        //向服务器delete点赞
-                        up.setImageResource(R.drawable.up);
-                        up.setSelected(false);
-                        String url = OkHttpManager.API_ANSWER_PRAISE;
-                        Map<String,String> params = new HashMap<String, String>();
-                        params.put("answer_id",answerId);
-                        OkHttpManager.DataCallBack callback = new OkHttpManager.DataCallBack() {
-                            @Override
-                            public void requestFailure(Request request, IOException e) {
-                                Toast.makeText(context,"取消点赞失败",Toast.LENGTH_SHORT).show();
-                            }
-
-                            @Override
-                            public void requestSuccess(String result) throws Exception {
-//                                Toast.makeText(context,result,Toast.LENGTH_SHORT).show();
-                            }
-                        };
-                        OkHttpManager.deleteAsync(url,params,callback,X_ACCESS_TOKEN,TEMP_X_ACCESS_TOKEN);
-
-                    }
-
-                }
-            });
-        }
-
-        if (down != null) {
-            down_layout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if(down.isSelected()==false){
-                        down.setImageResource(R.drawable.down2);
-                        down.setSelected(true);
-                        up.setSelected(false);
-                        up.setImageResource(R.drawable.up);
-                        //向服务器post Down
-                        String url = OkHttpManager.API_ANSWER_DOWN;
-                        Map<String,String> params = new HashMap<String, String>();
-                        params.put("answer_id",answerId);
-                        OkHttpManager.DataCallBack callback = new OkHttpManager.DataCallBack() {
-                            @Override
-                            public void requestFailure(Request request, IOException e) {
-                                Toast.makeText(context,"Down失败",Toast.LENGTH_SHORT).show();
-                            }
-
-                            @Override
-                            public void requestSuccess(String result) throws Exception {
-//                                Toast.makeText(context,result,Toast.LENGTH_SHORT).show();
-                            }
-                        };
-                        OkHttpManager.postAsync(url,params,callback,X_ACCESS_TOKEN,TEMP_X_ACCESS_TOKEN);
-                        //向服务器delete点赞
-                        up.setImageResource(R.drawable.up);
-                        up.setSelected(false);
-                        String url2 = OkHttpManager.API_ANSWER_PRAISE;
-                        Map<String,String> params2 = new HashMap<String, String>();
-                        params.put("answer_id",answerId);
-                        OkHttpManager.DataCallBack callback2 = new OkHttpManager.DataCallBack() {
-                            @Override
-                            public void requestFailure(Request request, IOException e) {
-                                Toast.makeText(context,"取消点赞失败",Toast.LENGTH_SHORT).show();
-                            }
-
-                            @Override
-                            public void requestSuccess(String result) throws Exception {
-//                                Toast.makeText(context,result,Toast.LENGTH_SHORT).show();
-                            }
-                        };
-                        OkHttpManager.deleteAsync(url2,params2,callback2,X_ACCESS_TOKEN,TEMP_X_ACCESS_TOKEN);
-                    }else{
-                        down.setImageResource(R.drawable.down);
-                        down.setSelected(false);
-                        //向服务器DELETE Down
-                        String url = OkHttpManager.API_ANSWER_DOWN;
-                        Map<String,String> params = new HashMap<String, String>();
-                        params.put("answer_id",answerId);
-                        OkHttpManager.DataCallBack callback = new OkHttpManager.DataCallBack() {
-                            @Override
-                            public void requestFailure(Request request, IOException e) {
-                                Toast.makeText(context,"取消Down失败",Toast.LENGTH_SHORT).show();
-                            }
-
-                            @Override
-                            public void requestSuccess(String result) throws Exception {
-//                                Toast.makeText(context,result,Toast.LENGTH_SHORT).show();
-                            }
-                        };
-                        OkHttpManager.deleteAsync(url,params,callback,X_ACCESS_TOKEN,TEMP_X_ACCESS_TOKEN);
-                    }
-
-                }
-            });
-
-
-        }
-        final ImageView mark = (ImageView) findViewById(R.id.mark);
-        LinearLayout mark_layout = (LinearLayout)this.findViewById(R.id.mark_layout);
-        if (mark != null) {
-            mark_layout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if(mark.isSelected()==false){
-                        mark.setSelected(true);
-                        mark.setImageResource(R.drawable.mark2);
-
-                        String url = OkHttpManager.API_ANSWER_MARK;
-                        Map<String,String> params = new HashMap<String, String>();
-                        params.put("answer_id",answerId);
-                        OkHttpManager.DataCallBack callback = new OkHttpManager.DataCallBack() {
-                            @Override
-                            public void requestFailure(Request request, IOException e) {
-                                Toast.makeText(context,"收藏失败",Toast.LENGTH_SHORT).show();
-                            }
-
-                            @Override
-                            public void requestSuccess(String result) throws Exception {
-//                                Toast.makeText(context,result,Toast.LENGTH_SHORT).show();
-                            }
-                        };
-                        OkHttpManager.postAsync(url,params,callback,X_ACCESS_TOKEN,TEMP_X_ACCESS_TOKEN);
-                    }else{
-                        mark.setSelected(false);
-                        mark.setImageResource(R.drawable.mark);
-
-                        String url = OkHttpManager.API_ANSWER_MARK;
-                        Map<String,String> params = new HashMap<String, String>();
-                        params.put("answer_id",answerId);
-                        OkHttpManager.DataCallBack callback = new OkHttpManager.DataCallBack() {
-                            @Override
-                            public void requestFailure(Request request, IOException e) {
-                                Toast.makeText(context,"取消收藏失败",Toast.LENGTH_SHORT).show();
-                            }
-
-                            @Override
-                            public void requestSuccess(String result) throws Exception {
-//                                Toast.makeText(context,result,Toast.LENGTH_SHORT).show();
-                            }
-                        };
-                        OkHttpManager.deleteAsync(url,params,callback,X_ACCESS_TOKEN,TEMP_X_ACCESS_TOKEN);
-                    }
-
-                }
-            });
-        }
-        final ImageView comment = (ImageView) findViewById(R.id.comment);
-        LinearLayout comment_layout = (LinearLayout)this.findViewById(R.id.comment_layout);
-        if (comment != null) {
-            comment_layout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                }
-            });
-        }
     }
 
     @Override
