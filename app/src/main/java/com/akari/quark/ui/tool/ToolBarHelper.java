@@ -1,4 +1,4 @@
-package com.akari.quark.tool;
+package com.akari.quark.ui.tool;
 
 import android.content.Context;
 import android.content.res.TypedArray;

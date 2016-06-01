@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.akari.quark.R;
-import com.akari.quark.tool.ToolBarHelper;
+import com.akari.quark.ui.tool.ToolBarHelper;
 
 /**
  * Created by motoon on 2016/5/6.
