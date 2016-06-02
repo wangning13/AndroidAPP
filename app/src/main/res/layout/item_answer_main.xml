@@ -23,6 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="无标签"
+            android:ellipsize="end"
             android:textColor="#3C84C1"
             android:textSize="14sp" />
 
@@ -34,6 +35,7 @@
             android:lineSpacingExtra="1dp"
             android:maxLines="2"
             android:text="为什么国内的Android APP都不愿意遵循Google推出的Material Design设计规范？"
+            android:ellipsize="end"
             android:textColor="#1F1F1F"
             android:textSize="16sp" />
 

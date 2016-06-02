@@ -69,6 +69,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="12dp"
+                        android:ellipsize="end"
                         android:textColor="#CDCDCD"
                         android:textSize="14sp" />
                 </LinearLayout>
@@ -81,6 +82,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="top"
                     android:lineSpacingExtra="1dp"
+                    android:ellipsize="end"
                     android:maxLines="3"
                     android:lines="3"
                     android:textColor="#707070"

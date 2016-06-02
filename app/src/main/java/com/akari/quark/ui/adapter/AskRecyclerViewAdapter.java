@@ -103,7 +103,13 @@ public class AskRecyclerViewAdapter extends NewRecyclerViewAdapter<AskRecyclerVi
             if(ask.getBestAnswer().getPraiseNum()!=null)
                 mPraise.setText(ask.getBestAnswer().getPraiseNum()+"");
             mContent.setText(ask.getBestAnswer().getContent());
-            mTopic.setText(ask.getTopics().get(0));
+            for (int i=0;i<ask.getTopics().size();i++){
+                if(i!=ask.getTopics().size()-1){
+                    mTopic.setText(ask.getTopics().get(i) +"·");
+                }else {
+                    mTopic.setText(ask.getTopics().get(i));
+                }
+            }
         }
 
         public void setListener(final Context context, final AsksInMainMessage ask){

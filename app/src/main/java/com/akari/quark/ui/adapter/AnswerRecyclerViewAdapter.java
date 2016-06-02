@@ -98,14 +98,20 @@ public class AnswerRecyclerViewAdapter extends NewRecyclerViewAdapter<AnswerRecy
             mToAnswer= (LinearLayout) mCardView.findViewById(R.id.wanna_answer);
         }
 
-        public void fillData(AnswersInMainMessage ask) {
+        public void fillData(AnswersInMainMessage answer) {
             mCardView.setVisibility(View.VISIBLE);
-            mTitle.setText(ask.getTitle());
-            mAttentionCount.setText(ask.getFocusNum()+"人关注");
-            mAnswerCount.setText(ask.getAnswerNum()+"个回答");
-            if(ask.getTopics()!=null){
-                if(!ask.getTopics().isEmpty())
-                    mTopic.setText(ask.getTopics().get(0));
+            mTitle.setText(answer.getTitle());
+            mAttentionCount.setText(answer.getFocusNum()+"人关注");
+            mAnswerCount.setText(answer.getAnswerNum()+"个回答");
+            if(answer.getTopics()!=null){
+                if(!answer.getTopics().isEmpty())
+                    for (int i=0;i<answer.getTopics().size();i++){
+                        if(i!=answer.getTopics().size()-1){
+                            mTopic.setText(answer.getTopics().get(i) +"·");
+                        }else {
+                            mTopic.setText(answer.getTopics().get(i));
+                        }
+                    }
             }
         }
 

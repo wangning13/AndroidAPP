@@ -237,7 +237,7 @@ public class QuestionDetailActivity extends AppCompatActivity implements Refresh
 
     @Override
     public void onHeaderRefresh() {
-        int times = 3000;
+        int times = 0;
         refreshData(times);
     }
 
@@ -302,7 +302,7 @@ public class QuestionDetailActivity extends AppCompatActivity implements Refresh
             public void run() {
                 mRefreshlayout.setFooterRefreshing(false);
             }
-        }, 3000);
+        },0);
     }
 
     @Override
