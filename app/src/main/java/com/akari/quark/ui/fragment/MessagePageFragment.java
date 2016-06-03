@@ -3,6 +3,7 @@ package com.akari.quark.ui.fragment;
 /**
  * Created by motoon on 2016/5/14.
  */
+
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -67,7 +68,7 @@ public class MessagePageFragment extends Fragment implements RefreshLayout.OnRef
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(layoutManager);
-        switch (mPage){
+        switch (mPage) {
             case 1:
                 mRecyclerView.setAdapter(mRecyclerViewAdapter = new MessageRecyclerViewAdapter(getContext()));
                 break;

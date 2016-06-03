@@ -162,8 +162,8 @@ public class MainFragment extends Fragment implements RefreshLayout.OnRefreshLis
     public void onLoadFinished(Loader<AsyncTaskLoader.LoaderResult<List<?>>> loader, AsyncTaskLoader.LoaderResult<List<?>> data) {
         if (mPage == 1) {
             mLayout.setHeaderRefreshing(false);
-            if (data.hasException()||data.mResult.isEmpty()) {
-                Toast.makeText(getContext(),"无法完成加载，请检查网络...",Toast.LENGTH_SHORT).show();
+            if (data.hasException() || data.mResult.isEmpty()) {
+                Toast.makeText(getContext(), "无法完成加载，请检查网络...", Toast.LENGTH_SHORT).show();
                 return;
             }
             mAdapter.setDataSource(data.mResult);
@@ -172,10 +172,10 @@ public class MainFragment extends Fragment implements RefreshLayout.OnRefreshLis
             if (data.hasException()) {
                 return;
             }
-            if(data.mResult.isEmpty()){
-                Toast.makeText(getContext(),"没有更多了...",Toast.LENGTH_SHORT).show();
+            if (data.mResult.isEmpty()) {
+                Toast.makeText(getContext(), "没有更多了...", Toast.LENGTH_SHORT).show();
                 mPage--;
-            }else{
+            } else {
                 int pre;
                 pre = mAdapter.addDataSource(data.mResult);
                 mRecyclerView.smoothScrollToPosition(pre);

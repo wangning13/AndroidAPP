@@ -34,11 +34,11 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-    private void init(){
+    private void init() {
         initView();
     }
 
-    private void initView(){
+    private void initView() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_find) {
             // Handle the camera action
         } else if (id == R.id.nav_message) {
-            Intent intent = new Intent(context,MessageActivity.class);
+            Intent intent = new Intent(context, MessageActivity.class);
             context.startActivity(intent);
         } else if (id == R.id.nav_care_field) {
 

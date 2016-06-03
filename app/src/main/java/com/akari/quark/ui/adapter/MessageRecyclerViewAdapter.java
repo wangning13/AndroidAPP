@@ -20,9 +20,9 @@ public class MessageRecyclerViewAdapter extends RecyclerViewAdapter<MessageRecyc
     private Context mContext;
     private ArrayList<Integer> mInt = new ArrayList<>();
 
-    public MessageRecyclerViewAdapter(Context context){
-        mContext=context;
-        mLayoutInflater=LayoutInflater.from(context);
+    public MessageRecyclerViewAdapter(Context context) {
+        mContext = context;
+        mLayoutInflater = LayoutInflater.from(context);
     }
 
 

@@ -66,6 +66,7 @@ public abstract class AsyncTaskLoader<T> extends android.support.v4.content.Asyn
 
     /**
      * used to wrap data with exception
+     *
      * @param <T> result type
      */
     public static class LoaderResult<T> {

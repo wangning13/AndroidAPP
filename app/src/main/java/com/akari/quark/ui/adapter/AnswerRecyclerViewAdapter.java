@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.text.Layout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,9 +27,9 @@ public class AnswerRecyclerViewAdapter extends NewRecyclerViewAdapter<AnswerRecy
     private Context mContext;
     private List<AnswersInMainMessage> mData;
 
-    public AnswerRecyclerViewAdapter(Context context){
-        mContext=context;
-        mLayoutInflater=LayoutInflater.from(context);
+    public AnswerRecyclerViewAdapter(Context context) {
+        mContext = context;
+        mLayoutInflater = LayoutInflater.from(context);
         setHasStableIds(true);
     }
 
@@ -49,7 +47,7 @@ public class AnswerRecyclerViewAdapter extends NewRecyclerViewAdapter<AnswerRecy
         final AnswersInMainMessage answer = mData.get(position);
         holder.fillData(answer);
         String questionId = String.valueOf(answer.getId());
-        holder.setListener(mContext,questionId);
+        holder.setListener(mContext, questionId);
     }
 
     @Override
@@ -95,20 +93,20 @@ public class AnswerRecyclerViewAdapter extends NewRecyclerViewAdapter<AnswerRecy
             mAttentionCount = (TextView) mCardView.findViewById(R.id.attention_count);
             mAnswerCount = (TextView) mCardView.findViewById(R.id.answer_count);
             mTopic = (TextView) mCardView.findViewById(R.id.answer_item_tag);
-            mToAnswer= (LinearLayout) mCardView.findViewById(R.id.wanna_answer);
+            mToAnswer = (LinearLayout) mCardView.findViewById(R.id.wanna_answer);
         }
 
         public void fillData(AnswersInMainMessage answer) {
             mCardView.setVisibility(View.VISIBLE);
             mTitle.setText(answer.getTitle());
-            mAttentionCount.setText(answer.getFocusNum()+"人关注");
-            mAnswerCount.setText(answer.getAnswerNum()+"个回答");
-            if(answer.getTopics()!=null){
-                if(!answer.getTopics().isEmpty())
-                    for (int i=0;i<answer.getTopics().size();i++){
-                        if(i!=answer.getTopics().size()-1){
-                            mTopic.setText(answer.getTopics().get(i) +"·");
-                        }else {
+            mAttentionCount.setText(answer.getFocusNum() + "人关注");
+            mAnswerCount.setText(answer.getAnswerNum() + "个回答");
+            if (answer.getTopics() != null) {
+                if (!answer.getTopics().isEmpty())
+                    for (int i = 0; i < answer.getTopics().size(); i++) {
+                        if (i != answer.getTopics().size() - 1) {
+                            mTopic.setText(answer.getTopics().get(i) + "·");
+                        } else {
                             mTopic.setText(answer.getTopics().get(i));
                         }
                     }
@@ -120,7 +118,7 @@ public class AnswerRecyclerViewAdapter extends NewRecyclerViewAdapter<AnswerRecy
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(context, QuestionDetailActivity.class);
-                    intent.putExtra("questionId",questionId);
+                    intent.putExtra("questionId", questionId);
                     context.startActivity(intent);
                 }
             });

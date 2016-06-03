@@ -40,8 +40,8 @@ public class OkHttpManager {
     public static final String API_ANSWER_MARK = BASE_URL + "/api/answer/collect";
     public static final String API_QUESTION_FOCUS = BASE_URL + "/api/question/focus";
 
-    public static final String X_ACCESS_TOKEN="x-access-token";
-    public static final String TEMP_X_ACCESS_TOKEN="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZXhwIjoxNDY0MDE0NTg4ODE1fQ.6ney0SK3o5FJehcZNMmBOVDrV22tX_kbmgrJUxsLTsE";
+    public static final String X_ACCESS_TOKEN = "x-access-token";
+    public static final String TEMP_X_ACCESS_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZXhwIjoxNDY0MDE0NTg4ODE1fQ.6ney0SK3o5FJehcZNMmBOVDrV22tX_kbmgrJUxsLTsE";
 
     /**
      * 静态实例
@@ -112,25 +112,25 @@ public class OkHttpManager {
 //    }
 
     //-------------------------同步的方式请求数据--------------------------
-    public static void main(String[] args) throws ConnectException,IOException,RemoteException {
+    public static void main(String[] args) throws ConnectException, IOException, RemoteException {
         String response = getSyncString(
                 "http://115.159.160.18:3000/api/question/detail?question_id=2",
-                X_ACCESS_TOKEN,TEMP_X_ACCESS_TOKEN);
+                X_ACCESS_TOKEN, TEMP_X_ACCESS_TOKEN);
         System.out.print(response);
     }
 
     //同步GET，返回Response
-    public  Response getSync(String url,String key,String token) {
+    public Response getSync(String url, String key, String token) {
 
         //通过获取到的实例来调用内部方法
-        return sOkHttpManager.inner_getSync(url,key,token);
+        return sOkHttpManager.inner_getSync(url, key, token);
     }
 
     //同步GET返回Response内部逻辑
-    private static   Response inner_getSync(String url,String key,String token) {
+    private static Response inner_getSync(String url, String key, String token) {
         Request request = new Request.Builder()
                 .url(url)
-                .header(key,token)
+                .header(key, token)
                 .build();
         Response response = null;
         try {
@@ -143,19 +143,19 @@ public class OkHttpManager {
     }
 
     //同步GET返回String
-    public static String getSyncString(String url,String key,String token) {
-        return inner_getSyncString(url,key,token);
+    public static String getSyncString(String url, String key, String token) {
+        return inner_getSyncString(url, key, token);
     }
 
 
     //同步GET返回String内部逻辑
-    private static String inner_getSyncString(String url,String key,String token) {
+    private static String inner_getSyncString(String url, String key, String token) {
         String result = null;
         try {
             /**
              * 把取得到的结果转为字符串，这里最好用string()
              */
-            result = inner_getSync(url,key,token)
+            result = inner_getSync(url, key, token)
                     .body()
                     .string();
         } catch (IOException e) {
@@ -183,14 +183,14 @@ public class OkHttpManager {
 //                X_ACCESS_TOKEN,TEMP_X_ACCESS_TOKEN);
 //    }
     //异步GET
-    public static void getAsync(String url, DataCallBack callBack,String key,String token) {
-        getInstance().inner_getAsync(url, callBack,key,token);
+    public static void getAsync(String url, DataCallBack callBack, String key, String token) {
+        getInstance().inner_getAsync(url, callBack, key, token);
     }
 
     //异步GET内部逻辑
-    private  void inner_getAsync(String url, final DataCallBack callBack,String key,String token) {
+    private void inner_getAsync(String url, final DataCallBack callBack, String key, String token) {
         final Request request = new Request.Builder()
-                .header(key,token)
+                .header(key, token)
                 .url(url)
                 .build();
 
@@ -271,11 +271,11 @@ public class OkHttpManager {
     //-------------------------提交表单--------------------------
     //异步POST
 
-    public static void postAsync(String url, Map<String, String> params, DataCallBack callBack,String token,String tokenValue) {
-        inner_postAsync(url, params, callBack,token,tokenValue);
+    public static void postAsync(String url, Map<String, String> params, DataCallBack callBack, String token, String tokenValue) {
+        inner_postAsync(url, params, callBack, token, tokenValue);
     }
 
-    private static void inner_postAsync(String url, Map<String, String> params, final DataCallBack callBack,String token,String tokenValue) {
+    private static void inner_postAsync(String url, Map<String, String> params, final DataCallBack callBack, String token, String tokenValue) {
 
         RequestBody requestBody = null;
         if (params == null) {
@@ -315,7 +315,7 @@ public class OkHttpManager {
         //结果返回
         final Request request = new Request.Builder()
                 .url(url)
-                .header(token,tokenValue)
+                .header(token, tokenValue)
                 .post(requestBody)
                 .build();
         mClient.newCall(request).enqueue(new Callback() {
@@ -336,11 +336,11 @@ public class OkHttpManager {
 
     //异步DELETE
 
-    public static void deleteAsync(String url, Map<String, String> params, DataCallBack callBack,String token,String tokenValue) {
-        inner_deleteAsync(url, params, callBack,token,tokenValue);
+    public static void deleteAsync(String url, Map<String, String> params, DataCallBack callBack, String token, String tokenValue) {
+        inner_deleteAsync(url, params, callBack, token, tokenValue);
     }
 
-    private static void inner_deleteAsync(String url, Map<String, String> params, final DataCallBack callBack,String token,String tokenValue) {
+    private static void inner_deleteAsync(String url, Map<String, String> params, final DataCallBack callBack, String token, String tokenValue) {
 
         RequestBody requestBody = null;
         if (params == null) {
@@ -380,7 +380,7 @@ public class OkHttpManager {
         //结果返回
         final Request request = new Request.Builder()
                 .url(url)
-                .header(token,tokenValue)
+                .header(token, tokenValue)
                 .delete(requestBody)
                 .build();
         mClient.newCall(request).enqueue(new Callback() {
@@ -495,12 +495,13 @@ public class OkHttpManager {
 
     /**
      * 为HttpGet 的 url 方便的添加1个name value 参数。
+     *
      * @param url
      * @param name
      * @param value
      * @return
      */
-    public static String attachHttpGetParam(String url, String name, String value){
+    public static String attachHttpGetParam(String url, String name, String value) {
         return url + "?" + name + "=" + value;
     }
 }

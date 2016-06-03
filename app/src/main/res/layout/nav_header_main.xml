@@ -14,15 +14,16 @@
 
     <com.akari.quark.ui.view.CircleImageView
         android:id="@+id/imageView"
-        android:layout_width="@dimen/circle_image_view_width"
-        android:layout_height="@dimen/circle_image_view_height"
-        android:paddingTop="@dimen/nav_header_vertical_spacing"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:src="@drawable/head"
         app:shape_mode="circle" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:gravity="center_horizontal"
         android:text="@string/navigation_big_text"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
@@ -33,7 +34,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="@string/navigation_small_text"
+        android:text="一个未来的理论计算化学家"
         android:textSize="@dimen/navigation_small_textsize" />
 
 </LinearLayout>

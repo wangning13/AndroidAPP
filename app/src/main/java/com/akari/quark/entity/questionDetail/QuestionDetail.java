@@ -17,36 +17,28 @@ public class QuestionDetail {
     private String error_code;
 
     /**
-     * 
-     * @return
-     *     The message
+     * @return The message
      */
     public Message getMessage() {
         return message;
     }
 
     /**
-     * 
-     * @param message
-     *     The message
+     * @param message The message
      */
     public void setMessage(Message message) {
         this.message = message;
     }
 
     /**
-     * 
-     * @return
-     *     The status
+     * @return The status
      */
     public Long getStatus() {
         return status;
     }
 
     /**
-     * 
-     * @param status
-     *     The status
+     * @param status The status
      */
     public void setStatus(Long status) {
         this.status = status;

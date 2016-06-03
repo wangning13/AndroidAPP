@@ -20,9 +20,9 @@ public class LikeRecyclerViewAdapter extends RecyclerViewAdapter<LikeRecyclerVie
     private Context mContext;
     private ArrayList<Integer> mInt = new ArrayList<>();
 
-    public LikeRecyclerViewAdapter(Context context){
-        mContext=context;
-        mLayoutInflater=LayoutInflater.from(context);
+    public LikeRecyclerViewAdapter(Context context) {
+        mContext = context;
+        mLayoutInflater = LayoutInflater.from(context);
     }
 
 

@@ -1,4 +1,5 @@
 package com.akari.quark.ui.activity;
+
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -14,7 +15,7 @@ import com.akari.quark.ui.tool.ToolBarHelper;
  * Created by motoon on 2016/5/6.
  */
 public abstract class ToolBarActivity extends AppCompatActivity {
-    public Toolbar toolbar ;
+    public Toolbar toolbar;
     private ToolBarHelper mToolBarHelper;
 
     @Override
@@ -29,33 +30,33 @@ public abstract class ToolBarActivity extends AppCompatActivity {
     @Override
     public void setContentView(int layoutResID) {
 
-        mToolBarHelper = new ToolBarHelper(this,layoutResID) ;
-        toolbar = mToolBarHelper.getToolBar() ;
+        mToolBarHelper = new ToolBarHelper(this, layoutResID);
+        toolbar = mToolBarHelper.getToolBar();
         setContentView(mToolBarHelper.getContentView());
         /*把 toolbar 设置到Activity 中*/
         setSupportActionBar(toolbar);
         /*自定义的一些操作*/
-        onCreateCustomToolBar(toolbar) ;
+        onCreateCustomToolBar(toolbar);
     }
 
-    public void onCreateCustomToolBar(Toolbar toolbar){
-        toolbar.setContentInsetsRelative(0,0);
-        toolbar.showOverflowMenu() ;
-        getLayoutInflater().inflate(R.layout.toolbar, toolbar) ;
+    public void onCreateCustomToolBar(Toolbar toolbar) {
+        toolbar.setContentInsetsRelative(0, 0);
+        toolbar.showOverflowMenu();
+        getLayoutInflater().inflate(R.layout.toolbar, toolbar);
         ImageView btn = (ImageView) toolbar.findViewById(R.id.id_send_btn);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(v.getContext(),"发表成功",Toast.LENGTH_SHORT).show();
+                Toast.makeText(v.getContext(), "发表成功", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home){
+        if (item.getItemId() == android.R.id.home) {
             finish();
-            return true ;
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }

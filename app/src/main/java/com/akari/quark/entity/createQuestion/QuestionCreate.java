@@ -17,54 +17,42 @@ public class QuestionCreate {
     private Long questionId;
 
     /**
-     * 
-     * @return
-     *     The status
+     * @return The status
      */
     public Long getStatus() {
         return status;
     }
 
     /**
-     * 
-     * @param status
-     *     The status
+     * @param status The status
      */
     public void setStatus(Long status) {
         this.status = status;
     }
 
     /**
-     * 
-     * @return
-     *     The message
+     * @return The message
      */
     public String getMessage() {
         return message;
     }
 
     /**
-     * 
-     * @param message
-     *     The message
+     * @param message The message
      */
     public void setMessage(String message) {
         this.message = message;
     }
 
     /**
-     * 
-     * @return
-     *     The questionId
+     * @return The questionId
      */
     public Long getQuestionId() {
         return questionId;
     }
 
     /**
-     * 
-     * @param questionId
-     *     The question_id
+     * @param questionId The question_id
      */
     public void setQuestionId(Long questionId) {
         this.questionId = questionId;

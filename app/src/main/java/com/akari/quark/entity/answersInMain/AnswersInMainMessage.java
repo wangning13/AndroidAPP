@@ -1,10 +1,11 @@
 
 package com.akari.quark.entity.answersInMain;
 
-import java.util.ArrayList;
-import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AnswersInMainMessage {
 
@@ -25,90 +26,70 @@ public class AnswersInMainMessage {
     private List<String> topics = new ArrayList<String>();
 
     /**
-     * 
-     * @return
-     *     The id
+     * @return The id
      */
     public Long getId() {
         return id;
     }
 
     /**
-     * 
-     * @param id
-     *     The id
+     * @param id The id
      */
     public void setId(Long id) {
         this.id = id;
     }
 
     /**
-     * 
-     * @return
-     *     The title
+     * @return The title
      */
     public String getTitle() {
         return title;
     }
 
     /**
-     * 
-     * @param title
-     *     The title
+     * @param title The title
      */
     public void setTitle(String title) {
         this.title = title;
     }
 
     /**
-     * 
-     * @return
-     *     The focusNum
+     * @return The focusNum
      */
     public Long getFocusNum() {
         return focusNum;
     }
 
     /**
-     * 
-     * @param focusNum
-     *     The focus_num
+     * @param focusNum The focus_num
      */
     public void setFocusNum(Long focusNum) {
         this.focusNum = focusNum;
     }
 
     /**
-     * 
-     * @return
-     *     The answerNum
+     * @return The answerNum
      */
     public Long getAnswerNum() {
         return answerNum;
     }
 
     /**
-     * 
-     * @param answerNum
-     *     The answer_num
+     * @param answerNum The answer_num
      */
     public void setAnswerNum(Long answerNum) {
         this.answerNum = answerNum;
     }
 
     /**
-     * 
-     * @return
-     *     The topics
+     * @return The topics
      */
     public List<String> getTopics() {
         return topics;
     }
 
     /**
-     * 
-     * @param topics
-     *     The topics
+     * @param topics The topics
      */
     public void setTopics(List<String> topics) {
         this.topics = topics;

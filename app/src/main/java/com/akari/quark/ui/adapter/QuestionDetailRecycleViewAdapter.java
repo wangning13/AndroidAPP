@@ -29,12 +29,12 @@ public class QuestionDetailRecycleViewAdapter extends RecyclerView.Adapter<Quest
     public static final int TYPE_NORMAL = 1;
     private View mHeaderView;
     private List<Answer> answerList = new ArrayList<Answer>();
-//    private OnItemClickListener mListener;
+    //    private OnItemClickListener mListener;
     private Message message;
     private Context mContext;
     private LayoutInflater mLayoutInflater;
 
-//    public void setOnItemClickListener(OnItemClickListener listener)
+    //    public void setOnItemClickListener(OnItemClickListener listener)
 //    {
 //        this.mListener = listener;
 //    }
@@ -42,24 +42,24 @@ public class QuestionDetailRecycleViewAdapter extends RecyclerView.Adapter<Quest
         mHeaderView = headerView;
         notifyItemInserted(0);
     }
+
     public View getHeaderView() {
         return mHeaderView;
     }
-    public QuestionDetailRecycleViewAdapter(Context context,Message message)
-    {
+
+    public QuestionDetailRecycleViewAdapter(Context context, Message message) {
         this.mContext = context;
         this.message = message;
         answerList = message.getAnswers();
-        mLayoutInflater=LayoutInflater.from(context);
+        mLayoutInflater = LayoutInflater.from(context);
     }
+
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int position)
-    {
-        if(mHeaderView != null && position == 0)
-        {
+    public MyViewHolder onCreateViewHolder(ViewGroup parent, int position) {
+        if (mHeaderView != null && position == 0) {
             return new MyViewHolder(mHeaderView);
 
-        }else {
+        } else {
             final View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_answer, parent, false);
             return new MyViewHolder(itemView);
         }
@@ -67,77 +67,76 @@ public class QuestionDetailRecycleViewAdapter extends RecyclerView.Adapter<Quest
 
     @Override
     public int getItemViewType(int position) {
-        if(mHeaderView == null) return TYPE_NORMAL;
-        if(position == 0) return TYPE_HEADER;
+        if (mHeaderView == null) return TYPE_NORMAL;
+        if (position == 0) return TYPE_HEADER;
         return TYPE_NORMAL;
     }
+
     @Override
-    public void onBindViewHolder(final MyViewHolder holder, final int position)
-    {
-        if(position==0){
+    public void onBindViewHolder(final MyViewHolder holder, final int position) {
+        if (position == 0) {
             holder.questionTitle.setText(message.getTitle());
             holder.content.setText(message.getContent());
-            holder.focusNum.setText(message.getFocusNum()+"人关注");
-            holder.answerNum.setText(message.getAnswerNum()+"人回答");
-            for (int i=0;i<message.getTopics().size();i++){
-                if(i!=message.getTopics().size()-1){
-                    holder.topics.setText(message.getTopics().get(i) +"·");
-                }else {
+            holder.focusNum.setText(message.getFocusNum() + "人关注");
+            holder.answerNum.setText(message.getAnswerNum() + "人回答");
+            for (int i = 0; i < message.getTopics().size(); i++) {
+                if (i != message.getTopics().size() - 1) {
+                    holder.topics.setText(message.getTopics().get(i) + "·");
+                } else {
                     holder.topics.setText(message.getTopics().get(i));
                 }
             }
-        }else{
-            holder.context.setText(answerList.get(position-1).getContent());
-            holder.username.setText(answerList.get(position-1).getUser().getName());
-            holder.introduction.setText(answerList.get(position-1).getUser().getIntroduction());
-            holder.praiseNum.setText(answerList.get(position-1).getPraiseNum()+"");
-            final Long answerId = answerList.get(position-1).getId();
+        } else {
+            holder.context.setText(answerList.get(position - 1).getContent());
+            holder.username.setText(answerList.get(position - 1).getUser().getName());
+            holder.introduction.setText(answerList.get(position - 1).getUser().getIntroduction());
+            holder.praiseNum.setText(answerList.get(position - 1).getPraiseNum() + "");
+            final Long answerId = answerList.get(position - 1).getId();
             holder.context.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(mContext,AnswerDetailActivity.class);
-                    intent.putExtra("answerId",String.valueOf(answerId));
-                    intent.putExtra("questionTitle",message.getTitle());
+                    Intent intent = new Intent(mContext, AnswerDetailActivity.class);
+                    intent.putExtra("answerId", String.valueOf(answerId));
+                    intent.putExtra("questionTitle", message.getTitle());
                     mContext.startActivity(intent);
                 }
             });
         }
     }
+
     public int getRealPosition(RecyclerView.ViewHolder holder) {
         int position = holder.getLayoutPosition();
         return mHeaderView == null ? position : position - 1;
     }
 
     @Override
-    public int getItemCount()
-    {
-        return mHeaderView == null ? answerList.size() : answerList.size()+1 ;
+    public int getItemCount() {
+        return mHeaderView == null ? answerList.size() : answerList.size() + 1;
     }
+
     /**
      * 批量增加
-     * */
-    public void addItems(List<Answer> items)
-    {
+     */
+    public void addItems(List<Answer> items) {
         if (items == null)
             return;
         this.answerList.addAll(0, items);
         this.notifyItemRangeInserted(0, items.size());
     }
-    public interface OnItemClickListener
-    {
-        public void OnItemClick(View view,String data);
+
+    public interface OnItemClickListener {
+        public void OnItemClick(View view, String data);
     }
 
-    public static class ViewHolderHeader extends RecyclerView.ViewHolder{
-        public ViewHolderHeader(View itemView){
+    public static class ViewHolderHeader extends RecyclerView.ViewHolder {
+        public ViewHolderHeader(View itemView) {
             super(itemView);
         }
 
     }
 
 
-    public  class MyViewHolder extends RecyclerView.ViewHolder
-    {
+    public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView questionTitle;
         TextView content;
         TextView focusNum;
@@ -150,17 +149,17 @@ public class QuestionDetailRecycleViewAdapter extends RecyclerView.Adapter<Quest
         CircleImageView imageView;
         TextView introduction;
         TextView praiseNum;
-        public MyViewHolder(View itemView)
-        {
+
+        public MyViewHolder(View itemView) {
             super(itemView);
-            if(itemView == mHeaderView){
+            if (itemView == mHeaderView) {
                 questionTitle = (TextView) itemView.findViewById(R.id.quetion_detail_title);
                 content = (TextView) itemView.findViewById(R.id.content);
                 focusNum = (TextView) itemView.findViewById(R.id.focus_num);
                 answerNum = (TextView) itemView.findViewById(R.id.answer_num);
                 topics = (TextView) itemView.findViewById(R.id.topic);
 
-            }else {
+            } else {
                 cardView = (CardView) itemView.findViewById(R.id.answer_card);
                 context = (TextView) itemView.findViewById((R.id.answer_content1));
                 username = (TextView) cardView.findViewById(R.id.username);
@@ -171,9 +170,12 @@ public class QuestionDetailRecycleViewAdapter extends RecyclerView.Adapter<Quest
             }
 
         }
+
         public CardView getmCardView() {
             return cardView;
-        };
+        }
+
+        ;
     }
 
 }

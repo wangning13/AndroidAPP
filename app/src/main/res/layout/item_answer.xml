@@ -13,18 +13,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="10dp" >
+        android:padding="10dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:orientation="horizontal" >
+            android:orientation="horizontal">
 
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:orientation="vertical" >
+                android:orientation="vertical">
 
                 <com.akari.quark.ui.view.CircleImageView
                     android:id="@+id/image_view"
@@ -34,6 +34,7 @@
                     android:layout_centerHorizontal="true"
                     android:src="@drawable/head"
                     app:shape_mode="circle" />
+
                 <TextView
                     android:id="@+id/item_count"
                     android:layout_width="32dp"
@@ -53,6 +54,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:orientation="vertical">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -64,6 +66,7 @@
                         android:layout_height="wrap_content"
                         android:textColor="#174465"
                         android:textSize="16sp" />
+
                     <TextView
                         android:id="@+id/introduction"
                         android:layout_width="wrap_content"
@@ -73,7 +76,6 @@
                         android:textColor="#CDCDCD"
                         android:textSize="14sp" />
                 </LinearLayout>
-
 
 
                 <TextView
@@ -90,7 +92,6 @@
 
 
             </LinearLayout>
-
 
 
         </LinearLayout>
