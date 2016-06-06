@@ -20,72 +20,56 @@ public class Answer {
     private User user;
 
     /**
-     * 
-     * @return
-     *     The id
+     * @return The id
      */
     public Long getId() {
         return id;
     }
 
     /**
-     * 
-     * @param id
-     *     The id
+     * @param id The id
      */
     public void setId(Long id) {
         this.id = id;
     }
 
     /**
-     * 
-     * @return
-     *     The content
+     * @return The content
      */
     public String getContent() {
         return content;
     }
 
     /**
-     * 
-     * @param content
-     *     The content
+     * @param content The content
      */
     public void setContent(String content) {
         this.content = content;
     }
 
     /**
-     * 
-     * @return
-     *     The praiseNum
+     * @return The praiseNum
      */
     public Long getPraiseNum() {
         return praiseNum;
     }
 
     /**
-     * 
-     * @param praiseNum
-     *     The praise_num
+     * @param praiseNum The praise_num
      */
     public void setPraiseNum(Long praiseNum) {
         this.praiseNum = praiseNum;
     }
 
     /**
-     * 
-     * @return
-     *     The user
+     * @return The user
      */
     public User getUser() {
         return user;
     }
 
     /**
-     * 
-     * @param user
-     *     The user
+     * @param user The user
      */
     public void setUser(User user) {
         this.user = user;

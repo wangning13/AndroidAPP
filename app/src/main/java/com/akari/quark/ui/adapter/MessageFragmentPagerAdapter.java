@@ -12,7 +12,7 @@ import com.akari.quark.ui.fragment.MessagePageFragment;
  */
 public class MessageFragmentPagerAdapter extends FragmentPagerAdapter {
     final int PAGE_COUNT = 2;
-    private String tabTitles[] = new String[] { "通知", "赞"};
+    private String tabTitles[] = new String[]{"通知", "赞"};
     private Context context;
 
     public MessageFragmentPagerAdapter(FragmentManager fm, Context context) {

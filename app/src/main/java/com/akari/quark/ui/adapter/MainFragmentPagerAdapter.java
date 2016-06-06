@@ -9,7 +9,7 @@ import com.akari.quark.ui.fragment.MainFragment;
 
 public class MainFragmentPagerAdapter extends FragmentPagerAdapter {
     final int PAGE_COUNT = 2;
-    private String tabTitles[] = new String[] { "提问", "回答" };
+    private String tabTitles[] = new String[]{"提问", "回答"};
     private Context context;
 
     public MainFragmentPagerAdapter(FragmentManager fm, Context context) {

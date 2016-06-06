@@ -12,6 +12,7 @@ import java.util.Map;
 public class GsonUtil {
 
     private static Gson gson = null;
+
     static {
         if (gson == null) {
             gson = new Gson();

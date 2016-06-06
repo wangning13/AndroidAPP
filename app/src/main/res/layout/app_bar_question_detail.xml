@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -18,8 +17,8 @@
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
             app:navigationIcon="?attr/homeAsUpIndicator"
-            android:theme="@style/AppTheme.AppBarOverlay"
-            >
+            android:theme="@style/AppTheme.AppBarOverlay">
+
             <TextView
                 android:id="@+id/toolbar_title"
                 android:layout_width="wrap_content"
@@ -28,8 +27,7 @@
                 android:singleLine="true"
                 android:text="6月5日创建"
                 android:textColor="#ffffff"
-                android:textSize="18sp"
-                />
+                android:textSize="18sp" />
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
@@ -58,6 +56,6 @@
         app:layout_behavior="com.akari.quark.ui.behavior.ScrollAwareFABBehavior"
         app:pressedTranslationZ="20dp"
         app:borderWidth="0dp"
-        android:layout_margin="@dimen/fab_margin"/>
+        android:layout_margin="@dimen/fab_margin" />
 
 </android.support.design.widget.CoordinatorLayout>

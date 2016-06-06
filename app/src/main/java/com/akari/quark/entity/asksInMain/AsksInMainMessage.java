@@ -1,10 +1,11 @@
 
 package com.akari.quark.entity.asksInMain;
 
-import java.util.ArrayList;
-import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AsksInMainMessage {
 
@@ -22,72 +23,56 @@ public class AsksInMainMessage {
     private List<String> topics = new ArrayList<String>();
 
     /**
-     * 
-     * @return
-     *     The id
+     * @return The id
      */
     public Long getId() {
         return id;
     }
 
     /**
-     * 
-     * @param id
-     *     The id
+     * @param id The id
      */
     public void setId(Long id) {
         this.id = id;
     }
 
     /**
-     * 
-     * @return
-     *     The bestAnswer
+     * @return The bestAnswer
      */
     public BestAnswer getBestAnswer() {
         return bestAnswer;
     }
 
     /**
-     * 
-     * @param bestAnswer
-     *     The bestAnswer
+     * @param bestAnswer The bestAnswer
      */
     public void setBestAnswer(BestAnswer bestAnswer) {
         this.bestAnswer = bestAnswer;
     }
 
     /**
-     * 
-     * @return
-     *     The title
+     * @return The title
      */
     public String getTitle() {
         return title;
     }
 
     /**
-     * 
-     * @param title
-     *     The title
+     * @param title The title
      */
     public void setTitle(String title) {
         this.title = title;
     }
 
     /**
-     * 
-     * @return
-     *     The topics
+     * @return The topics
      */
     public List<String> getTopics() {
         return topics;
     }
 
     /**
-     * 
-     * @param topics
-     *     The topics
+     * @param topics The topics
      */
     public void setTopics(List<String> topics) {
         this.topics = topics;

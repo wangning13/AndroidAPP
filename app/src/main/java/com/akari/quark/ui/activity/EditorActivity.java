@@ -80,7 +80,7 @@ public class EditorActivity extends AppCompatActivity implements EditorFragmentL
 
     @Override
     public void onBackPressed() {
-        Fragment fragment =  getFragmentManager()
+        Fragment fragment = getFragmentManager()
                 .findFragmentByTag(ImageSettingsDialogFragment.IMAGE_SETTINGS_DIALOG_TAG);
         if (fragment != null && fragment.isVisible()) {
             ((ImageSettingsDialogFragment) fragment).dismissFragment();
@@ -335,32 +335,32 @@ public class EditorActivity extends AppCompatActivity implements EditorFragmentL
         return super.onOptionsItemSelected(item);
     }
 
-    private void postAnswer(){
-        if(TextUtils.isEmpty(mEditorFragment.getContent())){
-            Toast.makeText(getApplicationContext(),"回答不能为空",Toast.LENGTH_SHORT).show();
+    private void postAnswer() {
+        if (TextUtils.isEmpty(mEditorFragment.getContent())) {
+            Toast.makeText(getApplicationContext(), "回答不能为空", Toast.LENGTH_SHORT).show();
             return;
         }
 
         final String content = mEditorFragment.getContent().toString();
 
         String url = DataPostHelper.API_ADD_ANSWER;
-        Map<String,String> params = new HashMap<String, String>();
-        params.put("question_id",getIntent().getStringExtra("questionId"));
-        params.put("answer_content",content);
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("question_id", getIntent().getStringExtra("questionId"));
+        params.put("answer_content", content);
 
         OkHttpManager.DataCallBack callback = new OkHttpManager.DataCallBack() {
             @Override
             public void requestFailure(Request request, IOException e) {
-                Toast.makeText(getApplicationContext(),"回答创建失败",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "回答创建失败", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void requestSuccess(String result) throws Exception {
                 finish();
-                Toast.makeText(getApplicationContext(),"回答创建成功",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "回答创建成功", Toast.LENGTH_SHORT).show();
             }
         };
 
-        OkHttpManager.postAsync(url,params,callback,DataPostHelper.X_ACCESS_TOKEN,DataPostHelper.TEMP_X_ACCESS_TOKEN);
+        OkHttpManager.postAsync(url, params, callback, DataPostHelper.X_ACCESS_TOKEN, DataPostHelper.TEMP_X_ACCESS_TOKEN);
     }
 }

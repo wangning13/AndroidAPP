@@ -35,108 +35,84 @@ public class Message {
     private List<Answer> answers = new ArrayList<Answer>();
 
     /**
-     * 
-     * @return
-     *     The title
+     * @return The title
      */
     public String getTitle() {
         return title;
     }
 
     /**
-     * 
-     * @param title
-     *     The title
+     * @param title The title
      */
     public void setTitle(String title) {
         this.title = title;
     }
 
     /**
-     * 
-     * @return
-     *     The content
+     * @return The content
      */
     public String getContent() {
         return content;
     }
 
     /**
-     * 
-     * @param content
-     *     The content
+     * @param content The content
      */
     public void setContent(String content) {
         this.content = content;
     }
 
     /**
-     * 
-     * @return
-     *     The answerNum
+     * @return The answerNum
      */
     public Long getAnswerNum() {
         return answerNum;
     }
 
     /**
-     * 
-     * @param answerNum
-     *     The answer_num
+     * @param answerNum The answer_num
      */
     public void setAnswerNum(Long answerNum) {
         this.answerNum = answerNum;
     }
 
     /**
-     * 
-     * @return
-     *     The focusNum
+     * @return The focusNum
      */
     public Long getFocusNum() {
         return focusNum;
     }
 
     /**
-     * 
-     * @param focusNum
-     *     The focus_num
+     * @param focusNum The focus_num
      */
     public void setFocusNum(Long focusNum) {
         this.focusNum = focusNum;
     }
 
     /**
-     * 
-     * @return
-     *     The topics
+     * @return The topics
      */
     public List<String> getTopics() {
         return topics;
     }
 
     /**
-     * 
-     * @param topics
-     *     The topics
+     * @param topics The topics
      */
     public void setTopics(List<String> topics) {
         this.topics = topics;
     }
 
     /**
-     * 
-     * @return
-     *     The answers
+     * @return The answers
      */
     public List<Answer> getAnswers() {
         return answers;
     }
 
     /**
-     * 
-     * @param answers
-     *     The answers
+     * @param answers The answers
      */
     public void setAnswers(List<Answer> answers) {
         this.answers = answers;

@@ -7,7 +7,7 @@ import android.view.View;
 /**
  * Created by motoon on 2016/5/12.
  */
-public class AnswerItemDecoration extends RecyclerView.ItemDecoration{
+public class AnswerItemDecoration extends RecyclerView.ItemDecoration {
 
     private int space;
 
@@ -23,7 +23,7 @@ public class AnswerItemDecoration extends RecyclerView.ItemDecoration{
         outRect.bottom = space;
 
         // Add top margin only for the first item to avoid double space between items
-        if(parent.getChildPosition(view) == 0)
+        if (parent.getChildPosition(view) == 0)
             outRect.top = space;
     }
 }

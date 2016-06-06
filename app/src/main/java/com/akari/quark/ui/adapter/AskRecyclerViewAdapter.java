@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.akari.quark.R;
 import com.akari.quark.entity.asksInMain.AsksInMainMessage;
@@ -28,9 +27,9 @@ public class AskRecyclerViewAdapter extends NewRecyclerViewAdapter<AskRecyclerVi
     private Context mContext;
     private List<AsksInMainMessage> mData;
 
-    public AskRecyclerViewAdapter(Context context){
-        mContext=context;
-        mLayoutInflater=LayoutInflater.from(context);
+    public AskRecyclerViewAdapter(Context context) {
+        mContext = context;
+        mLayoutInflater = LayoutInflater.from(context);
         setHasStableIds(true);
     }
 
@@ -45,12 +44,12 @@ public class AskRecyclerViewAdapter extends NewRecyclerViewAdapter<AskRecyclerVi
      */
     @Override
     public void onBindViewHolder(NormalViewHolder holder, final int position) {
-        final AsksInMainMessage ask=mData.get(position);
+        final AsksInMainMessage ask = mData.get(position);
         holder.fillData(ask);
 //        String questionId = String.valueOf(ask.getId());
 //        String answerId = String.valueOf(ask.getBestAnswer().getAnswererId());
 //        String questionTitle = ask.getTitle();
-        holder.setListener(mContext,ask);
+        holder.setListener(mContext, ask);
     }
 
     @Override
@@ -100,29 +99,35 @@ public class AskRecyclerViewAdapter extends NewRecyclerViewAdapter<AskRecyclerVi
         public void fillData(AsksInMainMessage ask) {
             mCardView.setVisibility(View.VISIBLE);
             mTitle.setText(ask.getTitle());
-            if(ask.getBestAnswer().getPraiseNum()!=null)
-                mPraise.setText(ask.getBestAnswer().getPraiseNum()+"");
+            if (ask.getBestAnswer().getPraiseNum() != null)
+                mPraise.setText(ask.getBestAnswer().getPraiseNum() + "");
             mContent.setText(ask.getBestAnswer().getContent());
-            mTopic.setText(ask.getTopics().get(0));
+            for (int i = 0; i < ask.getTopics().size(); i++) {
+                if (i != ask.getTopics().size() - 1) {
+                    mTopic.setText(ask.getTopics().get(i) + "·");
+                } else {
+                    mTopic.setText(ask.getTopics().get(i));
+                }
+            }
         }
 
-        public void setListener(final Context context, final AsksInMainMessage ask){
+        public void setListener(final Context context, final AsksInMainMessage ask) {
             mTitle.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(context,QuestionDetailActivity.class);
-                    intent.putExtra("questionId",ask.getId()+"");
+                    Intent intent = new Intent(context, QuestionDetailActivity.class);
+                    intent.putExtra("questionId", ask.getId() + "");
                     context.startActivity(intent);
                 }
             });
-            Log.d("BESTANSWER",ask.getBestAnswer().toString());
-            if(!TextUtils.isEmpty(ask.getBestAnswer().getContent())){
+            Log.d("BESTANSWER", ask.getBestAnswer().toString());
+            if (!TextUtils.isEmpty(ask.getBestAnswer().getContent())) {
                 mContent.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent intent = new Intent(context,AnswerDetailActivity.class);
-                        intent.putExtra("answerId",ask.getBestAnswer().getAnswererId()+"");
-                        intent.putExtra("questionTitle",ask.getTitle());
+                        Intent intent = new Intent(context, AnswerDetailActivity.class);
+                        intent.putExtra("answerId", ask.getBestAnswer().getAnswererId() + "");
+                        intent.putExtra("questionTitle", ask.getTitle());
                         context.startActivity(intent);
                     }
                 });

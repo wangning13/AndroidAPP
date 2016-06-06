@@ -22,7 +22,11 @@ public class AsksInMainListLoader extends AsyncTaskLoader<List<AsksInMainMessage
         return asks;
     }
 
-    public int getPage(){ return mPage; }
+    public int getPage() {
+        return mPage;
+    }
 
-    public void setPage(int page){ mPage=page; }
+    public void setPage(int page) {
+        mPage = page;
+    }
 }

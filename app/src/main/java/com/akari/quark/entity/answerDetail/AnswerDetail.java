@@ -17,54 +17,42 @@ public class AnswerDetail {
     private Message message;
 
     /**
-     * 
-     * @return
-     *     The status
+     * @return The status
      */
     public Long getStatus() {
         return status;
     }
 
     /**
-     * 
-     * @param status
-     *     The status
+     * @param status The status
      */
     public void setStatus(Long status) {
         this.status = status;
     }
 
     /**
-     * 
-     * @return
-     *     The errorCode
+     * @return The errorCode
      */
     public String getErrorCode() {
         return errorCode;
     }
 
     /**
-     * 
-     * @param errorCode
-     *     The error_code
+     * @param errorCode The error_code
      */
     public void setErrorCode(String errorCode) {
         this.errorCode = errorCode;
     }
 
     /**
-     * 
-     * @return
-     *     The message
+     * @return The message
      */
     public Message getMessage() {
         return message;
     }
 
     /**
-     * 
-     * @param message
-     *     The message
+     * @param message The message
      */
     public void setMessage(Message message) {
         this.message = message;

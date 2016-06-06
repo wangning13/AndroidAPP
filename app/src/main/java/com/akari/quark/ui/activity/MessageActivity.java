@@ -18,10 +18,11 @@ import com.akari.quark.ui.adapter.MessageFragmentPagerAdapter;
 /**
  * Created by motoon on 2016/5/14.
  */
-public class MessageActivity extends AppCompatActivity{
+public class MessageActivity extends AppCompatActivity {
 
     private Context context;
     private Toolbar toolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,7 +56,6 @@ public class MessageActivity extends AppCompatActivity{
                 }
             });
         }
-
 
 
     }

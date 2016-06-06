@@ -2,16 +2,11 @@ package com.akari.quark.network;
 
 import android.os.Handler;
 
-import com.akari.quark.BuildConfig;
-import com.akari.quark.common.DeviceStatus;
 import com.akari.quark.common.exception.ConnectionException;
 import com.akari.quark.common.exception.RemoteException;
 import com.akari.quark.common.exception.RequestException;
-import com.akari.quark.common.exception.UnauthorizedException;
 import com.akari.quark.util.AppCtx;
-import com.google.common.net.HttpHeaders;
 
-import org.apache.http.HttpStatus;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.message.BasicNameValuePair;
 
@@ -23,7 +18,6 @@ import java.net.ConnectException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Cache;
@@ -34,7 +28,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import okhttp3.ResponseBody;
 
 public class OkHttpManager2 {
     public static final String BASE_URL = "http://115.159.160.18:3000";
@@ -48,8 +41,8 @@ public class OkHttpManager2 {
     private static final String API_ANSWER_DETAIL = BASE_URL + "/api/answer/detail";
     private static final String API_ADD_ANSWER = BASE_URL + "/api/answer/add";
 
-    private static final String X_ACCESS_TOKEN="x-access-token";
-    private static final String TEMP_X_ACCESS_TOKEN="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MywiZXhwIjoxNDY0ODUyMTk5MzIyfQ.hV8c7R-HaSwLUIWUmcd_nbO7v4yxhrAA-0bLmRq2WM8";
+    private static final String X_ACCESS_TOKEN = "x-access-token";
+    private static final String TEMP_X_ACCESS_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MywiZXhwIjoxNDY0ODUyMTk5MzIyfQ.hV8c7R-HaSwLUIWUmcd_nbO7v4yxhrAA-0bLmRq2WM8";
 
     //okhttpclient实例
     private static final OkHttpClient mClient;
@@ -100,7 +93,7 @@ public class OkHttpManager2 {
     }
 
     //使用token进行访问
-    public static Request.Builder newRequest(String key,String value) {
+    public static Request.Builder newRequest(String key, String value) {
         Request.Builder builder = new Request.Builder();
         builder.header(key, value);
 
@@ -112,31 +105,31 @@ public class OkHttpManager2 {
     }
 
     //-------------------------同步的方式请求数据--------------------------
-    public static void main(String[] args) throws ConnectException,IOException,RemoteException{
+    public static void main(String[] args) throws ConnectException, IOException, RemoteException {
         String response = getSyncString(
                 "http://115.159.160.18:3000/api/question/list/answer?page=0",
-                X_ACCESS_TOKEN,TEMP_X_ACCESS_TOKEN);
+                X_ACCESS_TOKEN, TEMP_X_ACCESS_TOKEN);
         System.out.print(response);
     }
 
     //同步GET，返回Response
-    public static Response getSync(String url,String key,String token) {
+    public static Response getSync(String url, String key, String token) {
 
         //通过获取到的实例来调用内部方法
-        return inner_getSync(url,key,token);
+        return inner_getSync(url, key, token);
     }
 
     //同步GET返回Response内部逻辑
-    private static Response inner_getSync(String url,String key,String token) {
+    private static Response inner_getSync(String url, String key, String token) {
         Request request = null;
-        if(key==null&&token==null){
+        if (key == null && token == null) {
             request = new Request.Builder()
                     .url(url)
                     .build();
-        }else{
+        } else {
             request = new Request.Builder()
                     .url(url)
-                    .header(key,token)
+                    .header(key, token)
                     .build();
         }
         Response response = null;
@@ -150,18 +143,18 @@ public class OkHttpManager2 {
     }
 
     //同步GET返回String
-    public static String getSyncString(String url,String key,String token) {
-        return inner_getSyncString(url,key,token);
+    public static String getSyncString(String url, String key, String token) {
+        return inner_getSyncString(url, key, token);
     }
 
     //同步GET返回String内部逻辑
-    private static String inner_getSyncString(String url,String key,String token) {
+    private static String inner_getSyncString(String url, String key, String token) {
         String result = null;
         try {
             /**
              * 把取得到的结果转为字符串，这里最好用string()
              */
-            result = inner_getSync(url,key,token)
+            result = inner_getSync(url, key, token)
                     .body()
                     .string();
         } catch (IOException e) {
@@ -172,14 +165,14 @@ public class OkHttpManager2 {
 
     //-------------------------异步的方式请求数据--------------------------
     //异步GET
-    public static void getAsync(String url, DataCallBack callBack,String key,String token) {
-        inner_getAsync(url, callBack,key,token);
+    public static void getAsync(String url, DataCallBack callBack, String key, String token) {
+        inner_getAsync(url, callBack, key, token);
     }
 
     //异步GET内部逻辑
-    private static void inner_getAsync(String url, final DataCallBack callBack,String key,String token) {
+    private static void inner_getAsync(String url, final DataCallBack callBack, String key, String token) {
         final Request request = new Request.Builder()
-                .header(key,token)
+                .header(key, token)
                 .url(url)
                 .build();
 
@@ -408,19 +401,22 @@ public class OkHttpManager2 {
 
     /**
      * 这里使用了HttpClinet的API。只是为了方便
+     *
      * @param params
      * @return
      */
-    public static String formatParams(List<BasicNameValuePair> params){
+    public static String formatParams(List<BasicNameValuePair> params) {
         return URLEncodedUtils.format(params, CHARSET_NAME);
     }
+
     /**
      * 为HttpGet 的 url 方便的添加多个name value 参数。
+     *
      * @param url
      * @param params
      * @return
      */
-    public static String attachHttpGetParams(String url, List<BasicNameValuePair> params){
+    public static String attachHttpGetParams(String url, List<BasicNameValuePair> params) {
         return url + "?" + formatParams(params);
     }
 
@@ -462,7 +458,7 @@ public class OkHttpManager2 {
     private static void checkResponse(Response response) throws RemoteException, RequestException, ConnectionException {
         if (response.isSuccessful()) {
             return;
-        }else{
+        } else {
             throw new RequestException(response);
         }
     }
