@@ -20,56 +20,72 @@ public class Writer {
     private String introduction;
 
     /**
-     * @return The id
+     * 
+     * @return
+     *     The id
      */
     public Long getId() {
         return id;
     }
 
     /**
-     * @param id The id
+     * 
+     * @param id
+     *     The id
      */
     public void setId(Long id) {
         this.id = id;
     }
 
     /**
-     * @return The name
+     * 
+     * @return
+     *     The name
      */
     public String getName() {
         return name;
     }
 
     /**
-     * @param name The name
+     * 
+     * @param name
+     *     The name
      */
     public void setName(String name) {
         this.name = name;
     }
 
     /**
-     * @return The imgUrl
+     * 
+     * @return
+     *     The imgUrl
      */
     public String getImgUrl() {
         return imgUrl;
     }
 
     /**
-     * @param imgUrl The img_url
+     * 
+     * @param imgUrl
+     *     The img_url
      */
     public void setImgUrl(String imgUrl) {
         this.imgUrl = imgUrl;
     }
 
     /**
-     * @return The introduction
+     * 
+     * @return
+     *     The introduction
      */
     public String getIntroduction() {
         return introduction;
     }
 
     /**
-     * @param introduction The introduction
+     * 
+     * @param introduction
+     *     The introduction
      */
     public void setIntroduction(String introduction) {
         this.introduction = introduction;
