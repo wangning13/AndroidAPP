@@ -182,6 +182,36 @@ public class OkHttpManager {
 //                "http://115.159.160.18:3000/api/question/detail?question_id=1",dataCallBack,
 //                X_ACCESS_TOKEN,TEMP_X_ACCESS_TOKEN);
 //    }
+    //异步GET无header
+    public static void getAsyncNoHeader(String url, DataCallBack callBack) {
+        getInstance().inner_getAsync_noHeader(url, callBack);
+    }
+
+    //异步GET内部逻辑
+    private  void inner_getAsync_noHeader(String url, final DataCallBack callBack) {
+        final Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+        mClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                deliverDataFailure(request, e, callBack);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String result = null;
+                try {
+                    result = response.body().string();
+                } catch (IOException e) {
+                    deliverDataFailure(request, e, callBack);
+                }
+                deliverDataSuccess(result, callBack);
+            }
+        });
+    }
+
     //异步GET
     public static void getAsync(String url, DataCallBack callBack, String key, String token) {
         getInstance().inner_getAsync(url, callBack, key, token);
