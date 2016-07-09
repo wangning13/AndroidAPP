@@ -146,6 +146,12 @@ public class AnswerDetailActivity extends AppCompatActivity implements NestedScr
                                 toolbar.setTitle("回答");
                                 Toolbar toolbar2 = (Toolbar) findViewById(R.id.id_tool_bar2);
                                 toolbar2.setTitle(questionTitle);
+                                toolbar2.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        Toast.makeText(context,"HaHa",Toast.LENGTH_LONG).show();
+                                    }
+                                });
                                 setSupportActionBar(toolbar);
                                 toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                                     @Override
