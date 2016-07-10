@@ -31,7 +31,6 @@ public class LoginActivity extends Activity {
     private static final String TOKEN = "token";
     private Context context;
     private SharedPreferences sharedPreferences;
-    String token;
     EditText emailEdit;
     EditText pwdEdit;
     Button loginButton;
@@ -82,15 +81,14 @@ public class LoginActivity extends Activity {
                             String errorCode = login.getErrorCode();
                             com.akari.quark.entity.login.Message message = login.getMessage();
                             if(status==1){
-                                Toast.makeText(context,"登录成功",Toast.LENGTH_SHORT).show();
                                 String token = message.getToken();
                                 Intent intent = new Intent(context,MainActivity.class);
                                 context.startActivity(intent);
                                 //写入SharedPreference
-                                sharedPreferences.edit().putBoolean("AUTO_ISCHECK",true).commit();
-                                sharedPreferences.edit().putString(EMAIL,email);
-                                sharedPreferences.edit().putString(PWD,pwd);
-                                sharedPreferences.edit().putString(TOKEN,token);
+                                sharedPreferences.edit().putBoolean(ISCHECKED,true).commit();
+                                sharedPreferences.edit().putString(EMAIL,email).commit();
+                                sharedPreferences.edit().putString(PWD,pwd).commit();
+                                sharedPreferences.edit().putString(TOKEN,token).commit();
                                 finish();
                             }else {
                                 if(errorCode.equals("2002")){

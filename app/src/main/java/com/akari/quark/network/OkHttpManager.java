@@ -1,5 +1,6 @@
 package com.akari.quark.network;
 
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Looper;
 
@@ -42,10 +43,10 @@ public class OkHttpManager {
 
     public static final String X_ACCESS_TOKEN = "x-access-token";
     public static final String TEMP_X_ACCESS_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZXhwIjoxNDY0MDE0NTg4ODE1fQ.6ney0SK3o5FJehcZNMmBOVDrV22tX_kbmgrJUxsLTsE";
-
     /**
      * 静态实例
      */
+    private SharedPreferences sharedPreferences;
     private static OkHttpManager sOkHttpManager;
     //okhttpclient实例
     private static OkHttpClient mClient;

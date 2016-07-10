@@ -2,6 +2,7 @@ package com.akari.quark.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -24,6 +25,7 @@ public class MainActivity extends AppCompatActivity
 
     private Context context;
     private Toolbar toolbar;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,14 +109,18 @@ public class MainActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
         if (id == R.id.nav_find) {
             // Handle the camera action
         } else if (id == R.id.nav_message) {
+            drawer.closeDrawer(GravityCompat.START);
+            item.setChecked(true); // 改变item选中状态
             Intent intent = new Intent(context, MessageActivity.class);
             context.startActivity(intent);
+
         } else if (id == R.id.nav_care_field) {
 
         } else if (id == R.id.nav_care_question) {
@@ -123,10 +129,19 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_answer_question) {
 
+        }else if (id == R.id.nav_logout) {
+            drawer.closeDrawer(GravityCompat.START);
+            MainActivity.this.finish();
+            item.setChecked(true); // 改变item选中状态
+            sharedPreferences = getSharedPreferences("ischecked", Context.MODE_WORLD_READABLE);
+            sharedPreferences.edit().putBoolean("ischecked",false).commit();
+            Intent intent = new Intent(context, LoginActivity.class);
+            context.startActivity(intent);
+
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+
+
         return true;
     }
 }

@@ -29,6 +29,10 @@
             android:id="@+id/nav_answer_question"
             android:icon="@mipmap/ic4"
             android:title="我回答的问题" />
+        <item
+            android:id="@+id/nav_logout"
+            android:icon="@mipmap/ic4"
+            android:title="注销" />
 
     </group>
 
