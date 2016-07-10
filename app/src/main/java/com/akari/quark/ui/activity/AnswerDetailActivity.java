@@ -111,10 +111,10 @@ public class AnswerDetailActivity extends AppCompatActivity implements NestedScr
                             } else {
                                 Message message = answerDetail.getMessage();
                                 final Long id = message.getId();
-                                String content = message.getContent();
-//                                    Long questionId = message.getQuestionId();
+                                final String content = message.getContent();
+                                final Long questionId = message.getQuestionId();
                                 final Long answerId = message.getAnswererId();
-                                Long createTime = message.getCreateTime();
+                                final Long createTime = message.getCreateTime();
 //                                    Long deleteFlag = message.getDeleteFlag();
 //                                    Long praiseNum = message.getPariseNum();
 //                                    Long commentNum = message.getCommentNum();
@@ -149,7 +149,9 @@ public class AnswerDetailActivity extends AppCompatActivity implements NestedScr
                                 toolbar2.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
-                                        Toast.makeText(context,"HaHa",Toast.LENGTH_LONG).show();
+                                        Intent intent = new Intent(context, QuestionDetailActivity.class);
+                                        intent.putExtra("questionId", questionId+"");
+                                        context.startActivity(intent);
                                     }
                                 });
                                 setSupportActionBar(toolbar);
