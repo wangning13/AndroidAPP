@@ -114,7 +114,8 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_find) {
-            // Handle the camera action
+            drawer.closeDrawer(GravityCompat.START);
+            item.setChecked(true); // 改变item选中状态
         } else if (id == R.id.nav_message) {
             drawer.closeDrawer(GravityCompat.START);
             item.setChecked(true); // 改变item选中状态
@@ -122,18 +123,25 @@ public class MainActivity extends AppCompatActivity
             context.startActivity(intent);
 
         } else if (id == R.id.nav_care_field) {
-
+            drawer.closeDrawer(GravityCompat.START);
+            item.setChecked(true); // 改变item选中状态
         } else if (id == R.id.nav_care_question) {
+            drawer.closeDrawer(GravityCompat.START);
+            item.setChecked(true); // 改变item选中状态
 
         } else if (id == R.id.nav_raise_question) {
+            drawer.closeDrawer(GravityCompat.START);
+            item.setChecked(true); // 改变item选中状态
 
         } else if (id == R.id.nav_answer_question) {
+            drawer.closeDrawer(GravityCompat.START);
+            item.setChecked(true); // 改变item选中状态
 
         }else if (id == R.id.nav_logout) {
             drawer.closeDrawer(GravityCompat.START);
             MainActivity.this.finish();
             item.setChecked(true); // 改变item选中状态
-            sharedPreferences = getSharedPreferences("ischecked", Context.MODE_WORLD_READABLE);
+            sharedPreferences = getSharedPreferences("userinfo", Context.MODE_WORLD_READABLE);
             sharedPreferences.edit().putBoolean("ischecked",false).commit();
             Intent intent = new Intent(context, LoginActivity.class);
             context.startActivity(intent);

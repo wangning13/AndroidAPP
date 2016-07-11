@@ -46,14 +46,12 @@ public class LoginActivity extends Activity {
         emailEdit = (EditText) findViewById(R.id.email_edit);
         pwdEdit = (EditText) findViewById(R.id.password_edit);
         //可以被其他应用程序读
-        sharedPreferences = getSharedPreferences(ISCHECKED, Context.MODE_WORLD_READABLE);
+        sharedPreferences = getSharedPreferences("userinfo", Context.MODE_WORLD_READABLE);
         loginButton = (Button) findViewById(R.id.login_button);
         forgetPwd = (TextView) findViewById(R.id.forget_pwd);
         userRegister = (TextView) findViewById(R.id.user_register);
-        if (sharedPreferences.getBoolean("AUTO_ISCHECK",false)){
-            emailEdit.setText(sharedPreferences.getString(EMAIL,"请填写邮箱"));
-            pwdEdit.setText(sharedPreferences.getString(PWD,"请填写密码"));
-        }
+        emailEdit.setText(sharedPreferences.getString(EMAIL,""));
+        pwdEdit.setText(sharedPreferences.getString(PWD,""));
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,7 +79,7 @@ public class LoginActivity extends Activity {
                             String errorCode = login.getErrorCode();
                             com.akari.quark.entity.login.Message message = login.getMessage();
                             if(status==1){
-                                String token = message.getToken();
+                                String token = message.getInfo();
                                 Intent intent = new Intent(context,MainActivity.class);
                                 context.startActivity(intent);
                                 //写入SharedPreference

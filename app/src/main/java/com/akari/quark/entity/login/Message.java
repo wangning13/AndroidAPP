@@ -2,30 +2,29 @@
 package com.akari.quark.entity.login;
 
 import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 
 public class Message {
 
-    @SerializedName("token")
+//    @SerializedName("token")
     @Expose
-    private String token;
+    private String info;
 
     /**
      * 
      * @return
-     *     The token
+     *     The info
      */
-    public String getToken() {
-        return token;
+    public String getInfo() {
+        return info;
     }
 
     /**
      * 
-     * @param token
-     *     The token
+     * @param info
+     *     The info
      */
-    public void setToken(String token) {
-        this.token = token;
+    public void setInfo(String info) {
+        this.info = info;
     }
 
 }

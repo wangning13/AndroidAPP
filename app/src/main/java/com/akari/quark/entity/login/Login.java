@@ -15,6 +15,9 @@ public class Login {
     @SerializedName("message")
     @Expose
     private Message message;
+//    @SerializedName("message")
+//    @Expose
+//    private String error;
 
     /**
      * 
@@ -69,5 +72,23 @@ public class Login {
     public void setMessage(Message message) {
         this.message = message;
     }
+
+//    /**
+//     *
+//     * @return
+//     *     The error
+//     */
+//    public String getError() {
+//        return error;
+//    }
+//
+//    /**
+//     *
+//     * @param error
+//     *     The error
+//     */
+//    public void setError(String error) {
+//        this.error = error;
+//    }
 
 }

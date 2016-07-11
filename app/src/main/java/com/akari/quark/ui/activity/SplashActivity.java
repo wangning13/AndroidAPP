@@ -22,8 +22,8 @@ public class SplashActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash);
 
-        sharedPreferences = getSharedPreferences(ISCHECKED, Context.MODE_WORLD_READABLE);
-        if (sharedPreferences.getBoolean("AUTO_ISCHECK",false)){
+        sharedPreferences = getSharedPreferences("userinfo", Context.MODE_WORLD_READABLE);
+        if (sharedPreferences.getBoolean(ISCHECKED,false)){
             //默认是自动登录状态，直接跳转
             new Handler().postDelayed(new Runnable() {
                 public void run() {
@@ -31,6 +31,8 @@ public class SplashActivity extends Activity {
                     Intent mainIntent = new Intent(SplashActivity.this, MainActivity.class);
                     SplashActivity.this.startActivity(mainIntent);
                     SplashActivity.this.finish();
+//                    Toast.makeText(SplashActivity.this,sharedPreferences.getString("token","token不存在"),Toast.LENGTH_SHORT).show();
+
                 }
 
             }, SPLASH_DISPLAY_LENGHT);
