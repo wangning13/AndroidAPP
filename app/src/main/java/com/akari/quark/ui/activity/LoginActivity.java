@@ -1,11 +1,11 @@
 package com.akari.quark.ui.activity;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.TextUtils;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,90 +21,171 @@ import java.io.IOException;
 
 import okhttp3.Request;
 
-/**
- * Created by motoon on 2016/6/3.
- */
-public class LoginActivity extends Activity {
+public class LoginActivity extends AppCompatActivity {
+    private static final String TAG = "LoginActivity";
+    private static final int REQUEST_SIGNUP = 0;
+
     private static final String ISCHECKED = "ischecked";
     private static final String EMAIL = "email";
     private static final String PWD = "pwd";
     private static final String TOKEN = "token";
     private Context context;
     private SharedPreferences sharedPreferences;
+
     EditText emailEdit;
     EditText pwdEdit;
     Button loginButton;
-    TextView forgetPwd;
-    TextView userRegister;
-
+    TextView signupLink;
+    
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.login);
+        setContentView(R.layout.activity_login);
         context = LoginActivity.this;
 
-        emailEdit = (EditText) findViewById(R.id.email_edit);
-        pwdEdit = (EditText) findViewById(R.id.password_edit);
-        //可以被其他应用程序读
         sharedPreferences = getSharedPreferences("userinfo", Context.MODE_WORLD_READABLE);
-        loginButton = (Button) findViewById(R.id.login_button);
-        forgetPwd = (TextView) findViewById(R.id.forget_pwd);
-        userRegister = (TextView) findViewById(R.id.user_register);
+
+        emailEdit = (EditText) findViewById(R.id.input_email);
+        pwdEdit = (EditText) findViewById(R.id.input_password);
+        loginButton = (Button) findViewById(R.id.btn_login);
+        signupLink = (TextView) findViewById(R.id.link_signup);
+
         emailEdit.setText(sharedPreferences.getString(EMAIL,""));
         pwdEdit.setText(sharedPreferences.getString(PWD,""));
 
         loginButton.setOnClickListener(new View.OnClickListener() {
+
             @Override
-            public void onClick(View view) {
-                if(TextUtils.isEmpty(emailEdit.getText())){
-                    emailEdit.setError("此处不能为空！");
-                }
-                if(TextUtils.isEmpty(pwdEdit.getText())){
-                    pwdEdit.setError("此处不能为空！");
-                }else {
-                    final String email = emailEdit.getText().toString();
-                    final String pwd = pwdEdit.getText().toString();
+            public void onClick(View v) {
+                login();
+            }
+        });
 
-                    String url = OkHttpManager.API_LOGIN+"?mail="+email+"&password="+pwd;
-                    OkHttpManager.DataCallBack dataCallBack = new OkHttpManager.DataCallBack() {
-                        @Override
-                        public void requestFailure(Request request, IOException e) {
-                            Toast.makeText(context,"登录失败",Toast.LENGTH_SHORT).show();
-                        }
+        signupLink.setOnClickListener(new View.OnClickListener() {
 
-                        @Override
-                        public void requestSuccess(String result) throws Exception {
-                            Login login = GsonUtil.GsonToBean(result,Login.class);
-                            Long status = login.getStatus();
-                            String errorCode = login.getErrorCode();
-                            com.akari.quark.entity.login.Message message = login.getMessage();
-                            if(status==1){
-                                String token = message.getInfo();
-                                Intent intent = new Intent(context,MainActivity.class);
-                                context.startActivity(intent);
-                                //写入SharedPreference
-                                sharedPreferences.edit().putBoolean(ISCHECKED,true).commit();
-                                sharedPreferences.edit().putString(EMAIL,email).commit();
-                                sharedPreferences.edit().putString(PWD,pwd).commit();
-                                sharedPreferences.edit().putString(TOKEN,token).commit();
-                                finish();
-                            }else {
-                                if(errorCode.equals("2002")){
-                                    Toast.makeText(context,"密码错误",Toast.LENGTH_SHORT).show();
-                                }
-                                if(errorCode.equals("2004")){
-                                    Toast.makeText(context,"该账户不存在",Toast.LENGTH_SHORT).show();
-                                }
-                            }
-
-                        }
-                    };
-                    OkHttpManager.getAsyncNoHeader(url,dataCallBack);
-                }
-
+            @Override
+            public void onClick(View v) {
+                // Start the Signup activity
+                Intent intent = new Intent(getApplicationContext(), SignupActivity.class);
+                startActivityForResult(intent, REQUEST_SIGNUP);
             }
         });
     }
 
+    public void login() {
+        Log.d(TAG, "Login");
 
+        if (!validate()) {
+            onLoginFailed();
+            return;
+        }
+
+//        loginButton.setEnabled(false);
+
+//        final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this,
+//                R.style.AppTheme_Login_Dialog);
+//        progressDialog.setIndeterminate(true);
+//        progressDialog.setMessage("Authenticating...");
+//        progressDialog.show();
+
+        final String email = emailEdit.getText().toString();
+        final String pwd = pwdEdit.getText().toString();
+
+        String url = OkHttpManager.API_LOGIN+"?mail="+email+"&password="+pwd;
+        OkHttpManager.DataCallBack dataCallBack = new OkHttpManager.DataCallBack() {
+            @Override
+            public void requestFailure(Request request, IOException e) {
+                Toast.makeText(context,"登录失败",Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void requestSuccess(String result) throws Exception {
+                Login login = GsonUtil.GsonToBean(result,Login.class);
+                Long status = login.getStatus();
+                String errorCode = login.getErrorCode();
+                com.akari.quark.entity.login.Message message = login.getMessage();
+                if(status==1){
+                    String token = message.getInfo();
+                    Intent intent = new Intent(context,MainActivity.class);
+                    context.startActivity(intent);
+                    //写入SharedPreference
+                    sharedPreferences.edit().putBoolean(ISCHECKED,true).commit();
+                    sharedPreferences.edit().putString(EMAIL,email).commit();
+                    sharedPreferences.edit().putString(PWD,pwd).commit();
+                    sharedPreferences.edit().putString(TOKEN,token).commit();
+                    finish();
+                }else {
+                    if(errorCode.equals("2002")){
+                        Toast.makeText(context,"密码错误",Toast.LENGTH_SHORT).show();
+                    }
+                    if(errorCode.equals("2004")){
+                        Toast.makeText(context,"该账户不存在",Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+            }
+        };
+        OkHttpManager.getAsyncNoHeader(url,dataCallBack);
+
+//        new android.os.Handler().postDelayed(
+//                new Runnable() {
+//                    public void run() {
+//                        // On complete call either onLoginSuccess or onLoginFailed
+//                        onLoginSuccess();
+//                        // onLoginFailed();
+//                        progressDialog.dismiss();
+//                    }
+//                }, 3000);
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_SIGNUP) {
+            if (resultCode == RESULT_OK) {
+
+                // TODO: Implement successful signup logic here
+                // By default we just finish the Activity and log them in automatically
+                this.finish();
+            }
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        // Disable going back to the MainActivity
+        moveTaskToBack(true);
+    }
+
+    public void onLoginSuccess() {
+        loginButton.setEnabled(true);
+        finish();
+    }
+
+    public void onLoginFailed() {
+        loginButton.setEnabled(true);
+    }
+
+    public boolean validate() {
+        boolean valid = true;
+
+        String email = emailEdit.getText().toString();
+        String password = pwdEdit.getText().toString();
+
+        if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            emailEdit.setError("请输入一个有效的邮箱地址");
+            valid = false;
+        } else {
+            emailEdit.setError(null);
+        }
+
+        if (password.isEmpty()) {
+            pwdEdit.setError("密码不能为空");
+            valid = false;
+        } else {
+            pwdEdit.setError(null);
+        }
+
+        return valid;
+    }
 }

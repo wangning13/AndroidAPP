@@ -2,6 +2,23 @@
 <resources>
     <color name="colorPrimary">#1E73B3</color>
     <color name="colorPrimaryDark">#0E3C60</color>
+    <color name="color_control_activated">#1C5E95</color>
+
     <color name="colorAccent">#FCDD82</color>
-    <color name="color_control_activated">@color/wp_blue_light</color>
+
+    <color name="primary">#1E73B3</color>
+    <color name="primary_dark">#1C5E95</color>
+    <color name="primary_darker">#0E3C60</color>
+
+    <color name="accent">#FFFFFF</color>
+
+    <color name="black">#000000</color>
+    <color name="jet">#222222</color>
+    <color name="oil">#333333</color>
+    <color name="monsoon">#777777</color>
+    <color name="jumbo">#888888</color>
+    <color name="aluminum">#999999</color>
+    <color name="base">#AAAAAA</color>
+    <color name="iron">#CCCCCC</color>
+    <color name="white">#FFFFFF</color>
 </resources>

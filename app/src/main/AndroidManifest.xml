@@ -20,12 +20,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activity.LoginActivity" />
         <activity android:name=".ui.activity.MainActivity" />
         <activity android:name=".ui.activity.QuestionDetailActivity" />
         <activity android:name=".ui.activity.CreatQuestionActivity" />
         <activity android:name=".ui.activity.AnswerDetailActivity" />
         <activity android:name=".ui.activity.MessageActivity" />
+        <activity android:name=".ui.activity.LoginActivity" android:theme="@style/AppTheme.Login" />
+        <activity android:name=".ui.activity.SignupActivity" android:theme="@style/AppTheme.Login" />
         <activity
             android:name=".ui.activity.EditorActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"></activity>

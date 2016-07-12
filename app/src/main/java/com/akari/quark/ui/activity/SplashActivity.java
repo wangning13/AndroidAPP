@@ -13,7 +13,7 @@ import com.akari.quark.R;
  * Created by motoon on 2016/6/1.
  */
 public class SplashActivity extends Activity {
-    private final int SPLASH_DISPLAY_LENGHT = 3000; // 延迟三秒
+    private final int SPLASH_DISPLAY_LENGHT = 500; // 延迟
     private SharedPreferences sharedPreferences;
     private static final String ISCHECKED="ischecked";
 
@@ -27,12 +27,9 @@ public class SplashActivity extends Activity {
             //默认是自动登录状态，直接跳转
             new Handler().postDelayed(new Runnable() {
                 public void run() {
-//                    Intent mainIntent = new Intent(SplashActivity.this, LoginActivity.class);
                     Intent mainIntent = new Intent(SplashActivity.this, MainActivity.class);
                     SplashActivity.this.startActivity(mainIntent);
                     SplashActivity.this.finish();
-//                    Toast.makeText(SplashActivity.this,sharedPreferences.getString("token","token不存在"),Toast.LENGTH_SHORT).show();
-
                 }
 
             }, SPLASH_DISPLAY_LENGHT);
@@ -40,14 +37,10 @@ public class SplashActivity extends Activity {
             new Handler().postDelayed(new Runnable() {
                 public void run() {
                     Intent mainIntent = new Intent(SplashActivity.this, LoginActivity.class);
-//                  Intent mainIntent = new Intent(SplashActivity.this, MainActivity.class);
                     SplashActivity.this.startActivity(mainIntent);
                     SplashActivity.this.finish();
                 }
-
             }, SPLASH_DISPLAY_LENGHT);
         }
-
-
     }
 }
