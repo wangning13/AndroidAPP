@@ -30,6 +30,7 @@ public class OkHttpManager {
 
     public static final String API_GET_ALL_ASK_QUESTIONS = BASE_URL + "/api/question/list/ask";
     public static final String API_GET_ALL_ANSWER_QUESTIONS = BASE_URL + "/api/question/list/answer";
+    public static final String API_SIGNUP = BASE_URL + "/api/account/register";
     public static final String API_LOGIN = BASE_URL + "/api/account/login";
     public static final String API_QUESTION_DETAIL = BASE_URL + "/api/question/detail";
     public static final String API_ADD_QUESTION = BASE_URL + "/api/question/add";
@@ -166,23 +167,6 @@ public class OkHttpManager {
     }
 
     //-------------------------异步的方式请求数据--------------------------
-//    public static void main(String[] args) throws ConnectException,IOException,RemoteException {
-////        OkHttpManager okHttpManager = new OkHttpManager();
-//        DataCallBack dataCallBack = new DataCallBack() {
-//            @Override
-//            public void requestFailure(Request request, IOException e) {
-//                System.out.print("ERROR");
-//            }
-//
-//            @Override
-//            public void requestSuccess(String result) throws Exception {
-//                System.out.print(result);
-//            }
-//        };
-//        getAsync(
-//                "http://115.159.160.18:3000/api/question/detail?question_id=1",dataCallBack,
-//                X_ACCESS_TOKEN,TEMP_X_ACCESS_TOKEN);
-//    }
     //异步GET无header
     public static void getAsyncNoHeader(String url, DataCallBack callBack) {
         getInstance().inner_getAsync_noHeader(url, callBack);

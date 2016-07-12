@@ -57,7 +57,10 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                login();
+                final String email = emailEdit.getText().toString();
+                final String pwd = pwdEdit.getText().toString();
+
+                login(email, pwd);
             }
         });
 
@@ -72,10 +75,10 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    public void login() {
+    public void login(final String email, final String pwd) {
         Log.d(TAG, "Login");
 
-        if (!validate()) {
+        if (!validate(email, pwd)) {
             onLoginFailed();
             return;
         }
@@ -87,9 +90,6 @@ public class LoginActivity extends AppCompatActivity {
 //        progressDialog.setIndeterminate(true);
 //        progressDialog.setMessage("Authenticating...");
 //        progressDialog.show();
-
-        final String email = emailEdit.getText().toString();
-        final String pwd = pwdEdit.getText().toString();
 
         String url = OkHttpManager.API_LOGIN+"?mail="+email+"&password="+pwd;
         OkHttpManager.DataCallBack dataCallBack = new OkHttpManager.DataCallBack() {
@@ -143,10 +143,17 @@ public class LoginActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_SIGNUP) {
             if (resultCode == RESULT_OK) {
+                String email = data.getStringExtra("EMAIL");
+                String pwd = data.getStringExtra("PASSWORD");
+
+                emailEdit.setText(email);
+                pwdEdit.setText(pwd);
+
+                login(email, pwd);
 
                 // TODO: Implement successful signup logic here
                 // By default we just finish the Activity and log them in automatically
-                this.finish();
+//                this.finish();
             }
         }
     }
@@ -166,11 +173,8 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setEnabled(true);
     }
 
-    public boolean validate() {
+    public boolean validate(String email, String password) {
         boolean valid = true;
-
-        String email = emailEdit.getText().toString();
-        String password = pwdEdit.getText().toString();
 
         if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             emailEdit.setError("请输入一个有效的邮箱地址");
