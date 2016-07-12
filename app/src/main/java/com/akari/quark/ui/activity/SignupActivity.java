@@ -112,44 +112,7 @@ public class SignupActivity extends AppCompatActivity {
                 }
             }
         };
-        OkHttpManager.postAsync(url, body, callback, DataPostHelper.X_ACCESS_TOKEN, DataPostHelper.TEMP_X_ACCESS_TOKEN);
-
-
-//        String url = OkHttpManager.API_LOGIN+"?mail="+email+"&password="+pwd;
-//        OkHttpManager.DataCallBack dataCallBack = new OkHttpManager.DataCallBack() {
-//            @Override
-//            public void requestFailure(Request request, IOException e) {
-//                Toast.makeText(context,"注册失败",Toast.LENGTH_SHORT).show();
-//            }
-//
-//            @Override
-//            public void requestSuccess(String result) throws Exception {
-//                Login login = GsonUtil.GsonToBean(result,Login.class);
-//                Long status = login.getStatus();
-//                String errorCode = login.getErrorCode();
-//                com.akari.quark.entity.login.Message message = login.getMessage();
-//                if(status==1){
-//                    String token = message.getInfo();
-//                    Intent intent = new Intent(context,MainActivity.class);
-//                    context.startActivity(intent);
-//                    //写入SharedPreference
-//                    sharedPreferences.edit().putBoolean(ISCHECKED,true).commit();
-//                    sharedPreferences.edit().putString(EMAIL,email).commit();
-//                    sharedPreferences.edit().putString(PWD,pwd).commit();
-//                    sharedPreferences.edit().putString(TOKEN,token).commit();
-//                    finish();
-//                }else {
-//                    if(errorCode.equals("2002")){
-//                        Toast.makeText(context,"密码错误",Toast.LENGTH_SHORT).show();
-//                    }
-//                    if(errorCode.equals("2004")){
-//                        Toast.makeText(context,"该账户不存在",Toast.LENGTH_SHORT).show();
-//                    }
-//                }
-//
-//            }
-//        };
-//        OkHttpManager.getAsyncNoHeader(url,dataCallBack);
+        OkHttpManager.postAsyncNoHeader(url, body, callback);
 
         // TODO: Implement your own signup logic here.
 

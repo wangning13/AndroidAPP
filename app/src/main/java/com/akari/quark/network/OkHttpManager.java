@@ -285,6 +285,67 @@ public class OkHttpManager {
 
     //-------------------------提交表单--------------------------
     //异步POST
+    public static void postAsyncNoHeader(String url, Map<String, String> params, DataCallBack callBack) {
+        inner_postAsync_noHeader(url, params, callBack);
+    }
+
+    private static void inner_postAsync_noHeader(String url, Map<String, String> params, final DataCallBack callBack) {
+
+        RequestBody requestBody = null;
+        if (params == null) {
+            params = new HashMap<>();
+        }
+
+        /**
+         * 如果是3.0之前版本的，构建表单数据是下面的一句
+         */
+        //FormEncodingBuilder builder = new FormEncodingBuilder();
+
+        /**
+         * 3.0之后版本
+         */
+        FormBody.Builder builder = new FormBody.Builder();
+
+        /**
+         * 在这对添加的参数进行遍历，map遍历有四种方式，如果想要了解的可以网上查找
+         */
+        for (Map.Entry<String, String> map : params.entrySet()) {
+            String key = map.getKey().toString();
+            String value = null;
+            /**
+             * 判断值是否是空的
+             */
+            if (map.getValue() == null) {
+                value = "";
+            } else {
+                value = map.getValue();
+            }
+            /**
+             * 把key和value添加到formbody中
+             */
+            builder.add(key, value);
+        }
+        requestBody = builder.build();
+        //结果返回
+        final Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build();
+        mClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                deliverDataFailure(request, e, callBack);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String result = response.body().string();
+                deliverDataSuccess(result, callBack);
+            }
+
+
+        });
+    }
 
     public static void postAsync(String url, Map<String, String> params, DataCallBack callBack, String token, String tokenValue) {
         inner_postAsync(url, params, callBack, token, tokenValue);
