@@ -7,6 +7,8 @@ import com.akari.quark.entity.answersInMain.AnswersInMain;
 import com.akari.quark.entity.answersInMain.AnswersInMainMessage;
 import com.akari.quark.entity.asksInMain.AsksInMain;
 import com.akari.quark.entity.asksInMain.AsksInMainMessage;
+import com.akari.quark.entity.comment.Comment;
+import com.akari.quark.entity.comment.CommentMessage;
 import com.akari.quark.network.OkHttpManager2;
 import com.akari.quark.util.GsonUtil;
 
@@ -29,9 +31,12 @@ public class DataRequestHelper {
     private static final String API_WATCH_QUESTION = BASE_URL + "/api/question/focus";
     private static final String API_ANSWER_DETAIL = BASE_URL + "/api/answer/detail";
     private static final String API_ADD_ANSWER = BASE_URL + "/api/answer/add";
+    private static final String API_GET_COMMENTS = BASE_URL+ "api/comment/list";
 
     private static final String MAIL_PARAM = "mail";
     private static final String PASSWORD_PARAM = "password";
+    private static final String ANSWER_ID_PARAM = "answer_id";
+    private static final String PAGE_PARAM = "page";
 
     private static final String ACCOUNT_MAIL = "919169204@qq.com";
     private static final String ACCOUNT_PASSWORD = "123456";
@@ -57,6 +62,16 @@ public class DataRequestHelper {
         List<AnswersInMainMessage> messageList = answersInMain.getMessage();
         Log.d("GET", url);
         return messageList;
+    }
+
+    public static Comment getComments(long answerID, int page) {
+        List<BasicNameValuePair> paramList = new LinkedList<BasicNameValuePair>();
+        paramList.add(new BasicNameValuePair(ANSWER_ID_PARAM, answerID+""));
+        paramList.add(new BasicNameValuePair(PAGE_PARAM, page+""));
+        String url = OkHttpManager2.attachHttpGetParams(API_GET_COMMENTS, paramList);
+        final String result = OkHttpManager2.getSyncString(url, X_ACCESS_TOKEN, TEMP_X_ACCESS_TOKEN);
+        Comment comments = GsonUtil.GsonToBean(result, Comment.class);
+        return comments;
     }
 
     public static String getToken(String mail, String password) {

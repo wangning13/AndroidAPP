@@ -445,7 +445,9 @@ public class AnswerDetailActivity extends AppCompatActivity implements NestedScr
                                     comment_layout.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View view) {
-
+                                            Intent intent = new Intent(context, CommentActivity.class);
+                                            intent.putExtra("answerId", Long.parseLong(String.valueOf(answerId)));
+                                            context.startActivity(intent);
                                         }
                                     });
                                 }
