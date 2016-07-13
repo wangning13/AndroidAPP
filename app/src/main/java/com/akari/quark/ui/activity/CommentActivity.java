@@ -1,36 +1,35 @@
 package com.akari.quark.ui.activity;
 
-import android.app.Activity;
-import android.app.LoaderManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.Toast;
 
 import com.akari.quark.R;
-import com.akari.quark.entity.comment.CommentMessage;
+import com.akari.quark.entity.comment.Comment;
 import com.akari.quark.ui.adapter.CommentRecyclerViewAdapter;
 import com.akari.quark.ui.adapter.baseAdapter.NewRecyclerViewAdapter;
 import com.akari.quark.ui.listener.OnVerticalScrollListener;
 import com.akari.quark.ui.loader.AsyncTaskLoader;
 import com.akari.quark.ui.loader.CommentListLoader;
+import com.akari.quark.ui.tool.ErrorNotification;
 import com.hippo.refreshlayout.RefreshLayout;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class CommentActivity extends Activity implements RefreshLayout.OnRefreshListener, LoaderManager.LoaderCallbacks<AsyncTaskLoader.LoaderResult<List<?>>> {
+public class CommentActivity extends FragmentActivity implements RefreshLayout.OnRefreshListener, LoaderManager.LoaderCallbacks<AsyncTaskLoader.LoaderResult<?>> {
     private static final String TAG = CommentActivity.class.getSimpleName();
 
     private int mPage;
     private long mAnswerID;
 
     private Context mContext;
-    private NewRecyclerViewAdapter mAdapter;
+    private NewRecyclerViewAdapter<CommentRecyclerViewAdapter.NormalViewHolder> mAdapter;
     private RefreshLayout mLayout;
-    private AsyncTaskLoader mLoader;
     private RecyclerView mRecyclerView;
 
     @Override
@@ -40,6 +39,7 @@ public class CommentActivity extends Activity implements RefreshLayout.OnRefresh
 
         mContext = CommentActivity.this;
         mPage = 1;
+        mAnswerID = getIntent().getLongExtra("answerID", 0);
         mLayout = (RefreshLayout) findViewById(R.id.comment_refresh_layout);
         mLayout.setHeaderColorSchemeResources(android.R.color.holo_blue_bright,
                 android.R.color.holo_green_light, android.R.color.holo_orange_light,
@@ -76,7 +76,7 @@ public class CommentActivity extends Activity implements RefreshLayout.OnRefresh
     public void onStart() {
         super.onStart();
 
-        final LoaderManager loaderManager = getLoaderManager();
+        final LoaderManager loaderManager = getSupportLoaderManager();
         if (loaderManager.getLoader(0) != null) {
             // already loaded
             return;
@@ -92,38 +92,75 @@ public class CommentActivity extends Activity implements RefreshLayout.OnRefresh
     @Override
     public void onHeaderRefresh() {
         mPage = 1;
-        List<CommentMessage> list = new ArrayList<CommentMessage>();
-        CommentMessage message = new CommentMessage();
-        message.setContent("haha");
-        list.add(message);
-        mLayout.setHeaderRefreshing(false);
-        mAdapter.setDataSource(list);
+        getSupportLoaderManager().restartLoader(0, null, this);
+
+        final Loader<?> loader = getSupportLoaderManager().getLoader(0);
+        if (loader == null) {
+            return;
+        }
+        loader.forceLoad();
+
+        mRecyclerView.smoothScrollToPosition(0);
     }
 
     @Override
     public void onFooterRefresh() {
         mPage++;
-        List<CommentMessage> list = new ArrayList<CommentMessage>();
-        CommentMessage message = new CommentMessage();
-        message.setContent("haha");
-        list.add(message);
-        mLayout.setFooterRefreshing(false);
-        mAdapter.addDataSource(list);
+        getSupportLoaderManager().restartLoader(0, null, this);
+
+        final Loader<?> loader = getSupportLoaderManager().getLoader(0);
+        if (loader == null) {
+            return;
+        }
+
+        loader.forceLoad();
     }
 
     @Override
-    public android.content.Loader<AsyncTaskLoader.LoaderResult<List<?>>> onCreateLoader(int id, Bundle args) {
-        mLoader = new CommentListLoader(this, mPage, 1);
-        return null;
+    public Loader<AsyncTaskLoader.LoaderResult<?>> onCreateLoader(int id, Bundle args) {
+        AsyncTaskLoader mLoader = new CommentListLoader(this, mAnswerID, mPage);
+        return mLoader;
     }
 
     @Override
-    public void onLoadFinished(android.content.Loader<AsyncTaskLoader.LoaderResult<List<?>>> loader, AsyncTaskLoader.LoaderResult<List<?>> data) {
-
+    public void onLoadFinished(Loader<AsyncTaskLoader.LoaderResult<?>> loader, AsyncTaskLoader.LoaderResult<?> data) {
+        if(mPage == 1) {
+            mLayout.setHeaderRefreshing(false);
+            if (data.hasException()) {
+                Toast.makeText(mContext, "无法完成加载，请检查网络...", Toast.LENGTH_SHORT).show();
+            } else if (data.mResult == null){
+                Toast.makeText(mContext, "没有更多了...", Toast.LENGTH_SHORT).show();
+                mPage--;
+            }else{
+                Comment comment = (Comment) data.mResult;
+                if (comment.getStatus() == 1) {
+                    mAdapter.setDataSource(comment.getMessageList());
+                } else {
+                    ErrorNotification.errorNotify(mContext, comment.getError_code());
+                }
+            }
+        } else {
+            mLayout.setFooterRefreshing(false);
+            if (data.hasException()) {
+                Toast.makeText(mContext, "无法完成加载，请检查网络...", Toast.LENGTH_SHORT).show();
+            } else if (data.mResult == null){
+                Toast.makeText(mContext, "没有更多了...", Toast.LENGTH_SHORT).show();
+                mPage--;
+            } else {
+                int pre;
+                Comment comment = (Comment) data.mResult;
+                if (comment.getStatus() == 1) {
+                    pre = mAdapter.addDataSource(comment.getMessageList());
+                    mRecyclerView.smoothScrollToPosition(pre);
+                } else {
+                    ErrorNotification.errorNotify(mContext, comment.getError_code());
+                }
+            }
+        }
     }
 
     @Override
-    public void onLoaderReset(android.content.Loader<AsyncTaskLoader.LoaderResult<List<?>>> loader) {
+    public void onLoaderReset(Loader<AsyncTaskLoader.LoaderResult<?>> loader) {
 
     }
 }

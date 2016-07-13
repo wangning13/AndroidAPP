@@ -82,7 +82,7 @@ public class CommentRecyclerViewAdapter extends NewRecyclerViewAdapter<CommentRe
         }
 
         public void fillData(CommentMessage comment) {
-            mContent.setText("1");
+            mContent.setText(comment.getContent());
         }
     }
 }

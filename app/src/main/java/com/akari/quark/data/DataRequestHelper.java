@@ -31,7 +31,7 @@ public class DataRequestHelper {
     private static final String API_WATCH_QUESTION = BASE_URL + "/api/question/focus";
     private static final String API_ANSWER_DETAIL = BASE_URL + "/api/answer/detail";
     private static final String API_ADD_ANSWER = BASE_URL + "/api/answer/add";
-    private static final String API_GET_COMMENTS = BASE_URL+ "api/comment/list";
+    private static final String API_GET_COMMENTS = BASE_URL+ "/api/comment/list";
 
     private static final String MAIL_PARAM = "mail";
     private static final String PASSWORD_PARAM = "password";
@@ -66,11 +66,13 @@ public class DataRequestHelper {
 
     public static Comment getComments(long answerID, int page) {
         List<BasicNameValuePair> paramList = new LinkedList<BasicNameValuePair>();
-        paramList.add(new BasicNameValuePair(ANSWER_ID_PARAM, answerID+""));
+        paramList.add(new BasicNameValuePair(ANSWER_ID_PARAM, "1"));
         paramList.add(new BasicNameValuePair(PAGE_PARAM, page+""));
         String url = OkHttpManager2.attachHttpGetParams(API_GET_COMMENTS, paramList);
+        Log.d("GET1", url);
         final String result = OkHttpManager2.getSyncString(url, X_ACCESS_TOKEN, TEMP_X_ACCESS_TOKEN);
         Comment comments = GsonUtil.GsonToBean(result, Comment.class);
+        Log.d("GET2", url);
         return comments;
     }
 

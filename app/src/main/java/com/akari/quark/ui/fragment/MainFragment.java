@@ -1,5 +1,6 @@
 package com.akari.quark.ui.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -28,10 +29,11 @@ import java.util.List;
 public class MainFragment extends Fragment implements RefreshLayout.OnRefreshListener, LoaderManager.LoaderCallbacks<AsyncTaskLoader.LoaderResult<List<?>>> {
     public static final String ARG_PAGE = "ARG_PAGE";
     private static final String TAG = MainFragment.class.getSimpleName();
-    private int mFragment;
 
+    private int mFragment;
     private int mPage;
 
+    private Context mContext;
     private NewRecyclerViewAdapter mAdapter;
     private RefreshLayout mLayout;
     private AsyncTaskLoader mLoader;
@@ -52,6 +54,7 @@ public class MainFragment extends Fragment implements RefreshLayout.OnRefreshLis
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mContext = getActivity();
         mFragment = getArguments().getInt(ARG_PAGE);
         mPage = 1;
         new Handler().postDelayed(new Runnable() {
@@ -76,15 +79,15 @@ public class MainFragment extends Fragment implements RefreshLayout.OnRefreshLis
         mLayout.setOnRefreshListener(this);
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.rv_list);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
         mRecyclerView.setLayoutManager(layoutManager);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         switch (mFragment) {
             case 1:
-                mRecyclerView.setAdapter(mAdapter = new AskRecyclerViewAdapter(getContext()));
+                mRecyclerView.setAdapter(mAdapter = new AskRecyclerViewAdapter(mContext));
                 break;
             case 2:
-                mRecyclerView.setAdapter(mAdapter = new AnswerRecyclerViewAdapter(getContext()));
+                mRecyclerView.setAdapter(mAdapter = new AnswerRecyclerViewAdapter(mContext));
                 break;
         }
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -134,7 +137,6 @@ public class MainFragment extends Fragment implements RefreshLayout.OnRefreshLis
     public void onFooterRefresh() {
         mPage++;
         getLoaderManager().restartLoader(0, null, this);
-        final int pre = mAdapter.getItemCount();
 
         final Loader<?> loader = getLoaderManager().getLoader(0);
         if (loader == null) {
@@ -163,7 +165,7 @@ public class MainFragment extends Fragment implements RefreshLayout.OnRefreshLis
         if (mPage == 1) {
             mLayout.setHeaderRefreshing(false);
             if (data.hasException() || data.mResult.isEmpty()) {
-                Toast.makeText(getContext(), "无法完成加载，请检查网络...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "无法完成加载，请检查网络...", Toast.LENGTH_SHORT).show();
                 return;
             }
             mAdapter.setDataSource(data.mResult);
@@ -173,7 +175,7 @@ public class MainFragment extends Fragment implements RefreshLayout.OnRefreshLis
                 return;
             }
             if (data.mResult.isEmpty()) {
-                Toast.makeText(getContext(), "没有更多了...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "没有更多了...", Toast.LENGTH_SHORT).show();
                 mPage--;
             } else {
                 int pre;

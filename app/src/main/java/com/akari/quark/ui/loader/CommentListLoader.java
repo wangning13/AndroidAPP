@@ -1,6 +1,7 @@
 package com.akari.quark.ui.loader;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.akari.quark.data.DataRequestHelper;
 import com.akari.quark.entity.comment.Comment;
@@ -20,8 +21,7 @@ public class CommentListLoader extends AsyncTaskLoader<Comment>{
 
     @Override
     public Comment loadInBackgroundWithException() throws Exception {
-        final Comment comments = DataRequestHelper.getComments(mID, mPage);
-        return comments;
+        return DataRequestHelper.getComments(mID, mPage);
     }
 
     public int getPage() {

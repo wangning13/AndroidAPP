@@ -18,8 +18,7 @@ public class AnswersInMainListLoader extends AsyncTaskLoader<List<AnswersInMainM
 
     @Override
     public List<AnswersInMainMessage> loadInBackgroundWithException() throws Exception {
-        final List<AnswersInMainMessage> answers = DataRequestHelper.getAnswersInMain(mPage);
-        return answers;
+        return DataRequestHelper.getAnswersInMain(mPage);
     }
 
     public int getPage() {
