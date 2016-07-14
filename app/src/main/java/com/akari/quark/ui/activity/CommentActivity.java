@@ -3,25 +3,38 @@ package com.akari.quark.ui.activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.Toast;
 
 import com.akari.quark.R;
 import com.akari.quark.entity.comment.Comment;
+import com.akari.quark.entity.comment.CommentResult;
+import com.akari.quark.network.OkHttpManager;
 import com.akari.quark.ui.adapter.CommentRecyclerViewAdapter;
 import com.akari.quark.ui.adapter.baseAdapter.NewRecyclerViewAdapter;
+import com.akari.quark.ui.helper.CommentHelper;
 import com.akari.quark.ui.listener.OnVerticalScrollListener;
 import com.akari.quark.ui.loader.AsyncTaskLoader;
 import com.akari.quark.ui.loader.CommentListLoader;
 import com.akari.quark.ui.tool.ErrorNotification;
+import com.akari.quark.ui.view.DividerLine;
+import com.akari.quark.util.GsonUtil;
 import com.hippo.refreshlayout.RefreshLayout;
 
-public class CommentActivity extends FragmentActivity implements RefreshLayout.OnRefreshListener, LoaderManager.LoaderCallbacks<AsyncTaskLoader.LoaderResult<?>> {
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+import okhttp3.Request;
+
+public class CommentActivity extends AppCompatActivity implements RefreshLayout.OnRefreshListener, LoaderManager.LoaderCallbacks<AsyncTaskLoader.LoaderResult<?>>, CommentHelper.OnCommentListener {
     private static final String TAG = CommentActivity.class.getSimpleName();
 
     private int mPage;
@@ -29,8 +42,10 @@ public class CommentActivity extends FragmentActivity implements RefreshLayout.O
 
     private Context mContext;
     private NewRecyclerViewAdapter<CommentRecyclerViewAdapter.NormalViewHolder> mAdapter;
+    private Toolbar mToolbar;
     private RefreshLayout mLayout;
     private RecyclerView mRecyclerView;
+    private CommentHelper mCommentHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +55,16 @@ public class CommentActivity extends FragmentActivity implements RefreshLayout.O
         mContext = CommentActivity.this;
         mPage = 1;
         mAnswerID = getIntent().getLongExtra("answerID", 0);
+
+        mToolbar = (Toolbar)findViewById(R.id.comment_toolbar);
+        setSupportActionBar(mToolbar);
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
         mLayout = (RefreshLayout) findViewById(R.id.comment_refresh_layout);
         mLayout.setHeaderColorSchemeResources(android.R.color.holo_blue_bright,
                 android.R.color.holo_green_light, android.R.color.holo_orange_light,
@@ -54,6 +79,7 @@ public class CommentActivity extends FragmentActivity implements RefreshLayout.O
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setAdapter(mAdapter = new CommentRecyclerViewAdapter(mContext));
         mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.addItemDecoration(new DividerLine(DividerLine.VERTICAL, 2, 0xFFDDDDDD));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.addOnScrollListener(new OnVerticalScrollListener() {
             @Override
@@ -62,6 +88,8 @@ public class CommentActivity extends FragmentActivity implements RefreshLayout.O
                 onFooterRefresh();
             }
         });
+
+        mCommentHelper = new CommentHelper((View) findViewById(R.id.reply_form), this);
 
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -118,7 +146,7 @@ public class CommentActivity extends FragmentActivity implements RefreshLayout.O
 
     @Override
     public Loader<AsyncTaskLoader.LoaderResult<?>> onCreateLoader(int id, Bundle args) {
-        AsyncTaskLoader mLoader = new CommentListLoader(this, mAnswerID, mPage);
+        AsyncTaskLoader mLoader = new CommentListLoader(this, 1, mPage); //TODO 这里好像有问题
         return mLoader;
     }
 
@@ -162,5 +190,37 @@ public class CommentActivity extends FragmentActivity implements RefreshLayout.O
     @Override
     public void onLoaderReset(Loader<AsyncTaskLoader.LoaderResult<?>> loader) {
 
+    }
+
+    @Override
+    public void onReply(CharSequence content) {
+        String url = OkHttpManager.API_ADD_COMMENT;
+        Map<String, String> body = new HashMap<String, String>();
+        body.put("answer_id", String.valueOf(1)); //TODO 这里好像有问题
+        body.put("comment_content", String.valueOf(content));
+        body.put("replyee_id", "1"); //TODO 暂时都设为1，以后统一改
+
+        OkHttpManager.DataCallBack callback = new OkHttpManager.DataCallBack() {
+            @Override
+            public void requestFailure(Request request, IOException e) {
+                Toast.makeText(getApplicationContext(), "评论失败", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void requestSuccess(String result) throws Exception {
+                CommentResult commentResult = GsonUtil.GsonToBean(result,CommentResult.class);
+                int status = commentResult.getStatus();
+                int errorCode = commentResult.getError_code();
+                if(status==1){
+                    mCommentHelper.setContent("");
+
+                    mLayout.setHeaderRefreshing(true);
+                    onHeaderRefresh();
+                }else{
+                    ErrorNotification.errorNotify(mContext, errorCode);
+                }
+            }
+        };
+        OkHttpManager.postAsync(url, body, callback, OkHttpManager.X_ACCESS_TOKEN, OkHttpManager.TEMP_X_ACCESS_TOKEN);
     }
 }

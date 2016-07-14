@@ -114,8 +114,6 @@ public class SignupActivity extends AppCompatActivity {
         };
         OkHttpManager.postAsyncNoHeader(url, body, callback);
 
-        // TODO: Implement your own signup logic here.
-
 //        new android.os.Handler().postDelayed(
 //                new Runnable() {
 //                    public void run() {

@@ -41,6 +41,7 @@ public class OkHttpManager {
     public static final String API_ANSWER_DOWN = BASE_URL + "/api/answer/down";
     public static final String API_ANSWER_MARK = BASE_URL + "/api/answer/collect";
     public static final String API_QUESTION_FOCUS = BASE_URL + "/api/question/focus";
+    public static final String API_ADD_COMMENT = BASE_URL + "/api/answer/comment";
 
     public static final String X_ACCESS_TOKEN = "x-access-token";
     public static final String TEMP_X_ACCESS_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZXhwIjoxNDY0MDE0NTg4ODE1fQ.6ney0SK3o5FJehcZNMmBOVDrV22tX_kbmgrJUxsLTsE";

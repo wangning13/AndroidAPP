@@ -66,8 +66,8 @@ public class DataRequestHelper {
 
     public static Comment getComments(long answerID, int page) {
         List<BasicNameValuePair> paramList = new LinkedList<BasicNameValuePair>();
-        paramList.add(new BasicNameValuePair(ANSWER_ID_PARAM, "1"));
-        paramList.add(new BasicNameValuePair(PAGE_PARAM, page+""));
+        paramList.add(new BasicNameValuePair(ANSWER_ID_PARAM, String.valueOf(answerID)));
+        paramList.add(new BasicNameValuePair(PAGE_PARAM, String.valueOf(page)));
         String url = OkHttpManager2.attachHttpGetParams(API_GET_COMMENTS, paramList);
         Log.d("GET1", url);
         final String result = OkHttpManager2.getSyncString(url, X_ACCESS_TOKEN, TEMP_X_ACCESS_TOKEN);

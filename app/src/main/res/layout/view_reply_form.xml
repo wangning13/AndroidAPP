@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:animateLayoutChanges="false"
+                tools:gravity="bottom"
+                tools:elevation="@dimen/appbar_elevation"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+    <!-- used as border -->
+    <View
+        android:id="@+id/border"
+        android:background="?colorPrimary"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"/>
+
+    <EditText
+        android:layout_width="0dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_toStartOf="@+id/submit"
+        android:layout_toLeftOf="@+id/submit"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginStart="4dp"
+        android:maxLines="4"
+        android:hint="添加评论"
+        android:inputType="textMultiLine"
+        android:id="@+id/content"
+        tools:ignore="LabelFor"/>
+
+    <ImageButton
+        android:id="@+id/submit"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignBottom="@id/content"
+        android:background="?selectableItemBackgroundBorderless"
+        android:contentDescription="评论"
+        android:src="@drawable/ic_menu_send"
+        android:layout_marginEnd="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_width="@dimen/min_touch_size"
+        android:layout_height="@dimen/min_touch_size"/>
+</RelativeLayout>

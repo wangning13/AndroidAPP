@@ -10,6 +10,9 @@ import android.widget.TextView;
 import com.akari.quark.R;
 import com.akari.quark.entity.comment.CommentMessage;
 import com.akari.quark.ui.adapter.baseAdapter.NewRecyclerViewAdapter;
+import com.akari.quark.util.DateUtil;
+
+import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -72,17 +75,21 @@ public class CommentRecyclerViewAdapter extends NewRecyclerViewAdapter<CommentRe
     }
 
     public static class NormalViewHolder extends RecyclerView.ViewHolder {
-//        private final TextView mTitle;
+        private final TextView mUsername;
         private final TextView mContent;
-//        private final TextView mTopic;
+        private final TextView mTime;
 
         public NormalViewHolder(View itemView) {
             super(itemView);
-            mContent = (TextView) itemView.findViewById(R.id.id_num);
+            mContent = (TextView) itemView.findViewById(R.id.content);
+            mUsername = (TextView) itemView.findViewById(R.id.username_tv);
+            mTime = (TextView) itemView.findViewById(R.id.time_tv);
         }
 
         public void fillData(CommentMessage comment) {
+            mUsername.setText(comment.getReplyer_name());
             mContent.setText(comment.getContent());
+            mTime.setText(DateUtil.formatUnixTime(comment.getCreate_time()));
         }
     }
 }
