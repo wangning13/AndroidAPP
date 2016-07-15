@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="single">
+    <group
+        android:id="@+id/nav_module_explore"
+        android:checkableBehavior="single">
+
         <item
             android:id="@+id/nav_find"
             android:icon="@drawable/guanzhu"
@@ -10,30 +13,38 @@
             android:id="@+id/nav_message"
             android:icon="@mipmap/xiaoxi"
             android:title="消息" />
+
     </group>
 
-    <group android:checkableBehavior="single">
+    <group
+        android:id="@+id/nav_module_info"
+        android:checkableBehavior="single">
+
         <item
-            android:id="@+id/nav_care_field"
+            android:id="@+id/nav_focus"
             android:icon="@mipmap/ic1"
-            android:title="我关注的领域" />
+            android:title="我的关注" />
         <item
-            android:id="@+id/nav_care_question"
+            android:id="@+id/nav_question"
             android:icon="@mipmap/ic2"
-            android:title="我关注的问题" />
+            android:title="我的提问" />
         <item
-            android:id="@+id/nav_raise_question"
+            android:id="@+id/nav_answer"
             android:icon="@mipmap/ic3"
-            android:title="我提出的问题" />
-        <item
-            android:id="@+id/nav_answer_question"
-            android:icon="@mipmap/ic4"
-            android:title="我回答的问题" />
-        <item
-            android:id="@+id/nav_logout"
-            android:icon="@mipmap/ic4"
-            android:title="注销" />
+            android:title="我的回答" />
 
     </group>
+
+    <group
+        android:id="@+id/nav_module_tool"
+        android:checkableBehavior="single">
+
+    <item
+        android:id="@+id/nav_logout"
+        android:icon="@mipmap/ic4"
+        android:title="注销" />
+
+    </group>
+
 
 </menu>

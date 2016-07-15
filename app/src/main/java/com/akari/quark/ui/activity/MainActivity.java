@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.akari.quark.R;
+import com.akari.quark.ui.fragment.FocusFragment;
 import com.akari.quark.ui.fragment.MainFragment;
 
 public class MainActivity extends AppCompatActivity
@@ -130,7 +131,13 @@ public class MainActivity extends AppCompatActivity
                 Intent intent2 = new Intent(context, LoginActivity.class);
                 context.startActivity(intent2);
                 break;
+            case R.id.nav_focus:
+                toolbar.setTitle("关注");
+                fragmentManager.beginTransaction().replace(R.id.content, new FocusFragment()).commit();
+                drawerLayout.closeDrawer(navigationView);
+                break;
             default:
+                drawerLayout.closeDrawer(navigationView);
                 break;
 
         }
