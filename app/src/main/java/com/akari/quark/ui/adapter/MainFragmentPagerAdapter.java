@@ -1,20 +1,17 @@
 package com.akari.quark.ui.adapter;
 
-import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.akari.quark.ui.fragment.MainFragment;
+import com.akari.quark.ui.fragment.MainSubFragment;
 
 public class MainFragmentPagerAdapter extends FragmentPagerAdapter {
     final int PAGE_COUNT = 2;
     private String tabTitles[] = new String[]{"提问", "回答"};
-    private Context context;
 
-    public MainFragmentPagerAdapter(FragmentManager fm, Context context) {
+    public MainFragmentPagerAdapter(FragmentManager fm) {
         super(fm);
-        this.context = context;
     }
 
     @Override
@@ -24,7 +21,7 @@ public class MainFragmentPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return MainFragment.newInstance(position + 1);
+        return MainSubFragment.newInstance(position + 1);
     }
 
     @Override

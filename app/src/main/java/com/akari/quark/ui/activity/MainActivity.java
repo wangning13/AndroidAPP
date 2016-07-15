@@ -6,9 +6,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.TabLayout;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -18,11 +17,13 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.akari.quark.R;
-import com.akari.quark.ui.adapter.MainFragmentPagerAdapter;
+import com.akari.quark.ui.fragment.MainFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
+    DrawerLayout drawerLayout;
+    NavigationView navigationView;
+    FragmentManager fragmentManager;
     private Context context;
     private Toolbar toolbar;
     private SharedPreferences sharedPreferences;
@@ -32,6 +33,7 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         context = MainActivity.this;
+        fragmentManager = getSupportFragmentManager();
         init();
     }
 
@@ -42,15 +44,10 @@ public class MainActivity extends AppCompatActivity
 
     private void initView() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("发现");
         setSupportActionBar(toolbar);
 
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
-        viewPager.setAdapter(new MainFragmentPagerAdapter(getSupportFragmentManager(),
-                MainActivity.this));
-
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(viewPager);
-
+        fragmentManager.beginTransaction().replace(R.id.content, new MainFragment()).commit();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_main);
         if (fab != null) {
@@ -64,19 +61,21 @@ public class MainActivity extends AppCompatActivity
             });
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(
+                this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerToggle.syncState();
+        drawerLayout.setDrawerListener(drawerToggle);
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        assert navigationView != null;
         navigationView.setNavigationItemSelectedListener(this);
     }
 
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        assert drawer != null;
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -108,48 +107,33 @@ public class MainActivity extends AppCompatActivity
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.nav_find) {
-            drawer.closeDrawer(GravityCompat.START);
-            item.setChecked(true); // 改变item选中状态
-        } else if (id == R.id.nav_message) {
-            drawer.closeDrawer(GravityCompat.START);
-            item.setChecked(true); // 改变item选中状态
-            Intent intent = new Intent(context, MessageActivity.class);
-            context.startActivity(intent);
-
-        } else if (id == R.id.nav_care_field) {
-            drawer.closeDrawer(GravityCompat.START);
-            item.setChecked(true); // 改变item选中状态
-        } else if (id == R.id.nav_care_question) {
-            drawer.closeDrawer(GravityCompat.START);
-            item.setChecked(true); // 改变item选中状态
-
-        } else if (id == R.id.nav_raise_question) {
-            drawer.closeDrawer(GravityCompat.START);
-            item.setChecked(true); // 改变item选中状态
-
-        } else if (id == R.id.nav_answer_question) {
-            drawer.closeDrawer(GravityCompat.START);
-            item.setChecked(true); // 改变item选中状态
-
-        }else if (id == R.id.nav_logout) {
-            drawer.closeDrawer(GravityCompat.START);
-            MainActivity.this.finish();
-            item.setChecked(true); // 改变item选中状态
-            sharedPreferences = getSharedPreferences("userinfo", Context.MODE_WORLD_READABLE);
-            sharedPreferences.edit().putBoolean("ischecked",false).commit();
-            Intent intent = new Intent(context, LoginActivity.class);
-            context.startActivity(intent);
+    public boolean onNavigationItemSelected(MenuItem menuItem) {
+        menuItem.setChecked(true);
+        switch (menuItem.getItemId()) {
+            case R.id.nav_find:
+                toolbar.setTitle("发现");
+                fragmentManager.beginTransaction().replace(R.id.content, new MainFragment()).commit();
+                drawerLayout.closeDrawer(navigationView);
+                break;
+            case R.id.nav_message:
+                toolbar.setTitle("消息");
+                Intent intent = new Intent(context, MessageActivity.class);
+                context.startActivity(intent);
+                drawerLayout.closeDrawer(navigationView);
+                break;
+            case R.id.nav_logout:
+                drawerLayout.closeDrawer(navigationView);
+                MainActivity.this.finish();
+                menuItem.setChecked(true); // 改变item选中状态
+                sharedPreferences = getSharedPreferences("userinfo", Context.MODE_WORLD_READABLE);
+                sharedPreferences.edit().putBoolean("ischecked", false).apply();
+                Intent intent2 = new Intent(context, LoginActivity.class);
+                context.startActivity(intent2);
+                break;
+            default:
+                break;
 
         }
-
-
-
         return true;
     }
 }
