@@ -10,10 +10,9 @@
         android:src="@drawable/head"
         android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
-        android:padding="11dp"
-        android:layout_marginTop="1dp"
-        android:layout_height="48dp"
-        android:layout_width="48dp"
+        android:layout_marginTop="12dp"
+        android:layout_height="24dp"
+        android:layout_width="24dp"
         android:contentDescription="Avatar"
         app:shape_mode="circle" />
 
@@ -24,7 +23,7 @@
         android:layout_toEndOf="@id/avatar_img"
         android:layout_toRightOf="@id/avatar_img"
         tools:text="Username"
-        android:layout_marginLeft="4dp"
+        android:layout_marginLeft="12dp"
         android:layout_marginRight="4dp"
         android:layout_marginTop="12dp"
         style="@style/AppTheme.Topic.Username"/>

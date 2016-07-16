@@ -15,9 +15,12 @@ import android.widget.Toast;
 import com.akari.quark.R;
 import com.akari.quark.entity.login.Login;
 import com.akari.quark.network.OkHttpManager;
+import com.akari.quark.ui.tool.ErrorNotification;
 import com.akari.quark.util.GsonUtil;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import okhttp3.Request;
 
@@ -91,7 +94,11 @@ public class LoginActivity extends AppCompatActivity {
 //        progressDialog.setMessage("Authenticating...");
 //        progressDialog.show();
 
-        String url = OkHttpManager.API_LOGIN+"?mail="+email+"&password="+pwd;
+        String url = OkHttpManager.API_LOGIN;
+        Map<String, String> body = new HashMap<String, String>();
+        body.put("mail", email);
+        body.put("password", pwd);
+
         OkHttpManager.DataCallBack dataCallBack = new OkHttpManager.DataCallBack() {
             @Override
             public void requestFailure(Request request, IOException e) {
@@ -115,17 +122,12 @@ public class LoginActivity extends AppCompatActivity {
                     sharedPreferences.edit().putString(TOKEN,token).commit();
                     finish();
                 }else {
-                    if(errorCode.equals("2002")){
-                        Toast.makeText(context,"密码错误",Toast.LENGTH_SHORT).show();
-                    }
-                    if(errorCode.equals("2004")){
-                        Toast.makeText(context,"该账户不存在",Toast.LENGTH_SHORT).show();
-                    }
+                    ErrorNotification.errorNotify(context, Integer.parseInt(errorCode));
                 }
 
             }
         };
-        OkHttpManager.getAsyncNoHeader(url,dataCallBack);
+        OkHttpManager.postAsyncNoHeader(url, body, dataCallBack);
 
 //        new android.os.Handler().postDelayed(
 //                new Runnable() {

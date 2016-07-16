@@ -50,6 +50,7 @@
     <style name="AppTheme.Topic.Username" parent="TextAppearance.AppCompat.Subhead">
         <item name="android:textSize">14sp</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/primary_darker</item>
     </style>
 
     <style name="AppTheme.Topic.Secondary" parent="TextAppearance.AppCompat.Caption">
@@ -62,6 +63,7 @@
     </style>
 
     <style name="AppTheme.Topic.Content" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:textSize">14sp</item>
         <item name="android:lineSpacingMultiplier">1.2</item>
     </style>
 

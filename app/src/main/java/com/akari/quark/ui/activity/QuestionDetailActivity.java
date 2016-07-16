@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -26,6 +27,7 @@ import com.akari.quark.entity.questionDetail.Message;
 import com.akari.quark.entity.questionDetail.QuestionDetail;
 import com.akari.quark.network.OkHttpManager;
 import com.akari.quark.ui.adapter.QuestionDetailRecycleViewAdapter;
+import com.akari.quark.ui.view.DividerLine;
 import com.akari.quark.util.GsonUtil;
 import com.hippo.refreshlayout.RefreshLayout;
 
@@ -87,6 +89,8 @@ public class QuestionDetailActivity extends AppCompatActivity implements Refresh
         mRefreshlayout.setFooterColorSchemeResources(android.R.color.holo_blue_bright,
                 android.R.color.holo_green_light, android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
+        mRecyclerView.addItemDecoration(new DividerLine(DividerLine.VERTICAL, 3, 0xFFDDDDDD));
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRefreshlayout.setOnRefreshListener(this);
         mLinearLayoutManager = new LinearLayoutManager(this);
 

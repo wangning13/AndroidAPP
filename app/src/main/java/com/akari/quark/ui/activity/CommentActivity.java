@@ -169,21 +169,24 @@ public class CommentActivity extends AppCompatActivity implements RefreshLayout.
             }
         } else {
             mLayout.setFooterRefreshing(false);
-            if (data.hasException()) {
-                Toast.makeText(mContext, "无法完成加载，请检查网络...", Toast.LENGTH_SHORT).show();
-            } else if (data.mResult == null){
-                Toast.makeText(mContext, "没有更多了...", Toast.LENGTH_SHORT).show();
-                mPage--;
-            } else {
-                int pre;
-                Comment comment = (Comment) data.mResult;
-                if (comment.getStatus() == 1) {
-                    pre = mAdapter.addDataSource(comment.getMessageList());
-                    mRecyclerView.smoothScrollToPosition(pre);
-                } else {
-                    ErrorNotification.errorNotify(mContext, comment.getError_code());
-                }
-            }
+
+            Toast.makeText(mContext, "没有更多了...", Toast.LENGTH_SHORT).show();
+
+//            if (data.hasException()) {
+//                Toast.makeText(mContext, "无法完成加载，请检查网络...", Toast.LENGTH_SHORT).show();
+//            } else if (data.mResult == null){
+//                Toast.makeText(mContext, "没有更多了...", Toast.LENGTH_SHORT).show();
+//                mPage--;
+//            } else {
+//                int pre;
+//                Comment comment = (Comment) data.mResult;
+//                if (comment.getStatus() == 1) {
+//                    pre = mAdapter.addDataSource(comment.getMessageList());
+//                    mRecyclerView.smoothScrollToPosition(pre);
+//                } else {
+//                    ErrorNotification.errorNotify(mContext, comment.getError_code());
+//                }
+//            }
         }
     }
 

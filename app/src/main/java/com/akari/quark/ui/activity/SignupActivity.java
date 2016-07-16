@@ -16,6 +16,7 @@ import com.akari.quark.R;
 import com.akari.quark.data.DataPostHelper;
 import com.akari.quark.entity.login.Login;
 import com.akari.quark.network.OkHttpManager;
+import com.akari.quark.ui.tool.ErrorNotification;
 import com.akari.quark.util.GsonUtil;
 
 import java.io.IOException;
@@ -103,12 +104,7 @@ public class SignupActivity extends AppCompatActivity {
                 if(status==1){
                     onSignupSuccess();
                 }else{
-                    if(errorCode.equals("2000")){
-                        Toast.makeText(context,"邮箱错误",Toast.LENGTH_SHORT).show();
-                    }
-                    if(errorCode.equals("2001")){
-                        Toast.makeText(context,"该邮箱已存在",Toast.LENGTH_SHORT).show();
-                    }
+                    ErrorNotification.errorNotify(context, Integer.parseInt(errorCode));
                 }
             }
         };
