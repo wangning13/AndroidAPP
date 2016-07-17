@@ -18,9 +18,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.akari.quark.R;
-import com.akari.quark.entity.answerDetail.AnswerDetail;
-import com.akari.quark.entity.answerDetail.Message;
-import com.akari.quark.entity.answerDetail.Writer;
+import com.akari.quark.entity.answerdetail.AnswerDetail;
+import com.akari.quark.entity.answerdetail.Message;
+import com.akari.quark.entity.answerdetail.Writer;
 import com.akari.quark.entity.post.Post;
 import com.akari.quark.network.OkHttpManager;
 import com.akari.quark.util.GsonUtil;

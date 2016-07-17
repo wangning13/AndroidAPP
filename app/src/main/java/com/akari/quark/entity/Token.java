@@ -8,20 +8,19 @@ public class Token {
 
     @SerializedName("token")
     @Expose
-    private String token;
+    public static String token;
 
     /**
      * @return The token
      */
-    public String getToken() {
+    public static String getToken() {
         return token;
     }
 
     /**
      * @param token The token
      */
-    public void setToken(String token) {
-        this.token = token;
+    public static void setToken(String token) {
+        Token.token = token;
     }
-
 }

@@ -306,6 +306,7 @@ public class QuestionDetailActivity extends AppCompatActivity implements Refresh
             public void run() {
                 mRefreshlayout.setFooterRefreshing(false);
                 mPage++;
+
 //                Log.v("QuestionDetail",mPage);
             }
         }, 0);
