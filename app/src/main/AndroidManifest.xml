@@ -25,6 +25,8 @@
         <activity android:name=".ui.activity.CreatQuestionActivity" />
         <activity android:name=".ui.activity.AnswerDetailActivity" />
         <activity android:name=".ui.activity.MessageActivity" />
+        <activity android:name=".ui.activity.CommentActivity" />
+        <activity android:name=".ui.activity.FollowActivity" />
         <activity
             android:name=".ui.activity.LoginActivity"
             android:theme="@style/AppTheme.Login" />
@@ -34,7 +36,6 @@
         <activity
             android:name=".ui.activity.EditorActivity"
             android:configChanges="orientation|keyboardHidden|screenSize" />
-        <activity android:name=".ui.activity.CommentActivity"></activity>
     </application>
 
 </manifest>

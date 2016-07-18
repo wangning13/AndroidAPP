@@ -15,7 +15,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -80,11 +83,32 @@ public class MainActivity extends AppCompatActivity
         mUsername = (TextView) headerView.findViewById(R.id.header_username);
         mIntroduction = (TextView) headerView.findViewById(R.id.header_introduction);
 
+        ViewGroup followee = (ViewGroup) headerView.findViewById(R.id.followee);
+        ViewGroup follower = (ViewGroup) headerView.findViewById(R.id.follower);
+
+        followee.setOnClickListener(new OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, FollowActivity.class);
+                intent.putExtra("followType", FollowActivity.FollowType.Followee.name());
+                startActivity(intent);
+            }
+        });
+
+        follower.setOnClickListener(new OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, FollowActivity.class);
+                intent.putExtra("followType", FollowActivity.FollowType.Follower.name());
+                startActivity(intent);
+            }
+        });
+
         fragmentManager.beginTransaction().replace(R.id.content, new MainFragment()).commit();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_main);
         if (fab != null) {
-            fab.setOnClickListener(new View.OnClickListener() {
+            fab.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View view) {
 //                    Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show();

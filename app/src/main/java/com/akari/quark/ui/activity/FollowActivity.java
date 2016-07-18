@@ -3,69 +3,67 @@ package com.akari.quark.ui.activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.Toast;
 
 import com.akari.quark.R;
-import com.akari.quark.entity.comment.Comment;
-import com.akari.quark.entity.comment.CommentResult;
-import com.akari.quark.network.OkHttpManager;
-import com.akari.quark.ui.adapter.CommentRecyclerViewAdapter;
+import com.akari.quark.entity.follow.FollowMessage;
+import com.akari.quark.ui.adapter.FollowRecyclerViewAdapter;
 import com.akari.quark.ui.adapter.baseAdapter.NewRecyclerViewAdapter;
-import com.akari.quark.ui.helper.CommentHelper;
 import com.akari.quark.ui.listener.OnVerticalScrollListener;
-import com.akari.quark.ui.loader.AsyncTaskLoader;
-import com.akari.quark.ui.loader.CommentListLoader;
-import com.akari.quark.ui.tool.ErrorNotification;
 import com.akari.quark.ui.view.DividerLine;
-import com.akari.quark.util.GsonUtil;
 import com.hippo.refreshlayout.RefreshLayout;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
-import okhttp3.Request;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FollowActivity extends AppCompatActivity implements RefreshLayout.OnRefreshListener {
     private static final String TAG = FollowActivity.class.getSimpleName();
+    public static final FollowType UNKNOWN = FollowType.Unknown;
 
     private int mPage;
     private long mUserID;
 
     private Context mContext;
-    private NewRecyclerViewAdapter<CommentRecyclerViewAdapter.NormalViewHolder> mAdapter;
+    private NewRecyclerViewAdapter<FollowRecyclerViewAdapter.NormalViewHolder> mAdapter;
     private Toolbar mToolbar;
     private RefreshLayout mLayout;
     private RecyclerView mRecyclerView;
-    private FollowType followType;
+    private FollowType mFollowType;
 
     enum FollowType {
-        Followee, Follower
-    }
-
-    public FollowActivity(FollowType followType){
-        this.followType = followType;
+        Followee, Follower, Unknown
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_comment);
+        setContentView(R.layout.activity_followee_follower);
 
         mContext = FollowActivity.this;
         mPage = 1;
         mUserID = getIntent().getLongExtra("userID", 0);
 
-        mToolbar = (Toolbar)findViewById(R.id.comment_toolbar);
+        mFollowType = FollowType.valueOf(getIntent().getStringExtra("followType"));
+
+        mToolbar = (Toolbar) findViewById(R.id.follow_toolbar);
+        assert mToolbar != null;
+        switch (mFollowType){
+            case Followee:
+                mToolbar.setTitle("我关注的人");
+                break;
+            case Follower:
+                mToolbar.setTitle("关注我的人");
+                break;
+            default:
+                break;
+        }
         setSupportActionBar(mToolbar);
+
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,7 +71,8 @@ public class FollowActivity extends AppCompatActivity implements RefreshLayout.O
             }
         });
 
-        mLayout = (RefreshLayout) findViewById(R.id.comment_refresh_layout);
+        mLayout = (RefreshLayout) findViewById(R.id.follow_refresh_layout);
+        assert mLayout != null;
         mLayout.setHeaderColorSchemeResources(android.R.color.holo_blue_bright,
                 android.R.color.holo_green_light, android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
@@ -82,10 +81,10 @@ public class FollowActivity extends AppCompatActivity implements RefreshLayout.O
                 android.R.color.holo_red_light);
         mLayout.setOnRefreshListener(this);
 
-        mRecyclerView = (RecyclerView) mLayout.findViewById(R.id.comment_list);
+        mRecyclerView = (RecyclerView) mLayout.findViewById(R.id.follow_list);
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        mRecyclerView.setAdapter(mAdapter = new CommentRecyclerViewAdapter(mContext));
+        mRecyclerView.setAdapter(mAdapter = new FollowRecyclerViewAdapter(mContext));//TODO 以后要分类
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.addItemDecoration(new DividerLine(DividerLine.VERTICAL, 2, 0xFFDDDDDD));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -120,11 +119,24 @@ public class FollowActivity extends AppCompatActivity implements RefreshLayout.O
     public void onHeaderRefresh() {
         mPage = 1;
 
+        List<FollowMessage> followMessageList = new ArrayList<>();
+        FollowMessage followMessage = new FollowMessage();
+        followMessage.setId(1024);
+        followMessage.setIntroduction("一个未解之谜，巴拉拉小魔仙");
+        followMessage.setName("彭定康");
+        for (int i = 0; i < 10; i++) {
+            followMessageList.add(followMessage);
+        }
+        mAdapter.setDataSource(followMessageList);
+
         mRecyclerView.smoothScrollToPosition(0);
+
+        mLayout.setHeaderRefreshing(false);
     }
 
     @Override
     public void onFooterRefresh() {
-        mPage++;
+//        mPage++;
+        mLayout.setFooterRefreshing(false);
     }
 }

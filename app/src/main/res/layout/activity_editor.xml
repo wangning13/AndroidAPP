@@ -13,7 +13,7 @@
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
         app:navigationIcon="?attr/homeAsUpIndicator"
-        android:theme="@style/AppTheme.AppBarOverlay"></android.support.v7.widget.Toolbar>
+        android:theme="@style/AppTheme.AppBarOverlay"/>
 
     <fragment
         android:id="@+id/postEditor"

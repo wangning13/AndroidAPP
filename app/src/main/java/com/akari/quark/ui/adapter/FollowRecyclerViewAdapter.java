@@ -8,9 +8,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.akari.quark.R;
-import com.akari.quark.entity.comment.CommentMessage;
+import com.akari.quark.entity.follow.FollowMessage;
 import com.akari.quark.ui.adapter.baseAdapter.NewRecyclerViewAdapter;
-import com.akari.quark.util.DateUtil;
 
 import java.util.List;
 
@@ -19,18 +18,16 @@ import java.util.List;
  */
 public class FollowRecyclerViewAdapter extends NewRecyclerViewAdapter<FollowRecyclerViewAdapter.NormalViewHolder> {
     private LayoutInflater mLayoutInflater;
-    private Context mContext;
-    private List<CommentMessage> mData;
+    private List<FollowMessage> mData;
 
     public FollowRecyclerViewAdapter(Context context) {
-        mContext = context;
         mLayoutInflater = LayoutInflater.from(context);
         setHasStableIds(true);
     }
 
     @Override
     public NormalViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new NormalViewHolder(mLayoutInflater.inflate(R.layout.item_comment, parent, false));
+        return new NormalViewHolder(mLayoutInflater.inflate(R.layout.item_user, parent, false));
     }
 
     /**
@@ -39,8 +36,8 @@ public class FollowRecyclerViewAdapter extends NewRecyclerViewAdapter<FollowRecy
      */
     @Override
     public void onBindViewHolder(NormalViewHolder holder, final int position) {
-        final CommentMessage comment = mData.get(position);
-        holder.fillData(comment);
+        final FollowMessage follow = mData.get(position);
+        holder.fillData(follow);
 //        holder.setListener(mContext, comment);
     }
 
@@ -58,7 +55,7 @@ public class FollowRecyclerViewAdapter extends NewRecyclerViewAdapter<FollowRecy
     public int addDataSource(List list) {
         int pre = mData.size();
 
-        mData.addAll((List<CommentMessage>) list);
+        mData.addAll((List<FollowMessage>) list);
 
         notifyItemRangeInserted(pre, list.size());
 
@@ -67,27 +64,24 @@ public class FollowRecyclerViewAdapter extends NewRecyclerViewAdapter<FollowRecy
 
     @Override
     public void setDataSource(List list) {
-        mData = (List<CommentMessage>) list;
+        mData = (List<FollowMessage>) list;
 
         notifyDataSetChanged();
     }
 
     public static class NormalViewHolder extends RecyclerView.ViewHolder {
         private final TextView mUsername;
-        private final TextView mContent;
-        private final TextView mTime;
+        private final TextView mIntroduction;
 
         public NormalViewHolder(View itemView) {
             super(itemView);
-            mContent = (TextView) itemView.findViewById(R.id.content);
-            mUsername = (TextView) itemView.findViewById(R.id.username_tv);
-            mTime = (TextView) itemView.findViewById(R.id.time_tv);
+            mUsername = (TextView) itemView.findViewById(R.id.username);
+            mIntroduction = (TextView) itemView.findViewById(R.id.introduction);
         }
 
-        public void fillData(CommentMessage comment) {
-            mUsername.setText(comment.getReplyer_name());
-            mContent.setText(comment.getContent());
-            mTime.setText(DateUtil.formatUnixTime(comment.getCreate_time()));
+        public void fillData(FollowMessage followMessage) {
+            mUsername.setText(followMessage.getName());
+            mIntroduction.setText(followMessage.getIntroduction());
         }
     }
 }

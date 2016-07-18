@@ -15,7 +15,7 @@ public class Follow {
      */
 
     private int status;
-    private Object error_code;
+    private int error_code;
     /**
      * id : 12
      * img_url : default.png
@@ -34,11 +34,11 @@ public class Follow {
         this.status = status;
     }
 
-    public Object getError_code() {
+    public int getError_code() {
         return error_code;
     }
 
-    public void setError_code(Object error_code) {
+    public void setError_code(int error_code) {
         this.error_code = error_code;
     }
 
@@ -48,44 +48,5 @@ public class Follow {
 
     public void setFollowList(List<FollowMessage> followList) {
         this.followList = followList;
-    }
-
-    public static class FollowMessage {
-        private long id;
-        private String img_url;
-        private String name;
-        private Object introduction;
-
-        public long getId() {
-            return id;
-        }
-
-        public void setId(long id) {
-            this.id = id;
-        }
-
-        public String getImg_url() {
-            return img_url;
-        }
-
-        public void setImg_url(String img_url) {
-            this.img_url = img_url;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public Object getIntroduction() {
-            return introduction;
-        }
-
-        public void setIntroduction(Object introduction) {
-            this.introduction = introduction;
-        }
     }
 }

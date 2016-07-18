@@ -15,15 +15,19 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.akari.quark.R;
+import com.akari.quark.entity.follow.FollowMessage;
 import com.akari.quark.ui.adapter.AnswerRecyclerViewAdapter;
 import com.akari.quark.ui.adapter.AskRecyclerViewAdapter;
+import com.akari.quark.ui.adapter.FollowRecyclerViewAdapter;
 import com.akari.quark.ui.adapter.baseAdapter.NewRecyclerViewAdapter;
 import com.akari.quark.ui.listener.OnVerticalScrollListener;
 import com.akari.quark.ui.loader.AnswersInMainListLoader;
 import com.akari.quark.ui.loader.AsksInMainListLoader;
 import com.akari.quark.ui.loader.AsyncTaskLoader;
+import com.akari.quark.ui.view.DividerLine;
 import com.hippo.refreshlayout.RefreshLayout;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class FocusSubFragment extends Fragment implements RefreshLayout.OnRefreshListener, LoaderManager.LoaderCallbacks<AsyncTaskLoader.LoaderResult<List<?>>> {
@@ -87,7 +91,8 @@ public class FocusSubFragment extends Fragment implements RefreshLayout.OnRefres
                 mRecyclerView.setAdapter(mAdapter = new AnswerRecyclerViewAdapter(mContext));
                 break;
             case 2:
-                mRecyclerView.setAdapter(mAdapter = new AskRecyclerViewAdapter(mContext));
+                mRecyclerView.setAdapter(mAdapter = new FollowRecyclerViewAdapter(mContext));
+                mRecyclerView.addItemDecoration(new DividerLine(DividerLine.VERTICAL, 2, 0xFFDDDDDD));
                 break;
         }
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -162,27 +167,57 @@ public class FocusSubFragment extends Fragment implements RefreshLayout.OnRefres
 
     @Override
     public void onLoadFinished(Loader<AsyncTaskLoader.LoaderResult<List<?>>> loader, AsyncTaskLoader.LoaderResult<List<?>> data) {
-        if (mPage == 1) {
-            mLayout.setHeaderRefreshing(false);
-            if (data.hasException() || data.mResult.isEmpty()) {
-                Toast.makeText(mContext, "无法完成加载，请检查网络...", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            mAdapter.setDataSource(data.mResult);
-        } else {
-            mLayout.setFooterRefreshing(false);
-            if (data.hasException()) {
-                return;
-            }
-            if (data.mResult.isEmpty()) {
-                Toast.makeText(mContext, "没有更多了...", Toast.LENGTH_SHORT).show();
-                mPage--;
+        if(mFragment==1){
+            if (mPage == 1) {
+                mLayout.setHeaderRefreshing(false);
+                if (data.hasException() || data.mResult.isEmpty()) {
+                    Toast.makeText(mContext, "无法完成加载，请检查网络...", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                mAdapter.setDataSource(data.mResult);
             } else {
-                int pre;
-                pre = mAdapter.addDataSource(data.mResult);
-                mRecyclerView.smoothScrollToPosition(pre);
-            }
+                mLayout.setFooterRefreshing(false);
+                if (data.hasException()) {
+                    return;
+                }
+                if (data.mResult.isEmpty()) {
+                    Toast.makeText(mContext, "没有更多了...", Toast.LENGTH_SHORT).show();
+                    mPage--;
+                } else {
+                    int pre;
+                    pre = mAdapter.addDataSource(data.mResult);
+                    mRecyclerView.smoothScrollToPosition(pre);
+                }
 //            ((LinearLayoutManager)mRecyclerView.getLayoutManager()).scrollToPositionWithOffset(0,50);
+            }
+        } else {
+            if (mPage == 1) {
+                List<FollowMessage> followMessageList = new ArrayList<>();
+                FollowMessage followMessage3 = new FollowMessage();
+                followMessage3.setId(1026);
+                followMessage3.setIntroduction("一个未解之谜，巴拉拉小魔仙");
+                followMessage3.setName("化学");
+                FollowMessage followMessage2 = new FollowMessage();
+                followMessage2.setId(1025);
+                followMessage2.setIntroduction("普通的笑最呀嘛最时尚");
+                followMessage2.setName("物理");
+                FollowMessage followMessage = new FollowMessage();
+                followMessage.setId(1024);
+                followMessage.setIntroduction("你干啥玩意儿");
+                followMessage.setName("材料");
+
+                followMessageList.add(followMessage);
+                followMessageList.add(followMessage2);
+                followMessageList.add(followMessage3);
+
+                mAdapter.setDataSource(followMessageList);
+
+                mRecyclerView.smoothScrollToPosition(0);
+
+                mLayout.setHeaderRefreshing(false);
+            } else {
+                mLayout.setFooterRefreshing(false);
+            }
         }
     }
 
