@@ -15,15 +15,24 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.akari.quark.R;
+import com.akari.quark.entity.Infomation;
 import com.akari.quark.ui.fragment.FocusFragment;
 import com.akari.quark.ui.fragment.MainFragment;
+import com.akari.quark.ui.fragment.MainSubFragment;
+import com.akari.quark.ui.fragment.QuestionsAskAndAnswerFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     DrawerLayout drawerLayout;
     NavigationView navigationView;
+    ImageView mAvatar;
+    TextView mUsername;
+    TextView mIntroduction;
     FragmentManager fragmentManager;
     private Context context;
     private Toolbar toolbar;
@@ -35,7 +44,14 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         context = MainActivity.this;
         fragmentManager = getSupportFragmentManager();
+        sharedPreferences = getSharedPreferences("userinfo", Context.MODE_WORLD_READABLE);
         init();
+    }
+
+    @Override
+    protected void onStart(){
+        super.onStart();
+//        updateUsernameAndIntroduction();
     }
 
 
@@ -45,8 +61,24 @@ public class MainActivity extends AppCompatActivity
 
     private void initView() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        assert toolbar != null;
         toolbar.setTitle("发现");
         setSupportActionBar(toolbar);
+
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(
+                this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerToggle.syncState();
+        drawerLayout.setDrawerListener(drawerToggle);
+
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        assert navigationView != null;
+        navigationView.setNavigationItemSelectedListener(this);
+
+        View headerView = navigationView.getHeaderView(0);
+        mAvatar = (ImageView) headerView.findViewById(R.id.header_avatar);
+        mUsername = (TextView) headerView.findViewById(R.id.header_username);
+        mIntroduction = (TextView) headerView.findViewById(R.id.header_introduction);
 
         fragmentManager.beginTransaction().replace(R.id.content, new MainFragment()).commit();
 
@@ -61,16 +93,6 @@ public class MainActivity extends AppCompatActivity
                 }
             });
         }
-
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(
-                this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawerToggle.syncState();
-        drawerLayout.setDrawerListener(drawerToggle);
-
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
-        assert navigationView != null;
-        navigationView.setNavigationItemSelectedListener(this);
     }
 
     @Override
@@ -126,7 +148,6 @@ public class MainActivity extends AppCompatActivity
                 drawerLayout.closeDrawer(navigationView);
                 MainActivity.this.finish();
                 menuItem.setChecked(true); // 改变item选中状态
-                sharedPreferences = getSharedPreferences("userinfo", Context.MODE_WORLD_READABLE);
                 sharedPreferences.edit().putBoolean("ischecked", false).apply();
                 Intent intent2 = new Intent(context, LoginActivity.class);
                 context.startActivity(intent2);
@@ -136,11 +157,31 @@ public class MainActivity extends AppCompatActivity
                 fragmentManager.beginTransaction().replace(R.id.content, new FocusFragment()).commit();
                 drawerLayout.closeDrawer(navigationView);
                 break;
+            case R.id.nav_question:
+                toolbar.setTitle("提问");
+                fragmentManager.beginTransaction().replace(R.id.content, QuestionsAskAndAnswerFragment.newInstance(1)).commit();
+                drawerLayout.closeDrawer(navigationView);
+                break;
+            case R.id.nav_answer:
+                toolbar.setTitle("回答");
+                fragmentManager.beginTransaction().replace(R.id.content, QuestionsAskAndAnswerFragment.newInstance(2)).commit();
+                drawerLayout.closeDrawer(navigationView);
+                break;
             default:
                 drawerLayout.closeDrawer(navigationView);
                 break;
-
         }
         return true;
+    }
+
+    private void updateUsernameAndIntroduction(){
+//        if (sharedPreferences.getBoolean("ischecked",false)){//未登陆情况
+//            Toast.makeText(context, "未登陆", Toast.LENGTH_SHORT).show();
+//            mAvatar.setVisibility(View.INVISIBLE);
+//            return;
+//        }
+        Toast.makeText(context, Infomation.getName(), Toast.LENGTH_SHORT).show();
+        mUsername.setText(Infomation.getName());
+        mIntroduction.setText(Infomation.getIntroduction());
     }
 }

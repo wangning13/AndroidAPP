@@ -68,7 +68,7 @@ public class FocusSubFragment extends Fragment implements RefreshLayout.OnRefres
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.content_main, container, false);
+        View view = inflater.inflate(R.layout.fragment_content_main, container, false);
         mLayout = (RefreshLayout) view.findViewById(R.id.swipe_container);
         mLayout.setHeaderColorSchemeResources(android.R.color.holo_blue_bright,
                 android.R.color.holo_green_light, android.R.color.holo_orange_light,

@@ -79,7 +79,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    public void login(final String email, final String pwd) {
+    private void login(final String email, final String pwd) {
         Log.d(TAG, "Login");
 
         if (!validate(email, pwd)) {
@@ -117,10 +117,10 @@ public class LoginActivity extends AppCompatActivity {
                     Intent intent = new Intent(context,MainActivity.class);
                     context.startActivity(intent);
                     //写入SharedPreference
-                    sharedPreferences.edit().putBoolean(ISCHECKED,true).commit();
-                    sharedPreferences.edit().putString(EMAIL,email).commit();
-                    sharedPreferences.edit().putString(PWD,pwd).commit();
-                    sharedPreferences.edit().putString(TOKEN,token).commit();
+                    sharedPreferences.edit().putBoolean(ISCHECKED,true).apply();
+                    sharedPreferences.edit().putString(EMAIL,email).apply();
+                    sharedPreferences.edit().putString(PWD,pwd).apply();
+                    sharedPreferences.edit().putString(TOKEN,token).apply();
                     Infomation.loadInfo(context);
                     finish();
                 }else {
@@ -168,16 +168,16 @@ public class LoginActivity extends AppCompatActivity {
         moveTaskToBack(true);
     }
 
-    public void onLoginSuccess() {
+    private void onLoginSuccess() {
         loginButton.setEnabled(true);
         finish();
     }
 
-    public void onLoginFailed() {
+    private void onLoginFailed() {
         loginButton.setEnabled(true);
     }
 
-    public boolean validate(String email, String password) {
+    private boolean validate(String email, String password) {
         boolean valid = true;
 
         if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {

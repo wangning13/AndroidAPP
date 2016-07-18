@@ -26,9 +26,9 @@ import com.hippo.refreshlayout.RefreshLayout;
 
 import java.util.List;
 
-public class MainSubFragment extends Fragment implements RefreshLayout.OnRefreshListener, LoaderManager.LoaderCallbacks<AsyncTaskLoader.LoaderResult<List<?>>> {
+public class QuestionsAskAndAnswerFragment extends Fragment implements RefreshLayout.OnRefreshListener, LoaderManager.LoaderCallbacks<AsyncTaskLoader.LoaderResult<List<?>>> {
     public static final String ARG_PAGE = "ARG_PAGE";
-    private static final String TAG = MainSubFragment.class.getSimpleName();
+    private static final String TAG = QuestionsAskAndAnswerFragment.class.getSimpleName();
 
     private int mFragment;
     private int mPage;
@@ -39,12 +39,12 @@ public class MainSubFragment extends Fragment implements RefreshLayout.OnRefresh
     private AsyncTaskLoader mLoader;
     private RecyclerView mRecyclerView;
 
-    public MainSubFragment() {
+    public QuestionsAskAndAnswerFragment() {
         // Required empty public constructor
     }
 
-    public static MainSubFragment newInstance(int page) {
-        MainSubFragment fragment = new MainSubFragment();
+    public static QuestionsAskAndAnswerFragment newInstance(int page) {
+        QuestionsAskAndAnswerFragment fragment = new QuestionsAskAndAnswerFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_PAGE, page);
         fragment.setArguments(args);
@@ -84,7 +84,7 @@ public class MainSubFragment extends Fragment implements RefreshLayout.OnRefresh
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         switch (mFragment) {
             case 1:
-                mRecyclerView.setAdapter(mAdapter = new AskRecyclerViewAdapter(mContext));
+                mRecyclerView.setAdapter(mAdapter = new AnswerRecyclerViewAdapter(mContext));
                 break;
             case 2:
                 mRecyclerView.setAdapter(mAdapter = new AnswerRecyclerViewAdapter(mContext));
@@ -151,7 +151,7 @@ public class MainSubFragment extends Fragment implements RefreshLayout.OnRefresh
     public Loader<AsyncTaskLoader.LoaderResult<List<?>>> onCreateLoader(int id, Bundle args) {
         switch (mFragment) {
             case 1:
-                mLoader = new AsksInMainListLoader(getActivity(), mPage);
+                mLoader = new AnswersInMainListLoader(getActivity(), mPage);
                 break;
             case 2:
                 mLoader = new AnswersInMainListLoader(getActivity(), mPage);
