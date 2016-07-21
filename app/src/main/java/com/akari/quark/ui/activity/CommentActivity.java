@@ -146,7 +146,7 @@ public class CommentActivity extends AppCompatActivity implements RefreshLayout.
 
     @Override
     public Loader<AsyncTaskLoader.LoaderResult<?>> onCreateLoader(int id, Bundle args) {
-        AsyncTaskLoader mLoader = new CommentListLoader(this, 1, mPage); //TODO 这里好像有问题
+        AsyncTaskLoader mLoader = new CommentListLoader(this, mAnswerID, mPage);
         return mLoader;
     }
 
@@ -199,7 +199,7 @@ public class CommentActivity extends AppCompatActivity implements RefreshLayout.
     public void onReply(CharSequence content) {
         String url = OkHttpManager.API_ADD_COMMENT;
         Map<String, String> body = new HashMap<String, String>();
-        body.put("answer_id", String.valueOf(1)); //TODO 这里好像有问题
+        body.put("answer_id", String.valueOf(mAnswerID));
         body.put("comment_content", String.valueOf(content));
         body.put("replyee_id", "1"); //TODO 暂时都设为1，以后统一改
 

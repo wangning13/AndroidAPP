@@ -48,6 +48,8 @@ public class AnswerDetailActivity extends AppCompatActivity implements NestedScr
     private Context context;
     private RefreshLayout mRefreshlayout;
 
+    private String mAnswerID;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,13 +77,13 @@ public class AnswerDetailActivity extends AppCompatActivity implements NestedScr
         mRefreshlayout.setOnRefreshListener(this);
 
         Intent intent = getIntent();
-        final String answerId = intent.getStringExtra("answerId");
+        mAnswerID = intent.getStringExtra("answerId");
         final String questionTitle = intent.getStringExtra("questionTitle");
         //创建OkHttpClient对象，用于稍后发起请求
         OkHttpClient client = new OkHttpClient();
 
         String url = OkHttpManager.API_ANSWER_DETAIL;
-        String urlDetail = OkHttpManager.attachHttpGetParam(url, "answer_id", answerId);
+        String urlDetail = OkHttpManager.attachHttpGetParam(url, "answer_id", mAnswerID);
         //根据请求URL创建一个Request对象
         Request request = new Request.
                 Builder().url(urlDetail)
@@ -445,7 +447,7 @@ public class AnswerDetailActivity extends AppCompatActivity implements NestedScr
                                         @Override
                                         public void onClick(View view) {
                                             Intent intent = new Intent(context, CommentActivity.class);
-                                            intent.putExtra("answerId", Long.parseLong(String.valueOf(answerId)));
+                                            intent.putExtra("answerID", Long.parseLong(mAnswerID));
                                             context.startActivity(intent);
                                         }
                                     });
