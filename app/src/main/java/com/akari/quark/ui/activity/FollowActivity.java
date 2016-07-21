@@ -3,27 +3,30 @@ package com.akari.quark.ui.activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Toast;
 
 import com.akari.quark.R;
-import com.akari.quark.entity.follow.FollowMessage;
+import com.akari.quark.entity.follow.Follow;
 import com.akari.quark.ui.adapter.FollowRecyclerViewAdapter;
 import com.akari.quark.ui.adapter.baseAdapter.NewRecyclerViewAdapter;
 import com.akari.quark.ui.listener.OnVerticalScrollListener;
+import com.akari.quark.ui.loader.AsyncTaskLoader;
+import com.akari.quark.ui.loader.FollowListLoader;
+import com.akari.quark.ui.tool.ErrorNotification;
 import com.akari.quark.ui.view.DividerLine;
 import com.hippo.refreshlayout.RefreshLayout;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class FollowActivity extends AppCompatActivity implements RefreshLayout.OnRefreshListener {
-    public static final FollowType UNKNOWN = FollowType.Unknown;
+public class FollowActivity extends AppCompatActivity implements RefreshLayout.OnRefreshListener, LoaderManager.LoaderCallbacks<AsyncTaskLoader.LoaderResult<?>> {
     private static final String TAG = FollowActivity.class.getSimpleName();
+
     private int mPage;
     private long mUserID;
 
@@ -113,29 +116,82 @@ public class FollowActivity extends AppCompatActivity implements RefreshLayout.O
     @Override
     public void onHeaderRefresh() {
         mPage = 1;
+        getSupportLoaderManager().restartLoader(0, null, this);
 
-        List<FollowMessage> followMessageList = new ArrayList<>();
-        FollowMessage followMessage = new FollowMessage();
-        followMessage.setId(1024);
-        followMessage.setIntroduction("一个未解之谜，巴拉拉小魔仙");
-        followMessage.setName("彭定康");
-        for (int i = 0; i < 10; i++) {
-            followMessageList.add(followMessage);
+        final Loader<?> loader = getSupportLoaderManager().getLoader(0);
+        if (loader == null) {
+            return;
         }
-        mAdapter.setDataSource(followMessageList);
+        loader.forceLoad();
 
         mRecyclerView.smoothScrollToPosition(0);
-
-        mLayout.setHeaderRefreshing(false);
     }
 
     @Override
     public void onFooterRefresh() {
-//        mPage++;
-        mLayout.setFooterRefreshing(false);
+        mPage++;
+        getSupportLoaderManager().restartLoader(0, null, this);
+
+        final Loader<?> loader = getSupportLoaderManager().getLoader(0);
+        if (loader == null) {
+            return;
+        }
+
+        loader.forceLoad();
     }
 
-    enum FollowType {
+    @Override
+    public Loader<AsyncTaskLoader.LoaderResult<?>> onCreateLoader(int id, Bundle args) {
+        AsyncTaskLoader mLoader = new FollowListLoader(this, mUserID, mPage, mFollowType); //TODO 这里好像有问题
+        return mLoader;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<AsyncTaskLoader.LoaderResult<?>> loader, AsyncTaskLoader.LoaderResult<?> data) {
+        if (mPage == 1) {
+            mLayout.setHeaderRefreshing(false);
+            if (data.hasException()) {
+                Toast.makeText(mContext, "无法完成加载，请检查网络...", Toast.LENGTH_SHORT).show();
+            } else if (data.mResult == null) {
+                Toast.makeText(mContext, "没有更多了...", Toast.LENGTH_SHORT).show();
+                mPage--;
+            } else {
+                Follow follow = (Follow) data.mResult;
+                if (follow.getStatus() == 1) {
+                    mAdapter.setDataSource(follow.getFollowList());
+                } else {
+                    ErrorNotification.errorNotify(mContext, follow.getError_code());
+                }
+            }
+        } else {
+            mLayout.setFooterRefreshing(false);
+
+            Toast.makeText(mContext, "没有更多了...", Toast.LENGTH_SHORT).show();
+
+            if (data.hasException()) {
+                Toast.makeText(mContext, "无法完成加载，请检查网络...", Toast.LENGTH_SHORT).show();
+            } else if (data.mResult == null) {
+                Toast.makeText(mContext, "没有更多了...", Toast.LENGTH_SHORT).show();
+                mPage--;
+            } else {
+                int pre;
+                Follow follow = (Follow) data.mResult;
+                if (follow.getStatus() == 1) {
+                    pre = mAdapter.addDataSource(follow.getFollowList());
+                    mRecyclerView.smoothScrollToPosition(pre);
+                } else {
+                    ErrorNotification.errorNotify(mContext, follow.getError_code());
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<AsyncTaskLoader.LoaderResult<?>> loader) {
+
+    }
+
+    public enum FollowType {
         Followee, Follower, Unknown
     }
 }

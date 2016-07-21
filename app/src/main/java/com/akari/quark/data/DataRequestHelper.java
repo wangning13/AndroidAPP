@@ -8,6 +8,7 @@ import com.akari.quark.entity.answersInMain.AnswersInMainMessage;
 import com.akari.quark.entity.asksInMain.AsksInMain;
 import com.akari.quark.entity.asksInMain.AsksInMainMessage;
 import com.akari.quark.entity.comment.Comment;
+import com.akari.quark.entity.follow.Follow;
 import com.akari.quark.network.OkHttpManager2;
 import com.akari.quark.util.GsonUtil;
 
@@ -31,6 +32,8 @@ public class DataRequestHelper {
     private static final String API_ANSWER_DETAIL = BASE_URL + "/api/answer/detail";
     private static final String API_ADD_ANSWER = BASE_URL + "/api/answer/add";
     private static final String API_GET_COMMENTS = BASE_URL + "/api/comment/list";
+    private static final String API_GET_FOLLOWEES = BASE_URL + "/api/user/followee";
+    private static final String API_GET_FOLLOWERS = BASE_URL + "/api/user/follower";
 
     private static final String MAIL_PARAM = "mail";
     private static final String PASSWORD_PARAM = "password";
@@ -73,6 +76,20 @@ public class DataRequestHelper {
         Comment comments = GsonUtil.GsonToBean(result, Comment.class);
         Log.d("GET2", url);
         return comments;
+    }
+
+    public static Follow getFollowees(long userID, int page) {
+        final String url = OkHttpManager2.attachHttpGetParam(API_GET_FOLLOWEES, "page", String.valueOf(page));
+        final String result = OkHttpManager2.getSyncString(url, X_ACCESS_TOKEN, TEMP_X_ACCESS_TOKEN);
+        Follow followees = GsonUtil.GsonToBean(result, Follow.class);
+        return followees;
+    }
+
+    public static Follow getFollowers(long userID, int page) {
+        final String url = OkHttpManager2.attachHttpGetParam(API_GET_FOLLOWERS, "page", String.valueOf(page));
+        final String result = OkHttpManager2.getSyncString(url, X_ACCESS_TOKEN, TEMP_X_ACCESS_TOKEN);
+        Follow followers = GsonUtil.GsonToBean(result, Follow.class);
+        return followers;
     }
 
     public static String getToken(String mail, String password) {
