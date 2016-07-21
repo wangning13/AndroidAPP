@@ -1,4 +1,4 @@
-package com.akari.quark.entity.answerdetail;
+package com.akari.quark.entity.answerDetail;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
