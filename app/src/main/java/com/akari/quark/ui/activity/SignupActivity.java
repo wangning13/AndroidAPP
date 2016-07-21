@@ -2,7 +2,6 @@ package com.akari.quark.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -13,7 +12,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.akari.quark.R;
-import com.akari.quark.data.DataPostHelper;
 import com.akari.quark.entity.login.Login;
 import com.akari.quark.network.OkHttpManager;
 import com.akari.quark.ui.tool.ErrorNotification;
@@ -27,22 +25,20 @@ import okhttp3.Request;
 
 public class SignupActivity extends AppCompatActivity {
     private static final String TAG = "SignupActivity";
-    private Context context;
-
-    private String EMAIL = "";
-    private String PWD = "";
-
     EditText _codeText;
     EditText _emailText;
     EditText _passwordText;
     Button _signupButton;
     TextView _loginLink;
-    
+    private Context context;
+    private String EMAIL = "";
+    private String PWD = "";
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
-        context=SignupActivity.this;
+        context = SignupActivity.this;
 
         _codeText = (EditText) findViewById(R.id.input_code);
         _emailText = (EditText) findViewById(R.id.input_email);
@@ -97,13 +93,13 @@ public class SignupActivity extends AppCompatActivity {
 
             @Override
             public void requestSuccess(String result) throws Exception {
-                Login login = GsonUtil.GsonToBean(result,Login.class);
+                Login login = GsonUtil.GsonToBean(result, Login.class);
                 Long status = login.getStatus();
                 String errorCode = login.getErrorCode();
                 com.akari.quark.entity.login.Message message = login.getMessage();
-                if(status==1){
+                if (status == 1) {
                     onSignupSuccess();
-                }else{
+                } else {
                     ErrorNotification.errorNotify(context, Integer.parseInt(errorCode));
                 }
             }

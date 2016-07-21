@@ -85,8 +85,8 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginLeft="10dp">
+            android:layout_marginLeft="10dp"
+            android:orientation="horizontal">
 
             <com.akari.quark.ui.view.CircleImageView
                 android:id="@+id/imageView"
@@ -99,10 +99,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="11dp"
-                android:text="宇宙空间确实很空旷。即使像小行星带这样物质相对密集的地方，如果你驾驶飞船飞过去，看到一块小石头的概率都几乎等于零…"
                 android:maxLines="3"
-                android:textSize="15dp"
-                android:textColor="#707070" />
+                android:text="宇宙空间确实很空旷。即使像小行星带这样物质相对密集的地方，如果你驾驶飞船飞过去，看到一块小石头的概率都几乎等于零…"
+                android:textColor="#707070"
+                android:textSize="15dp" />
         </LinearLayout>
     </LinearLayout>
 

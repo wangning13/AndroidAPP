@@ -29,10 +29,12 @@ public class CommentHelper implements TextWatcher, View.OnClickListener {
     }
 
     @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+    }
 
     @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) { }
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+    }
 
     @Override
     public void afterTextChanged(Editable s) {
@@ -47,19 +49,19 @@ public class CommentHelper implements TextWatcher, View.OnClickListener {
         }
     }
 
-    public interface OnCommentListener {
-        void onReply(CharSequence content);
+    public Editable getContent() {
+        return mContent.getText();
     }
 
     public void setContent(CharSequence content) {
         mContent.setText(content);
     }
 
-    public Editable getContent() {
-        return mContent.getText();
-    }
-
     public void requestFocus() {
         mContent.requestFocus();
+    }
+
+    public interface OnCommentListener {
+        void onReply(CharSequence content);
     }
 }

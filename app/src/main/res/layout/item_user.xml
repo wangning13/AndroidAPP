@@ -15,11 +15,11 @@
 
         <com.akari.quark.ui.view.CircleImageView
             android:id="@+id/image_view"
-            android:layout_marginLeft="5dp"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
+            android:layout_marginLeft="5dp"
             android:src="@drawable/head"
             app:shape_mode="circle" />
 
@@ -41,9 +41,9 @@
 
             <TextView
                 android:id="@+id/introduction"
-                android:layout_marginTop="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:minLines="1"

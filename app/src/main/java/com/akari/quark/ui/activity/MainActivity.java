@@ -18,7 +18,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,7 +25,6 @@ import com.akari.quark.R;
 import com.akari.quark.entity.Infomation;
 import com.akari.quark.ui.fragment.FocusFragment;
 import com.akari.quark.ui.fragment.MainFragment;
-import com.akari.quark.ui.fragment.MainSubFragment;
 import com.akari.quark.ui.fragment.QuestionsAskAndAnswerFragment;
 
 public class MainActivity extends AppCompatActivity
@@ -52,7 +50,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onStart(){
+    protected void onStart() {
         super.onStart();
 //        updateUsernameAndIntroduction();
     }
@@ -86,7 +84,7 @@ public class MainActivity extends AppCompatActivity
         ViewGroup followee = (ViewGroup) headerView.findViewById(R.id.followee);
         ViewGroup follower = (ViewGroup) headerView.findViewById(R.id.follower);
 
-        followee.setOnClickListener(new OnClickListener(){
+        followee.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, FollowActivity.class);
@@ -95,7 +93,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        follower.setOnClickListener(new OnClickListener(){
+        follower.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, FollowActivity.class);
@@ -198,7 +196,7 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    private void updateUsernameAndIntroduction(){
+    private void updateUsernameAndIntroduction() {
 //        if (sharedPreferences.getBoolean("ischecked",false)){//未登陆情况
 //            Toast.makeText(context, "未登陆", Toast.LENGTH_SHORT).show();
 //            mAvatar.setVisibility(View.INVISIBLE);

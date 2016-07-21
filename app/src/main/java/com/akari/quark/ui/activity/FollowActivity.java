@@ -22,9 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FollowActivity extends AppCompatActivity implements RefreshLayout.OnRefreshListener {
-    private static final String TAG = FollowActivity.class.getSimpleName();
     public static final FollowType UNKNOWN = FollowType.Unknown;
-
+    private static final String TAG = FollowActivity.class.getSimpleName();
     private int mPage;
     private long mUserID;
 
@@ -34,10 +33,6 @@ public class FollowActivity extends AppCompatActivity implements RefreshLayout.O
     private RefreshLayout mLayout;
     private RecyclerView mRecyclerView;
     private FollowType mFollowType;
-
-    enum FollowType {
-        Followee, Follower, Unknown
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +47,7 @@ public class FollowActivity extends AppCompatActivity implements RefreshLayout.O
 
         mToolbar = (Toolbar) findViewById(R.id.follow_toolbar);
         assert mToolbar != null;
-        switch (mFollowType){
+        switch (mFollowType) {
             case Followee:
                 mToolbar.setTitle("我关注的人");
                 break;
@@ -138,5 +133,9 @@ public class FollowActivity extends AppCompatActivity implements RefreshLayout.O
     public void onFooterRefresh() {
 //        mPage++;
         mLayout.setFooterRefreshing(false);
+    }
+
+    enum FollowType {
+        Followee, Follower, Unknown
     }
 }

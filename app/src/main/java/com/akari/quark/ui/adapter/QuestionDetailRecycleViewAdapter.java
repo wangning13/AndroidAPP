@@ -34,6 +34,17 @@ public class QuestionDetailRecycleViewAdapter extends RecyclerView.Adapter<Quest
     private Context mContext;
     private LayoutInflater mLayoutInflater;
 
+    public QuestionDetailRecycleViewAdapter(Context context, Message message) {
+        this.mContext = context;
+        this.message = message;
+        answerList = message.getAnswers();
+        mLayoutInflater = LayoutInflater.from(context);
+    }
+
+    public View getHeaderView() {
+        return mHeaderView;
+    }
+
     //    public void setOnItemClickListener(OnItemClickListener listener)
 //    {
 //        this.mListener = listener;
@@ -41,17 +52,6 @@ public class QuestionDetailRecycleViewAdapter extends RecyclerView.Adapter<Quest
     public void setHeaderView(View headerView) {
         mHeaderView = headerView;
         notifyItemInserted(0);
-    }
-
-    public View getHeaderView() {
-        return mHeaderView;
-    }
-
-    public QuestionDetailRecycleViewAdapter(Context context, Message message) {
-        this.mContext = context;
-        this.message = message;
-        answerList = message.getAnswers();
-        mLayoutInflater = LayoutInflater.from(context);
     }
 
     @Override

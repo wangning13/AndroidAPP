@@ -4,16 +4,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".EditorActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".EditorActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/editor_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
-        app:navigationIcon="?attr/homeAsUpIndicator"
-        android:theme="@style/AppTheme.AppBarOverlay"/>
+        android:theme="@style/AppTheme.AppBarOverlay"
+        app:navigationIcon="?attr/homeAsUpIndicator" />
 
     <fragment
         android:id="@+id/postEditor"

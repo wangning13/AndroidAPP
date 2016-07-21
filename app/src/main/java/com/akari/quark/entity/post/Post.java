@@ -1,4 +1,3 @@
-
 package com.akari.quark.entity.post;
 
 import com.google.gson.annotations.Expose;

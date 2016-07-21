@@ -39,8 +39,8 @@
                     android:id="@+id/item_count"
                     android:layout_width="32dp"
                     android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
                     android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
                     android:layout_marginTop="3dp"
                     android:background="@drawable/corners_bg"
                     android:gravity="center"
@@ -82,11 +82,11 @@
                     android:id="@+id/answer_content1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:ellipsize="end"
                     android:gravity="top"
                     android:lineSpacingExtra="1dp"
-                    android:ellipsize="end"
-                    android:maxLines="3"
                     android:lines="3"
+                    android:maxLines="3"
                     android:textColor="#707070"
                     android:textSize="14sp" />
 

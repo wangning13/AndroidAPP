@@ -17,7 +17,6 @@ import android.widget.Toast;
 import com.akari.quark.R;
 import com.akari.quark.entity.follow.FollowMessage;
 import com.akari.quark.ui.adapter.AnswerRecyclerViewAdapter;
-import com.akari.quark.ui.adapter.AskRecyclerViewAdapter;
 import com.akari.quark.ui.adapter.FollowRecyclerViewAdapter;
 import com.akari.quark.ui.adapter.baseAdapter.NewRecyclerViewAdapter;
 import com.akari.quark.ui.listener.OnVerticalScrollListener;
@@ -167,7 +166,7 @@ public class FocusSubFragment extends Fragment implements RefreshLayout.OnRefres
 
     @Override
     public void onLoadFinished(Loader<AsyncTaskLoader.LoaderResult<List<?>>> loader, AsyncTaskLoader.LoaderResult<List<?>> data) {
-        if(mFragment==1){
+        if (mFragment == 1) {
             if (mPage == 1) {
                 mLayout.setHeaderRefreshing(false);
                 if (data.hasException() || data.mResult.isEmpty()) {

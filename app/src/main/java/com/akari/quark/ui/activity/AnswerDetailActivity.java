@@ -42,12 +42,11 @@ import okhttp3.Response;
  * Created by motoon on 2016/5/13.
  */
 public class AnswerDetailActivity extends AppCompatActivity implements NestedScrollingParent, NestedScrollingChild, RefreshLayout.OnRefreshListener {
-    private Context context;
-    private RefreshLayout mRefreshlayout;
-    public static Handler sHandler = new Handler();
     public static final String X_ACCESS_TOKEN = "x-access-token";
     public static final String TEMP_X_ACCESS_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZXhwIjoxNDY0ODUyNzE2MDExfQ.1sJDUeBZS0O1-Tjru2V05K8SJTPWB_D5weRuUEL1Upw";
-
+    public static Handler sHandler = new Handler();
+    private Context context;
+    private RefreshLayout mRefreshlayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,7 +149,7 @@ public class AnswerDetailActivity extends AppCompatActivity implements NestedScr
                                     @Override
                                     public void onClick(View v) {
                                         Intent intent = new Intent(context, QuestionDetailActivity.class);
-                                        intent.putExtra("questionId", questionId+"");
+                                        intent.putExtra("questionId", questionId + "");
                                         context.startActivity(intent);
                                     }
                                 });
@@ -485,13 +484,13 @@ public class AnswerDetailActivity extends AppCompatActivity implements NestedScr
     }
 
     @Override
-    public void setNestedScrollingEnabled(boolean enabled) {
-
+    public boolean isNestedScrollingEnabled() {
+        return false;
     }
 
     @Override
-    public boolean isNestedScrollingEnabled() {
-        return false;
+    public void setNestedScrollingEnabled(boolean enabled) {
+
     }
 
     @Override

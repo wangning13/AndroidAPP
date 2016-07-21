@@ -5,7 +5,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.akari.quark.ui.fragment.FocusSubFragment;
-import com.akari.quark.ui.fragment.MainSubFragment;
 
 public class FocusFragmentPagerAdapter extends FragmentPagerAdapter {
     final int PAGE_COUNT = 2;

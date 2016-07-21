@@ -13,14 +13,14 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
-        app:navigationIcon="?attr/homeAsUpIndicator"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:theme="@style/AppTheme.AppBarOverlay"
+        app:navigationIcon="?attr/homeAsUpIndicator">
 
     </android.support.v7.widget.Toolbar>
 
-    <ScrollView android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        xmlns:android="http://schemas.android.com/apk/res/android">
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/edit_list"
@@ -35,29 +35,29 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="18dp"
                 android:text="标题"
-                android:textColorHint="?attr/colorPrimary"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="?attr/colorPrimary" />
+                android:textColor="?attr/colorPrimary"
+                android:textColorHint="?attr/colorPrimary" />
 
             <EditText
                 android:id="@+id/newTitleText"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:layout_marginLeft="16dp"
-                android:hint="请写下你的问题标题，用问号结尾"
-                android:textSize="18sp"
                 android:background="@drawable/line_et_bg"
                 android:editable="true"
-                android:focusable="true" />
+                android:focusable="true"
+                android:hint="请写下你的问题标题，用问号结尾"
+                android:textSize="18sp" />
 
             <EditText
                 android:id="@+id/newTitleTopic"
                 android:layout_width="match_parent"
                 android:layout_height="67dp"
-                android:textSize="18sp"
                 android:layout_marginLeft="16dp"
                 android:background="@drawable/line_et_bg"
-                android:hint="话题" />
+                android:hint="话题"
+                android:textSize="18sp" />
 
             <EditText
                 android:id="@+id/newQuestionDescription"
@@ -66,10 +66,10 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:layout_marginTop="38dp"
-                android:textSize="18sp"
                 android:background="@null"
+                android:gravity="start"
                 android:hint="添加问题的补充说明"
-                android:gravity="start" />
+                android:textSize="18sp" />
         </LinearLayout>
     </ScrollView>
 

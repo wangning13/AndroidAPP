@@ -43,6 +43,9 @@ import okhttp3.Request;
  * Created by motoon on 2016/5/6.
  */
 public class QuestionDetailActivity extends AppCompatActivity implements RefreshLayout.OnRefreshListener {
+    public static Handler sHandler = new Handler();
+    String question_id;
+    View header;
     private Context context;
     private RecyclerView mRecyclerView;
     private RefreshLayout mRefreshlayout;
@@ -50,9 +53,6 @@ public class QuestionDetailActivity extends AppCompatActivity implements Refresh
     private QuestionDetailRecycleViewAdapter mAdapter;
     private Activity mActivity;
     private int mPage;
-    String question_id;
-    View header;
-    public static Handler sHandler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

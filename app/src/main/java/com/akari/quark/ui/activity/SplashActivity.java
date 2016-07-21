@@ -14,9 +14,9 @@ import com.akari.quark.entity.Infomation;
  * Created by motoon on 2016/6/1.
  */
 public class SplashActivity extends Activity {
+    private static final String ISCHECKED = "ischecked";
     private final int SPLASH_DISPLAY_LENGHT = 500; // 延迟
     private SharedPreferences sharedPreferences;
-    private static final String ISCHECKED="ischecked";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +24,7 @@ public class SplashActivity extends Activity {
         setContentView(R.layout.splash);
 
         sharedPreferences = getSharedPreferences("userinfo", Context.MODE_WORLD_READABLE);
-        if (sharedPreferences.getBoolean(ISCHECKED,false)){
+        if (sharedPreferences.getBoolean(ISCHECKED, false)) {
             //默认是自动登录状态，直接跳转
             new Handler().postDelayed(new Runnable() {
                 public void run() {
@@ -35,7 +35,7 @@ public class SplashActivity extends Activity {
                 }
 
             }, SPLASH_DISPLAY_LENGHT);
-        }else {
+        } else {
             new Handler().postDelayed(new Runnable() {
                 public void run() {
                     Intent mainIntent = new Intent(SplashActivity.this, LoginActivity.class);

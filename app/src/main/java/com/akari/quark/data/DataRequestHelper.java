@@ -8,7 +8,6 @@ import com.akari.quark.entity.answersInMain.AnswersInMainMessage;
 import com.akari.quark.entity.asksInMain.AsksInMain;
 import com.akari.quark.entity.asksInMain.AsksInMainMessage;
 import com.akari.quark.entity.comment.Comment;
-import com.akari.quark.entity.comment.CommentMessage;
 import com.akari.quark.network.OkHttpManager2;
 import com.akari.quark.util.GsonUtil;
 
@@ -31,7 +30,7 @@ public class DataRequestHelper {
     private static final String API_WATCH_QUESTION = BASE_URL + "/api/question/focus";
     private static final String API_ANSWER_DETAIL = BASE_URL + "/api/answer/detail";
     private static final String API_ADD_ANSWER = BASE_URL + "/api/answer/add";
-    private static final String API_GET_COMMENTS = BASE_URL+ "/api/comment/list";
+    private static final String API_GET_COMMENTS = BASE_URL + "/api/comment/list";
 
     private static final String MAIL_PARAM = "mail";
     private static final String PASSWORD_PARAM = "password";

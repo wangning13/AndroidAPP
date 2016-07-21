@@ -420,15 +420,6 @@ public class OkHttpManager2 {
         return url + "?" + formatParams(params);
     }
 
-    /**
-     * 数据回调接口
-     */
-    public interface DataCallBack {
-        void requestFailure(Request request, IOException e);
-
-        void requestSuccess(String result) throws Exception;
-    }
-
     public static Response sendRequest(Request request) throws ConnectionException, RemoteException {
         return sendRequest(request, true);
     }
@@ -461,5 +452,14 @@ public class OkHttpManager2 {
         } else {
             throw new RequestException(response);
         }
+    }
+
+    /**
+     * 数据回调接口
+     */
+    public interface DataCallBack {
+        void requestFailure(Request request, IOException e);
+
+        void requestSuccess(String result) throws Exception;
     }
 }

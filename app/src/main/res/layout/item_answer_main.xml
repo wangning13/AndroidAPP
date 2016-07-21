@@ -3,9 +3,9 @@
     android:id="@+id/answer_card_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="8dp"
     android:layout_marginLeft="5dp"
     android:layout_marginRight="5dp"
+    android:layout_marginTop="8dp"
     android:background="#DEDEDE"
     android:foreground="?android:attr/selectableItemBackground"
     android:orientation="vertical">
@@ -21,8 +21,8 @@
             android:id="@+id/answer_item_tag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="无标签"
             android:ellipsize="end"
+            android:text="无标签"
             android:textColor="#3C84C1"
             android:textSize="14sp" />
 
@@ -31,10 +31,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
+            android:ellipsize="end"
             android:lineSpacingExtra="1dp"
             android:maxLines="2"
             android:text="为什么国内的Android APP都不愿意遵循Google推出的Material Design设计规范？"
-            android:ellipsize="end"
             android:textColor="#1F1F1F"
             android:textSize="16sp" />
 
@@ -47,8 +47,8 @@
             <TextView
                 android:id="@+id/surf_count"
                 android:layout_width="0dp"
-                android:layout_weight="3"
                 android:layout_height="wrap_content"
+                android:layout_weight="3"
                 android:text="0次浏览"
                 android:textColor="#6B6B6B"
                 android:textSize="14sp" />
@@ -56,8 +56,8 @@
             <TextView
                 android:id="@+id/attention_count"
                 android:layout_width="0dp"
-                android:layout_weight="3"
                 android:layout_height="wrap_content"
+                android:layout_weight="3"
                 android:text="0人关注"
                 android:textColor="#6B6B6B"
                 android:textSize="14sp" />
@@ -65,8 +65,8 @@
             <TextView
                 android:id="@+id/answer_count"
                 android:layout_width="0dp"
-                android:layout_weight="4"
                 android:layout_height="wrap_content"
+                android:layout_weight="4"
                 android:text="0个回答"
                 android:textColor="#6B6B6B"
                 android:textSize="14sp" />

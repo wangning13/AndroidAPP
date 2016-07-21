@@ -12,6 +12,14 @@ public class AppCtx extends Application {
     private EventBus mEventBus;
     private volatile boolean mIsInited;
 
+    public static EventBus getEventBus() {
+        return mInstance.mEventBus;
+    }
+
+    public static AppCtx getInstance() {
+        return mInstance;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -28,14 +36,6 @@ public class AppCtx extends Application {
         // event bus is the first
         mEventBus = new AsyncEventBus(new HandlerExecutor());
         mEventBus.register(this);
-    }
-
-    public static EventBus getEventBus() {
-        return mInstance.mEventBus;
-    }
-
-    public static AppCtx getInstance() {
-        return mInstance;
     }
 
 }

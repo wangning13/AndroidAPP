@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/nav_header_height"
@@ -45,34 +46,36 @@
     </LinearLayout>
 
     <LinearLayout
-        android:padding="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/primary_dark"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="8dp">
 
         <LinearLayout
             android:id="@+id/agree"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:orientation="vertical">
+
             <TextView
-                android:layout_gravity="center_horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="1024"
                 android:textColor="@color/white"
                 android:textSize="@dimen/navigation_medium_textsize"
-                android:textStyle="bold"
-                android:text="1024"/>
+                android:textStyle="bold" />
+
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
                 android:layout_marginTop="2dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:text="被赞"
                 android:textColor="@color/white"
-                android:textSize="@dimen/navigation_medium_textsize"
-                android:text="被赞" />
+                android:textSize="@dimen/navigation_medium_textsize" />
         </LinearLayout>
 
         <LinearLayout
@@ -80,46 +83,50 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <TextView
-                android:layout_gravity="center_horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/navigation_medium_textsize"
+                android:layout_gravity="center_horizontal"
+                android:text="1024"
                 android:textColor="@color/white"
-                android:textStyle="bold"
-                android:text="1024"/>
+                android:textSize="@dimen/navigation_medium_textsize"
+                android:textStyle="bold" />
+
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
                 android:layout_marginTop="2dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:text="关注"
                 android:textColor="@color/white"
-                android:textSize="@dimen/navigation_medium_textsize"
-                android:text="关注" />
+                android:textSize="@dimen/navigation_medium_textsize" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/follower"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:orientation="vertical">
+
             <TextView
-                android:layout_gravity="center_horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="1024"
                 android:textColor="@color/white"
                 android:textSize="@dimen/navigation_medium_textsize"
-                android:textStyle="bold"
-                android:text="1024"/>
+                android:textStyle="bold" />
+
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
                 android:layout_marginTop="2dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:text="粉丝"
                 android:textColor="@color/white"
-                android:textSize="@dimen/navigation_medium_textsize"
-                android:text="粉丝" />
+                android:textSize="@dimen/navigation_medium_textsize" />
         </LinearLayout>
 
     </LinearLayout>

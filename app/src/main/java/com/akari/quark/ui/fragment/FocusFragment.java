@@ -7,7 +7,6 @@ import android.view.View;
 
 import com.akari.quark.R;
 import com.akari.quark.ui.adapter.FocusFragmentPagerAdapter;
-import com.akari.quark.ui.adapter.MainFragmentPagerAdapter;
 
 /**
  * Created by Akari on 16/7/15.

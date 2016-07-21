@@ -16,8 +16,8 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            app:navigationIcon="?attr/homeAsUpIndicator"
-            android:theme="@style/AppTheme.AppBarOverlay">
+            android:theme="@style/AppTheme.AppBarOverlay"
+            app:navigationIcon="?attr/homeAsUpIndicator">
 
             <TextView
                 android:id="@+id/toolbar_title"
@@ -49,13 +49,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/ic_add_white"
         app:backgroundTint="@color/colorPrimary"
-        app:rippleColor="#33728dff"
+        app:borderWidth="0dp"
         app:elevation="12dp"
         app:layout_behavior="com.akari.quark.ui.behavior.ScrollAwareFABBehavior"
         app:pressedTranslationZ="20dp"
-        app:borderWidth="0dp"
-        android:layout_margin="@dimen/fab_margin" />
+        app:rippleColor="#33728dff" />
 
 </android.support.design.widget.CoordinatorLayout>

@@ -16,11 +16,9 @@ import android.widget.Toast;
 
 import com.akari.quark.R;
 import com.akari.quark.ui.adapter.AnswerRecyclerViewAdapter;
-import com.akari.quark.ui.adapter.AskRecyclerViewAdapter;
 import com.akari.quark.ui.adapter.baseAdapter.NewRecyclerViewAdapter;
 import com.akari.quark.ui.listener.OnVerticalScrollListener;
 import com.akari.quark.ui.loader.AnswersInMainListLoader;
-import com.akari.quark.ui.loader.AsksInMainListLoader;
 import com.akari.quark.ui.loader.AsyncTaskLoader;
 import com.hippo.refreshlayout.RefreshLayout;
 

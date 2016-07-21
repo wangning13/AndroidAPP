@@ -14,16 +14,11 @@ import com.akari.quark.util.AppCtx;
 public class DeviceStatus {
     private static final DeviceStatus instance;
 
-    private final ConnectivityManager mConnectivityManager;
-
     static {
         instance = new DeviceStatus(AppCtx.getInstance());
     }
 
-    public static DeviceStatus getInstance() {
-        return instance;
-    }
-
+    private final ConnectivityManager mConnectivityManager;
     private boolean mIsNetworkMetered;
     private boolean mIsNetworkConnected;
 
@@ -37,6 +32,10 @@ public class DeviceStatus {
         }, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 
         updateNetworkStatus();
+    }
+
+    public static DeviceStatus getInstance() {
+        return instance;
     }
 
     private void updateNetworkStatus() {

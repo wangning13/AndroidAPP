@@ -33,14 +33,13 @@ public class LoginActivity extends AppCompatActivity {
     private static final String EMAIL = "email";
     private static final String PWD = "pwd";
     private static final String TOKEN = "token";
-    private Context context;
-    private SharedPreferences sharedPreferences;
-
     EditText emailEdit;
     EditText pwdEdit;
     Button loginButton;
     TextView signupLink;
-    
+    private Context context;
+    private SharedPreferences sharedPreferences;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,8 +53,8 @@ public class LoginActivity extends AppCompatActivity {
         loginButton = (Button) findViewById(R.id.btn_login);
         signupLink = (TextView) findViewById(R.id.link_signup);
 
-        emailEdit.setText(sharedPreferences.getString(EMAIL,""));
-        pwdEdit.setText(sharedPreferences.getString(PWD,""));
+        emailEdit.setText(sharedPreferences.getString(EMAIL, ""));
+        pwdEdit.setText(sharedPreferences.getString(PWD, ""));
 
         loginButton.setOnClickListener(new View.OnClickListener() {
 
@@ -103,27 +102,27 @@ public class LoginActivity extends AppCompatActivity {
         OkHttpManager.DataCallBack dataCallBack = new OkHttpManager.DataCallBack() {
             @Override
             public void requestFailure(Request request, IOException e) {
-                Toast.makeText(context,"登录失败",Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "登录失败", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void requestSuccess(String result) throws Exception {
-                Login login = GsonUtil.GsonToBean(result,Login.class);
+                Login login = GsonUtil.GsonToBean(result, Login.class);
                 Long status = login.getStatus();
                 String errorCode = login.getErrorCode();
                 com.akari.quark.entity.login.Message message = login.getMessage();
-                if(status==1){
+                if (status == 1) {
                     String token = message.getInfo();
-                    Intent intent = new Intent(context,MainActivity.class);
+                    Intent intent = new Intent(context, MainActivity.class);
                     context.startActivity(intent);
                     //写入SharedPreference
-                    sharedPreferences.edit().putBoolean(ISCHECKED,true).apply();
-                    sharedPreferences.edit().putString(EMAIL,email).apply();
-                    sharedPreferences.edit().putString(PWD,pwd).apply();
-                    sharedPreferences.edit().putString(TOKEN,token).apply();
+                    sharedPreferences.edit().putBoolean(ISCHECKED, true).apply();
+                    sharedPreferences.edit().putString(EMAIL, email).apply();
+                    sharedPreferences.edit().putString(PWD, pwd).apply();
+                    sharedPreferences.edit().putString(TOKEN, token).apply();
                     Infomation.loadInfo(context);
                     finish();
-                }else {
+                } else {
                     ErrorNotification.errorNotify(context, Integer.parseInt(errorCode));
                 }
 

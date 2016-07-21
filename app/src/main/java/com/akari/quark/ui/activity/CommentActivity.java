@@ -56,7 +56,7 @@ public class CommentActivity extends AppCompatActivity implements RefreshLayout.
         mPage = 1;
         mAnswerID = getIntent().getLongExtra("answerID", 0);
 
-        mToolbar = (Toolbar)findViewById(R.id.comment_toolbar);
+        mToolbar = (Toolbar) findViewById(R.id.comment_toolbar);
         setSupportActionBar(mToolbar);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -152,14 +152,14 @@ public class CommentActivity extends AppCompatActivity implements RefreshLayout.
 
     @Override
     public void onLoadFinished(Loader<AsyncTaskLoader.LoaderResult<?>> loader, AsyncTaskLoader.LoaderResult<?> data) {
-        if(mPage == 1) {
+        if (mPage == 1) {
             mLayout.setHeaderRefreshing(false);
             if (data.hasException()) {
                 Toast.makeText(mContext, "无法完成加载，请检查网络...", Toast.LENGTH_SHORT).show();
-            } else if (data.mResult == null){
+            } else if (data.mResult == null) {
                 Toast.makeText(mContext, "没有更多了...", Toast.LENGTH_SHORT).show();
                 mPage--;
-            }else{
+            } else {
                 Comment comment = (Comment) data.mResult;
                 if (comment.getStatus() == 1) {
                     mAdapter.setDataSource(comment.getMessageList());
@@ -211,15 +211,15 @@ public class CommentActivity extends AppCompatActivity implements RefreshLayout.
 
             @Override
             public void requestSuccess(String result) throws Exception {
-                CommentResult commentResult = GsonUtil.GsonToBean(result,CommentResult.class);
+                CommentResult commentResult = GsonUtil.GsonToBean(result, CommentResult.class);
                 int status = commentResult.getStatus();
                 int errorCode = commentResult.getError_code();
-                if(status==1){
+                if (status == 1) {
                     mCommentHelper.setContent("");
 
                     mLayout.setHeaderRefreshing(true);
                     onHeaderRefresh();
-                }else{
+                } else {
                     ErrorNotification.errorNotify(mContext, errorCode);
                 }
             }

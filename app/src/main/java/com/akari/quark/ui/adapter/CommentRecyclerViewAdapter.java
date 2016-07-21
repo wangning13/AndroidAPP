@@ -12,8 +12,6 @@ import com.akari.quark.entity.comment.CommentMessage;
 import com.akari.quark.ui.adapter.baseAdapter.NewRecyclerViewAdapter;
 import com.akari.quark.util.DateUtil;
 
-import org.w3c.dom.Text;
-
 import java.util.List;
 
 /**
