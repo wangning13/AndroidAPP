@@ -31,6 +31,7 @@ public class OkHttpManager {
     public static final String API_GET_ALL_ASK_QUESTIONS = BASE_URL + "/api/question/list/ask";
     public static final String API_GET_ALL_ANSWER_QUESTIONS = BASE_URL + "/api/question/list/answer";
     public static final String API_SIGNUP = BASE_URL + "/api/account/register";
+    public static final String API_SIGNUP_WITH_INVITE = BASE_URL + "/api/account/register/invite";
     public static final String API_LOGIN = BASE_URL + "/api/account/login";
     public static final String API_QUESTION_DETAIL = BASE_URL + "/api/question/detail";
     public static final String API_ADD_QUESTION = BASE_URL + "/api/question/add";

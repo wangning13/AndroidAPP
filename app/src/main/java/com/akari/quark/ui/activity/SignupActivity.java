@@ -76,14 +76,23 @@ public class SignupActivity extends AppCompatActivity {
 //        progressDialog.setMessage("Creating Account...");
 //        progressDialog.show();
 
-        String name = _codeText.getText().toString();
+        String code = _codeText.getText().toString();
         EMAIL = _emailText.getText().toString();
         PWD = _passwordText.getText().toString();
 
-        String url = OkHttpManager.API_SIGNUP;
+        String url = "";
         Map<String, String> body = new HashMap<String, String>();
-        body.put("mail", EMAIL);
-        body.put("password", PWD);
+
+        if (code.isEmpty()) { //无邀请码
+            url = OkHttpManager.API_SIGNUP;
+            body.put("mail", EMAIL);
+            body.put("password", PWD);
+        } else { //有邀请码
+            url = OkHttpManager.API_SIGNUP_WITH_INVITE;
+            body.put("mail", EMAIL);
+            body.put("password", PWD);
+            body.put("invite", code);
+        }
 
         OkHttpManager.DataCallBack callback = new OkHttpManager.DataCallBack() {
             @Override
@@ -105,6 +114,8 @@ public class SignupActivity extends AppCompatActivity {
             }
         };
         OkHttpManager.postAsyncNoHeader(url, body, callback);
+
+
 
 //        new android.os.Handler().postDelayed(
 //                new Runnable() {
@@ -135,16 +146,9 @@ public class SignupActivity extends AppCompatActivity {
     public boolean validate() {
         boolean valid = true;
 
-        String name = _codeText.getText().toString();
+//        String code = _codeText.getText().toString();
         String email = _emailText.getText().toString();
         String password = _passwordText.getText().toString();
-
-        if (name.isEmpty()) {
-            _codeText.setError("请输入邀请码");
-            valid = false;
-        } else {
-            _codeText.setError(null);
-        }
 
         if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             _emailText.setError("请输入一个有效的邮箱地址");
