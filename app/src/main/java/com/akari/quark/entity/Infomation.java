@@ -58,7 +58,6 @@ public class Infomation {
                     //写入SharedPreference
                     img_url = message.getImgUrl();
                     name = message.getName();
-                    Toast.makeText(context,name+"haha",Toast.LENGTH_SHORT).show();
                     Infomation.setName(name);
                     introduction = message.getIntroduction();
                     gender = message.getGender().intValue();
