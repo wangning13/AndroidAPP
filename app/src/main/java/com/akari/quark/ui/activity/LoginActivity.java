@@ -13,7 +13,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.akari.quark.R;
-import com.akari.quark.entity.Infomation;
 import com.akari.quark.entity.login.Login;
 import com.akari.quark.network.OkHttpManager;
 import com.akari.quark.ui.tool.ErrorNotification;
@@ -118,10 +117,9 @@ public class LoginActivity extends AppCompatActivity {
                     sharedPreferences.edit().putString(EMAIL, email).apply();
                     sharedPreferences.edit().putString(PWD, pwd).apply();
                     sharedPreferences.edit().putString(TOKEN, token).apply();
-                    Infomation.loadInfo(context);
                     Intent intent = new Intent(context, MainActivity.class);
                     context.startActivity(intent);
-                    LoginActivity.this.finish();
+                    finish();
                 } else {
                     ErrorNotification.errorNotify(context, Integer.parseInt(errorCode));
                 }

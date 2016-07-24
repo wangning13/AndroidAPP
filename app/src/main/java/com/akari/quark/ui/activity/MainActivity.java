@@ -19,10 +19,10 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.akari.quark.R;
 import com.akari.quark.entity.Infomation;
+import com.akari.quark.entity.userDetail.Message;
 import com.akari.quark.ui.fragment.FocusFragment;
 import com.akari.quark.ui.fragment.MainFragment;
 import com.akari.quark.ui.fragment.MessageFragment;
@@ -196,13 +196,14 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void updateUsernameAndIntroduction() {
-//        if (sharedPreferences.getBoolean("ischecked",false)){//未登陆情况
-//            Toast.makeText(context, "未登陆", Toast.LENGTH_SHORT).show();
-//            mAvatar.setVisibility(View.INVISIBLE);
-//            return;
-//        }
-        Toast.makeText(context, Infomation.getName(), Toast.LENGTH_SHORT).show();
-        mUsername.setText(Infomation.getName());
-        mIntroduction.setText(Infomation.getIntroduction());
+        Infomation.DataCallBack dataCallBack = new Infomation.DataCallBack() {
+            @Override
+            public void requestSuccess(Message message) throws Exception {
+                mUsername.setText(message.getName());
+                mIntroduction.setText(message.getIntroduction());
+            }
+        };
+        Infomation.loadInfo(context,dataCallBack);
+
     }
 }

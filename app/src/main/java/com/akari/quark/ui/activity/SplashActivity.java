@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import com.akari.quark.R;
-import com.akari.quark.entity.Infomation;
 
 /**
  * Created by motoon on 2016/6/1.
@@ -31,7 +30,6 @@ public class SplashActivity extends Activity {
                     Intent mainIntent = new Intent(SplashActivity.this, MainActivity.class);
                     SplashActivity.this.startActivity(mainIntent);
                     SplashActivity.this.finish();
-                    Infomation.loadInfo(SplashActivity.this);
                 }
 
             }, SPLASH_DISPLAY_LENGHT);

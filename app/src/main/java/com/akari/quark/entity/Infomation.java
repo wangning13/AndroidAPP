@@ -28,9 +28,8 @@ public class Infomation {
     public static String residence = "";
     public static int profession = -1;
     public static String token = "";
-
-    public static void loadInfo(final Context context) {
-        final SharedPreferences sharedPreferences;
+    public static SharedPreferences sharedPreferences;
+    public static void loadInfo(final Context context, final DataCallBack callback) {
         sharedPreferences = context.getSharedPreferences("userinfo", Context.MODE_WORLD_READABLE);
         token = sharedPreferences.getString(TOKEN, "");
         String url = OkHttpManager.API_USER_DETAIL;
@@ -59,6 +58,8 @@ public class Infomation {
                     //写入SharedPreference
                     img_url = message.getImgUrl();
                     name = message.getName();
+                    Toast.makeText(context,name+"haha",Toast.LENGTH_SHORT).show();
+                    Infomation.setName(name);
                     introduction = message.getIntroduction();
                     gender = message.getGender().intValue();
                     unit = message.getUnit();
@@ -77,6 +78,7 @@ public class Infomation {
                     sharedPreferences.edit().putString("residence", residence).commit();
                     sharedPreferences.edit().putInt("profession", profession).commit();
                     sharedPreferences.edit().putString(TOKEN, token).commit();
+                    callback.requestSuccess(message);
                 } else {
                     if (errorCode.equals("2003")) {
                         Toast.makeText(context, "请求超时", Toast.LENGTH_SHORT).show();
@@ -169,5 +171,11 @@ public class Infomation {
 
     public static void setToken(String token) {
         Infomation.token = token;
+    }
+    /**
+     * 数据回调接口
+     */
+    public interface DataCallBack {
+        void requestSuccess(Message result) throws Exception;
     }
 }
