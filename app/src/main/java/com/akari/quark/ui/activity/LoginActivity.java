@@ -28,7 +28,7 @@ public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
 
-    private static final String ISCHECKED = "ischecked";
+    private static final String ISLOGIN = "islogin";
     private static final String EMAIL = "email";
     private static final String PWD = "pwd";
     private static final String TOKEN = "token";
@@ -113,7 +113,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (status == 1) {
                     String token = message.getInfo();
                     //写入SharedPreference
-                    sharedPreferences.edit().putBoolean(ISCHECKED, true).apply();
+                    sharedPreferences.edit().putBoolean(ISLOGIN, true).apply();
                     sharedPreferences.edit().putString(EMAIL, email).apply();
                     sharedPreferences.edit().putString(PWD, pwd).apply();
                     sharedPreferences.edit().putString(TOKEN, token).apply();

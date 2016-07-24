@@ -13,7 +13,7 @@ import com.akari.quark.R;
  * Created by motoon on 2016/6/1.
  */
 public class SplashActivity extends Activity {
-    private static final String ISLOGIN = "ISLOGIN";
+    private static final String ISLOGIN = "islogin";
     private final int SPLASH_DISPLAY_LENGHT = 500; // 延迟
     private SharedPreferences sharedPreferences;
 
