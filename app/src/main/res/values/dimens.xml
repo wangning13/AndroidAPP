@@ -13,4 +13,5 @@
     <dimen name="navigation_small_textsize">13sp</dimen>
     <dimen name="appbar_elevation">4dp</dimen>
     <dimen name="min_touch_size">48dp</dimen>
+    <dimen name="search_view_inset">5dp</dimen>
 </resources>

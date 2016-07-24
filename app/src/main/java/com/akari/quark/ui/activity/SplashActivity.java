@@ -24,8 +24,9 @@ public class SplashActivity extends Activity {
         setContentView(R.layout.splash);
 
         sharedPreferences = getSharedPreferences("userinfo", Context.MODE_WORLD_READABLE);
-        if (sharedPreferences.getBoolean(ISCHECKED, false)) {
-            //默认是自动登录状态，直接跳转
+//        if (sharedPreferences.getBoolean(ISCHECKED, false)) {
+        if (true) {
+        //默认是自动登录状态，直接跳转
             new Handler().postDelayed(new Runnable() {
                 public void run() {
                     Intent mainIntent = new Intent(SplashActivity.this, MainActivity.class);
