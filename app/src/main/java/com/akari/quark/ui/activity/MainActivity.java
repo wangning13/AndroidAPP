@@ -25,6 +25,7 @@ import com.akari.quark.R;
 import com.akari.quark.entity.Infomation;
 import com.akari.quark.ui.fragment.FocusFragment;
 import com.akari.quark.ui.fragment.MainFragment;
+import com.akari.quark.ui.fragment.MessageFragment;
 import com.akari.quark.ui.fragment.QuestionsAskAndAnswerFragment;
 
 public class MainActivity extends AppCompatActivity
@@ -52,7 +53,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onStart() {
         super.onStart();
-//        updateUsernameAndIntroduction();
+        updateUsernameAndIntroduction();
     }
 
 
@@ -161,8 +162,7 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.nav_message:
                 toolbar.setTitle("消息");
-                Intent intent = new Intent(context, MessageActivity.class);
-                context.startActivity(intent);
+                fragmentManager.beginTransaction().replace(R.id.content,new MessageFragment()).commit();
                 drawerLayout.closeDrawer(navigationView);
                 break;
             case R.id.nav_logout:

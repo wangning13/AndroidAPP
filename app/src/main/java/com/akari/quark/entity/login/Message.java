@@ -1,10 +1,11 @@
 package com.akari.quark.entity.login;
 
 import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 public class Message {
 
-    //    @SerializedName("token")
+    @SerializedName("token")
     @Expose
     private String info;
 

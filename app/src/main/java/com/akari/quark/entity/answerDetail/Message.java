@@ -1,3 +1,4 @@
+
 package com.akari.quark.entity.answerDetail;
 
 import com.google.gson.annotations.Expose;
@@ -52,210 +53,270 @@ public class Message {
     private Boolean isPraised;
 
     /**
-     * @return The id
+     * 
+     * @return
+     *     The id
      */
     public Long getId() {
         return id;
     }
 
     /**
-     * @param id The id
+     * 
+     * @param id
+     *     The id
      */
     public void setId(Long id) {
         this.id = id;
     }
 
     /**
-     * @return The content
+     * 
+     * @return
+     *     The content
      */
     public String getContent() {
         return content;
     }
 
     /**
-     * @param content The content
+     * 
+     * @param content
+     *     The content
      */
     public void setContent(String content) {
         this.content = content;
     }
 
     /**
-     * @return The questionId
+     * 
+     * @return
+     *     The questionId
      */
     public Long getQuestionId() {
         return questionId;
     }
 
     /**
-     * @param questionId The question_id
+     * 
+     * @param questionId
+     *     The question_id
      */
     public void setQuestionId(Long questionId) {
         this.questionId = questionId;
     }
 
     /**
-     * @return The answererId
+     * 
+     * @return
+     *     The answererId
      */
     public Long getAnswererId() {
         return answererId;
     }
 
     /**
-     * @param answererId The answerer_id
+     * 
+     * @param answererId
+     *     The answerer_id
      */
     public void setAnswererId(Long answererId) {
         this.answererId = answererId;
     }
 
     /**
-     * @return The createTime
+     * 
+     * @return
+     *     The createTime
      */
     public Long getCreateTime() {
         return createTime;
     }
 
     /**
-     * @param createTime The create_time
+     * 
+     * @param createTime
+     *     The create_time
      */
     public void setCreateTime(Long createTime) {
         this.createTime = createTime;
     }
 
     /**
-     * @return The deleteFlag
+     * 
+     * @return
+     *     The deleteFlag
      */
     public Long getDeleteFlag() {
         return deleteFlag;
     }
 
     /**
-     * @param deleteFlag The delete_flag
+     * 
+     * @param deleteFlag
+     *     The delete_flag
      */
     public void setDeleteFlag(Long deleteFlag) {
         this.deleteFlag = deleteFlag;
     }
 
     /**
-     * @return The pariseNum
+     * 
+     * @return
+     *     The pariseNum
      */
     public Long getPariseNum() {
         return pariseNum;
     }
 
     /**
-     * @param pariseNum The parise_num
+     * 
+     * @param pariseNum
+     *     The parise_num
      */
     public void setPariseNum(Long pariseNum) {
         this.pariseNum = pariseNum;
     }
 
     /**
-     * @return The commentNum
+     * 
+     * @return
+     *     The commentNum
      */
     public Long getCommentNum() {
         return commentNum;
     }
 
     /**
-     * @param commentNum The comment_num
+     * 
+     * @param commentNum
+     *     The comment_num
      */
     public void setCommentNum(Long commentNum) {
         this.commentNum = commentNum;
     }
 
     /**
-     * @return The downNum
+     * 
+     * @return
+     *     The downNum
      */
     public Long getDownNum() {
         return downNum;
     }
 
     /**
-     * @param downNum The down_num
+     * 
+     * @param downNum
+     *     The down_num
      */
     public void setDownNum(Long downNum) {
         this.downNum = downNum;
     }
 
     /**
-     * @return The collectNum
+     * 
+     * @return
+     *     The collectNum
      */
     public Long getCollectNum() {
         return collectNum;
     }
 
     /**
-     * @param collectNum The collect_num
+     * 
+     * @param collectNum
+     *     The collect_num
      */
     public void setCollectNum(Long collectNum) {
         this.collectNum = collectNum;
     }
 
     /**
-     * @return The readNum
+     * 
+     * @return
+     *     The readNum
      */
     public Long getReadNum() {
         return readNum;
     }
 
     /**
-     * @param readNum The read_num
+     * 
+     * @param readNum
+     *     The read_num
      */
     public void setReadNum(Long readNum) {
         this.readNum = readNum;
     }
 
     /**
-     * @return The writer
+     * 
+     * @return
+     *     The writer
      */
     public Writer getWriter() {
         return writer;
     }
 
     /**
-     * @param writer The writer
+     * 
+     * @param writer
+     *     The writer
      */
     public void setWriter(Writer writer) {
         this.writer = writer;
     }
 
     /**
-     * @return The isCollected
+     * 
+     * @return
+     *     The isCollected
      */
     public Boolean getIsCollected() {
         return isCollected;
     }
 
     /**
-     * @param isCollected The is_collected
+     * 
+     * @param isCollected
+     *     The is_collected
      */
     public void setIsCollected(Boolean isCollected) {
         this.isCollected = isCollected;
     }
 
     /**
-     * @return The isDown
+     * 
+     * @return
+     *     The isDown
      */
     public Boolean getIsDown() {
         return isDown;
     }
 
     /**
-     * @param isDown The is_down
+     * 
+     * @param isDown
+     *     The is_down
      */
     public void setIsDown(Boolean isDown) {
         this.isDown = isDown;
     }
 
     /**
-     * @return The isPraised
+     * 
+     * @return
+     *     The isPraised
      */
     public Boolean getIsPraised() {
         return isPraised;
     }
 
     /**
-     * @param isPraised The is_praised
+     * 
+     * @param isPraised
+     *     The is_praised
      */
     public void setIsPraised(Boolean isPraised) {
         this.isPraised = isPraised;

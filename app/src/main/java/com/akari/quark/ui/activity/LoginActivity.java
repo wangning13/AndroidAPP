@@ -113,15 +113,15 @@ public class LoginActivity extends AppCompatActivity {
                 com.akari.quark.entity.login.Message message = login.getMessage();
                 if (status == 1) {
                     String token = message.getInfo();
-                    Intent intent = new Intent(context, MainActivity.class);
-                    context.startActivity(intent);
                     //写入SharedPreference
                     sharedPreferences.edit().putBoolean(ISCHECKED, true).apply();
                     sharedPreferences.edit().putString(EMAIL, email).apply();
                     sharedPreferences.edit().putString(PWD, pwd).apply();
                     sharedPreferences.edit().putString(TOKEN, token).apply();
                     Infomation.loadInfo(context);
-                    finish();
+                    Intent intent = new Intent(context, MainActivity.class);
+                    context.startActivity(intent);
+                    LoginActivity.this.finish();
                 } else {
                     ErrorNotification.errorNotify(context, Integer.parseInt(errorCode));
                 }

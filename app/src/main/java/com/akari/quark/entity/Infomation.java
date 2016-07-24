@@ -37,7 +37,7 @@ public class Infomation {
         OkHttpManager.DataCallBack dataCallBack = new OkHttpManager.DataCallBack() {
             @Override
             public void requestFailure(Request request, IOException e) {
-//                Toast.makeText(context,"用户信息请求失败",Toast.LENGTH_SHORT).show();
+                Toast.makeText(context,"用户信息请求失败",Toast.LENGTH_SHORT).show();
                 img_url = sharedPreferences.getString("img_url", "default");
                 name = sharedPreferences.getString("name", "暂未登录");
                 introduction = sharedPreferences.getString("introduction", "无");
@@ -60,12 +60,12 @@ public class Infomation {
                     img_url = message.getImgUrl();
                     name = message.getName();
                     introduction = message.getIntroduction();
-                    gender = message.getGender();
+                    gender = message.getGender().intValue();
                     unit = message.getUnit();
                     education = message.getEducation();
                     work = message.getWork();
                     residence = message.getResidence();
-                    profession = message.getProfession();
+                    profession = message.getProfession().intValue();
 
                     sharedPreferences.edit().putString("img_url", img_url).commit();
                     sharedPreferences.edit().putString("name", name).commit();
