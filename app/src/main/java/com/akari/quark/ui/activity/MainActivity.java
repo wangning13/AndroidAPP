@@ -21,7 +21,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.akari.quark.R;
-import com.akari.quark.entity.Infomation;
+import com.akari.quark.entity.Information;
 import com.akari.quark.entity.userDetail.Message;
 import com.akari.quark.ui.fragment.FocusFragment;
 import com.akari.quark.ui.fragment.MainFragment;
@@ -196,14 +196,14 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void updateUsernameAndIntroduction() {
-        Infomation.DataCallBack dataCallBack = new Infomation.DataCallBack() {
+        Information.DataCallBack dataCallBack = new Information.DataCallBack() {
             @Override
             public void requestSuccess(Message message) throws Exception {
                 mUsername.setText(message.getName());
                 mIntroduction.setText(message.getIntroduction());
             }
         };
-        Infomation.loadInfo(context,dataCallBack);
+        Information.loadInfo(context,dataCallBack);
 
     }
 }

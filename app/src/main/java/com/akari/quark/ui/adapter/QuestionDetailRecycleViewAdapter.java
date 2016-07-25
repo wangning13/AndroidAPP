@@ -28,16 +28,25 @@ public class QuestionDetailRecycleViewAdapter extends RecyclerView.Adapter<Quest
     public static final int TYPE_HEADER = 0;
     public static final int TYPE_NORMAL = 1;
     private View mHeaderView;
-    private List<Answer> answerList = new ArrayList<Answer>();
+    private static List<Answer> answerList = new ArrayList<Answer>();
+    private static List<Answer> answerList2 = new ArrayList<Answer>();
     //    private OnItemClickListener mListener;
     private Message message;
+    private com.akari.quark.entity.questionDetailAnswer.Message message1;
     private Context mContext;
     private LayoutInflater mLayoutInflater;
 
-    public QuestionDetailRecycleViewAdapter(Context context, Message message) {
+    public QuestionDetailRecycleViewAdapter(Context context, Message message, com.akari.quark.entity.questionDetailAnswer.Message message1) {
         this.mContext = context;
         this.message = message;
-        answerList = message.getAnswers();
+        this.message1 = message1;
+        if (message != null){
+            answerList = message.getAnswers();
+        }
+        if (message1 != null){
+            answerList2 = message1.getAnswers();
+            answerList.addAll(answerList2);
+        }
         mLayoutInflater = LayoutInflater.from(context);
     }
 
@@ -74,24 +83,41 @@ public class QuestionDetailRecycleViewAdapter extends RecyclerView.Adapter<Quest
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
-        if (position == 0) {
-            holder.questionTitle.setText(message.getTitle());
-            holder.content.setText(message.getContent());
-            holder.focusNum.setText(message.getFocusNum() + "人关注");
-            holder.answerNum.setText(message.getAnswerNum() + "人回答");
-            for (int i = 0; i < message.getTopics().size(); i++) {
-                if (i != message.getTopics().size() - 1) {
-                    holder.topics.setText(message.getTopics().get(i) + "·");
-                } else {
-                    holder.topics.setText(message.getTopics().get(i));
+        if (mHeaderView != null){
+            if (position == 0) {
+                holder.questionTitle.setText(message.getTitle());
+                holder.content.setText(message.getContent());
+                holder.focusNum.setText(message.getFocusNum() + "人关注");
+                holder.answerNum.setText(message.getAnswerNum() + "人回答");
+                for (int i = 0; i < message.getTopics().size(); i++) {
+                    if (i != message.getTopics().size() - 1) {
+                        holder.topics.setText(message.getTopics().get(i) + "·");
+                    } else {
+                        holder.topics.setText(message.getTopics().get(i));
+                    }
                 }
+            } else {
+                holder.context.setText(answerList.get(position - 1).getContent());
+                holder.username.setText(answerList.get(position - 1).getUser().getName());
+                holder.introduction.setText(answerList.get(position - 1).getUser().getIntroduction());
+                holder.praiseNum.setText(answerList.get(position - 1).getPraiseNum() + "");
+                final Long answerId = answerList.get(position - 1).getId();
+                holder.context.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(mContext, AnswerDetailActivity.class);
+                        intent.putExtra("answerId", String.valueOf(answerId));
+                        intent.putExtra("questionTitle", message.getTitle());
+                        mContext.startActivity(intent);
+                    }
+                });
             }
-        } else {
-            holder.context.setText(answerList.get(position - 1).getContent());
-            holder.username.setText(answerList.get(position - 1).getUser().getName());
-            holder.introduction.setText(answerList.get(position - 1).getUser().getIntroduction());
-            holder.praiseNum.setText(answerList.get(position - 1).getPraiseNum() + "");
-            final Long answerId = answerList.get(position - 1).getId();
+        }else {
+            holder.context.setText(answerList.get(position).getContent());
+            holder.username.setText(answerList.get(position).getUser().getName());
+            holder.introduction.setText(answerList.get(position).getUser().getIntroduction());
+            holder.praiseNum.setText(answerList.get(position).getPraiseNum() + "");
+            final Long answerId = answerList.get(position).getId();
             holder.context.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -111,7 +137,7 @@ public class QuestionDetailRecycleViewAdapter extends RecyclerView.Adapter<Quest
 
     @Override
     public int getItemCount() {
-        return mHeaderView == null ? answerList.size() : answerList.size() + 1;
+        return mHeaderView == null ? answerList2.size() : answerList.size() + 1;
     }
 
     /**

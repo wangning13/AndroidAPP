@@ -1,11 +1,9 @@
 
 package com.akari.quark.entity.questionDetailAnswer;
 
-import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-@Generated("org.jsonschema2pojo")
 public class Answer {
 
     @SerializedName("status")

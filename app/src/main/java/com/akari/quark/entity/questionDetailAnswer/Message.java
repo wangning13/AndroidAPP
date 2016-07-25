@@ -3,23 +3,23 @@ package com.akari.quark.entity.questionDetailAnswer;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.annotation.Generated;
+
+import com.akari.quark.entity.questionDetail.*;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-@Generated("org.jsonschema2pojo")
 public class Message {
 
     @SerializedName("answers")
     @Expose
-    private List<Answer_> answers = new ArrayList<Answer_>();
+    private List<com.akari.quark.entity.questionDetail.Answer> answers = new ArrayList<com.akari.quark.entity.questionDetail.Answer>();
 
     /**
      * 
      * @return
      *     The answers
      */
-    public List<Answer_> getAnswers() {
+    public List<com.akari.quark.entity.questionDetail.Answer> getAnswers() {
         return answers;
     }
 
@@ -28,7 +28,7 @@ public class Message {
      * @param answers
      *     The answers
      */
-    public void setAnswers(List<Answer_> answers) {
+    public void setAnswers(List<com.akari.quark.entity.questionDetail.Answer> answers) {
         this.answers = answers;
     }
 

@@ -16,7 +16,7 @@ import okhttp3.Request;
 /**
  * Created by motoon on 2016/7/16.
  */
-public class Infomation {
+public class Information {
     private static final String TOKEN = "token";
     public static String img_url = "";
     public static String name = "";
@@ -58,7 +58,7 @@ public class Infomation {
                     //写入SharedPreference
                     img_url = message.getImgUrl();
                     name = message.getName();
-                    Infomation.setName(name);
+                    Information.setName(name);
                     introduction = message.getIntroduction();
                     gender = message.getGender().intValue();
                     unit = message.getUnit();
@@ -97,7 +97,7 @@ public class Infomation {
     }
 
     public static void setImg_url(String img_url) {
-        Infomation.img_url = img_url;
+        Information.img_url = img_url;
     }
 
     public static String getName() {
@@ -105,7 +105,7 @@ public class Infomation {
     }
 
     public static void setName(String name) {
-        Infomation.name = name;
+        Information.name = name;
     }
 
     public static String getIntroduction() {
@@ -113,7 +113,7 @@ public class Infomation {
     }
 
     public static void setIntroduction(String introduction) {
-        Infomation.introduction = introduction;
+        Information.introduction = introduction;
     }
 
     public static int getGender() {
@@ -121,7 +121,7 @@ public class Infomation {
     }
 
     public static void setGender(int gender) {
-        Infomation.gender = gender;
+        Information.gender = gender;
     }
 
     public static String getUnit() {
@@ -129,7 +129,7 @@ public class Infomation {
     }
 
     public static void setUnit(String unit) {
-        Infomation.unit = unit;
+        Information.unit = unit;
     }
 
     public static String getEducation() {
@@ -137,7 +137,7 @@ public class Infomation {
     }
 
     public static void setEducation(String education) {
-        Infomation.education = education;
+        Information.education = education;
     }
 
     public static String getWork() {
@@ -145,7 +145,7 @@ public class Infomation {
     }
 
     public static void setWork(String work) {
-        Infomation.work = work;
+        Information.work = work;
     }
 
     public static String getResidence() {
@@ -153,7 +153,7 @@ public class Infomation {
     }
 
     public static void setResidence(String residence) {
-        Infomation.residence = residence;
+        Information.residence = residence;
     }
 
     public static int getProfession() {
@@ -161,7 +161,7 @@ public class Infomation {
     }
 
     public static void setProfession(int profession) {
-        Infomation.profession = profession;
+        Information.profession = profession;
     }
 
     public static String getToken() {
@@ -169,7 +169,7 @@ public class Infomation {
     }
 
     public static void setToken(String token) {
-        Infomation.token = token;
+        Information.token = token;
     }
     /**
      * 数据回调接口

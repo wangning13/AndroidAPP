@@ -22,9 +22,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.akari.quark.R;
+import com.akari.quark.entity.Information;
 import com.akari.quark.entity.post.Post;
 import com.akari.quark.entity.questionDetail.Message;
 import com.akari.quark.entity.questionDetail.QuestionDetail;
+import com.akari.quark.entity.questionDetailAnswer.Answer;
 import com.akari.quark.network.OkHttpManager;
 import com.akari.quark.ui.adapter.QuestionDetailRecycleViewAdapter;
 import com.akari.quark.ui.view.DividerLine;
@@ -127,7 +129,7 @@ public class QuestionDetailActivity extends AppCompatActivity implements Refresh
                     Toast.makeText(context, "网络连接失败请重新尝试...", Toast.LENGTH_SHORT).show();
                 } else {
                     Message message = questinoDetail.getMessage();
-                    mAdapter = new QuestionDetailRecycleViewAdapter(context, message);
+                    mAdapter = new QuestionDetailRecycleViewAdapter(context, message,null);
                     mRecyclerView.setAdapter(mAdapter);
                     mAdapter.setHeaderView(header);
 
@@ -185,7 +187,6 @@ public class QuestionDetailActivity extends AppCompatActivity implements Refresh
 
                                     @Override
                                     public void requestSuccess(String result) throws Exception {
-//                                          Toast.makeText(context,result,Toast.LENGTH_SHORT).show();
                                         Post post = GsonUtil.GsonToBean(result, Post.class);
                                         Long status = post.getStatus();
                                         String errorCode = post.getErrorCode();
@@ -216,7 +217,6 @@ public class QuestionDetailActivity extends AppCompatActivity implements Refresh
 
                                     @Override
                                     public void requestSuccess(String result) throws Exception {
-//                                          Toast.makeText(context,result,Toast.LENGTH_SHORT).show();
                                         Post post = GsonUtil.GsonToBean(result, Post.class);
                                         Long status = post.getStatus();
                                         String errorCode = post.getErrorCode();
@@ -257,7 +257,7 @@ public class QuestionDetailActivity extends AppCompatActivity implements Refresh
                 String url1 = OkHttpManager.attachHttpGetParam(url, "question_id", question_id);
                 String urlDetail = url1 + "&answer_page=" + mPage;
                 String key = OkHttpManager.X_ACCESS_TOKEN;
-                String token = OkHttpManager.TEMP_X_ACCESS_TOKEN;
+                String token = Information.token;
                 OkHttpManager.DataCallBack datacallback = new OkHttpManager.DataCallBack() {
                     @Override
                     public void requestFailure(Request request, IOException e) {
@@ -269,7 +269,7 @@ public class QuestionDetailActivity extends AppCompatActivity implements Refresh
                         QuestionDetail questinoDetail = GsonUtil.GsonToBean(result, QuestionDetail.class);
                         Message message = questinoDetail.getMessage();
                         mAdapter.notifyDataSetChanged();
-                        mAdapter = new QuestionDetailRecycleViewAdapter(context, message);
+                        mAdapter = new QuestionDetailRecycleViewAdapter(context, message,null);
                         mRecyclerView.setAdapter(mAdapter);
                         mAdapter.setHeaderView(header);
 
@@ -304,10 +304,39 @@ public class QuestionDetailActivity extends AppCompatActivity implements Refresh
         sHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                mRefreshlayout.setFooterRefreshing(false);
                 mPage++;
+                if (mPage == 2){
+                    mRecyclerView.scrollToPosition(9);
+                }else {
+                    mRecyclerView.scrollToPosition(10);
+                }
 
-//                Log.v("QuestionDetail",mPage);
+                mRefreshlayout.setFooterRefreshing(false);
+                String url = OkHttpManager.API_QUESTION_DETAIL;
+                String url1 = OkHttpManager.attachHttpGetParam(url, "question_id", question_id);
+                String urlDetail = url1 + "&answer_page=" + mPage;
+                String key = OkHttpManager.X_ACCESS_TOKEN;
+                String token = Information.token;
+                OkHttpManager.DataCallBack datacallback = new OkHttpManager.DataCallBack() {
+                    @Override
+                    public void requestFailure(Request request, IOException e) {
+                        Toast.makeText(context, "无法访问", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void requestSuccess(String result) throws Exception {
+                        Answer answer = GsonUtil.GsonToBean(result, Answer.class);
+                        com.akari.quark.entity.questionDetailAnswer.Message message1 = answer.getMessage();
+                        if (message1.getAnswers().size()==0){
+                            Toast.makeText(context, "没有更多了", Toast.LENGTH_SHORT).show();
+                        }else {
+//                            mAdapter.notifyDataSetChanged();
+                            mAdapter = new QuestionDetailRecycleViewAdapter(context, null,message1);
+                            mRecyclerView.setAdapter(mAdapter);
+                        }
+                    }
+                };
+                OkHttpManager.getAsync(urlDetail, datacallback, key, token);
             }
         }, 0);
     }
