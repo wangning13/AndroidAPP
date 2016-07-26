@@ -37,6 +37,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import okhttp3.Request;
@@ -55,6 +56,9 @@ public class QuestionDetailActivity extends AppCompatActivity implements Refresh
     private QuestionDetailRecycleViewAdapter mAdapter;
     private Activity mActivity;
     private int mPage;
+    private List<com.akari.quark.entity.questionDetail.Answer> answerList;
+    private static String title;
+    private static float scrollY;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +68,158 @@ public class QuestionDetailActivity extends AppCompatActivity implements Refresh
         mActivity = this;
         mPage = 1;
 
+        setFloatingActionButton();
 
+        mRecyclerView = (RecyclerView) findViewById(R.id.answer_list);
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                scrollY = mRecyclerView.getScrollY();
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+        });
+        setRefreshLayout();
+        mRecyclerView.addItemDecoration(new DividerLine(DividerLine.VERTICAL, 3, 0xFFDDDDDD));
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mRefreshlayout.setOnRefreshListener(this);
+        mLinearLayoutManager = new LinearLayoutManager(this);
+
+        //每个item高度一致，可设置为true，提高性能
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setLayoutManager(mLinearLayoutManager);
+
+        setHeader();
+
+
+    }
+
+    @Override
+    public void onHeaderRefresh() {
+        int times = 1000;
+        sHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mPage = 1;
+                mRecyclerView.scrollToPosition(0);
+                mRefreshlayout.setHeaderRefreshing(false);
+
+                String url = OkHttpManager.API_QUESTION_DETAIL;
+                String url1 = OkHttpManager.attachHttpGetParam(url, "question_id", question_id);
+                String urlDetail = url1 + "&answer_page=" + mPage;
+                String key = OkHttpManager.X_ACCESS_TOKEN;
+                String token = Information.token;
+                OkHttpManager.DataCallBack datacallback = new OkHttpManager.DataCallBack() {
+                    @Override
+                    public void requestFailure(Request request, IOException e) {
+                        Toast.makeText(context, "无法访问", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void requestSuccess(String result) throws Exception {
+                        QuestionDetail questinoDetail = GsonUtil.GsonToBean(result, QuestionDetail.class);
+                        Message message = questinoDetail.getMessage();
+                        mAdapter.notifyDataSetChanged();
+                        answerList = message.getAnswers();
+                        title = message.getTitle();
+                        mAdapter = new QuestionDetailRecycleViewAdapter(context,title);
+                        mAdapter.addDatas(answerList);
+                        mRecyclerView.setAdapter(mAdapter);
+                        mAdapter.setHeaderView(header);
+
+                        Long create_time = message.getCreateTime();
+                        SimpleDateFormat sdf = null;
+                        Date date = null;
+                        try {
+                            sdf = new SimpleDateFormat("MM月dd日创建");
+                            date = new Date(create_time);
+                            Toolbar toolbar = (Toolbar) findViewById(R.id.id_tool_bar);
+                            toolbar.setTitle(sdf.format(date));
+                            setSupportActionBar(toolbar);
+                            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    onBackPressed();
+                                }
+                            });
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                };
+                OkHttpManager.getAsync(urlDetail, datacallback, key, token);
+            }
+        }, times);
+    }
+
+    @Override
+    public void onFooterRefresh() {
+        sHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                mPage++;
+                mRefreshlayout.setFooterRefreshing(false);
+                String url = OkHttpManager.API_QUESTION_DETAIL;
+                String url1 = OkHttpManager.attachHttpGetParam(url, "question_id", question_id);
+                String urlDetail = url1 + "&answer_page=" + mPage;
+                String key = OkHttpManager.X_ACCESS_TOKEN;
+                String token = Information.token;
+                OkHttpManager.DataCallBack datacallback = new OkHttpManager.DataCallBack() {
+                    @Override
+                    public void requestFailure(Request request, IOException e) {
+                        Toast.makeText(context, "无法访问", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void requestSuccess(String result) throws Exception {
+                        Answer answer = GsonUtil.GsonToBean(result, Answer.class);
+                        com.akari.quark.entity.questionDetailAnswer.Message message1 = answer.getMessage();
+//                        answerList.addAll(message1.getAnswers());
+                        if (message1.getAnswers().size()==0){
+                            Toast.makeText(context, "没有更多了", Toast.LENGTH_SHORT).show();
+                        }else {
+                            mAdapter.addDatas(message1.getAnswers());
+                        }
+                    }
+                };
+                OkHttpManager.getAsync(urlDetail, datacallback, key, token);
+            }
+        }, 10);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void setRefreshLayout() {
+        mRefreshlayout = (RefreshLayout) findViewById(R.id.swipe_container);
+        mRefreshlayout.setHeaderColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light, android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+        mRefreshlayout.setFooterColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light, android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+    }
+
+    private void setFloatingActionButton() {
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_question_detail);
         if (fab != null) {
             fab.setOnClickListener(new View.OnClickListener() {
@@ -82,24 +237,9 @@ public class QuestionDetailActivity extends AppCompatActivity implements Refresh
                 }
             });
         }
+    }
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.answer_list);
-        mRefreshlayout = (RefreshLayout) findViewById(R.id.swipe_container);
-        mRefreshlayout.setHeaderColorSchemeResources(android.R.color.holo_blue_bright,
-                android.R.color.holo_green_light, android.R.color.holo_orange_light,
-                android.R.color.holo_red_light);
-        mRefreshlayout.setFooterColorSchemeResources(android.R.color.holo_blue_bright,
-                android.R.color.holo_green_light, android.R.color.holo_orange_light,
-                android.R.color.holo_red_light);
-        mRecyclerView.addItemDecoration(new DividerLine(DividerLine.VERTICAL, 3, 0xFFDDDDDD));
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mRefreshlayout.setOnRefreshListener(this);
-        mLinearLayoutManager = new LinearLayoutManager(this);
-
-        //每个item高度一致，可设置为true，提高性能
-        mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setLayoutManager(mLinearLayoutManager);
-
+    private void setHeader() {
         header = LayoutInflater.from(context).inflate(R.layout.question_headerview, mRecyclerView, false);
         final Button button = (Button) header.findViewById(R.id.concern_button);
         TextView item_tag = (TextView) header.findViewById(R.id.topic);
@@ -129,9 +269,34 @@ public class QuestionDetailActivity extends AppCompatActivity implements Refresh
                     Toast.makeText(context, "网络连接失败请重新尝试...", Toast.LENGTH_SHORT).show();
                 } else {
                     Message message = questinoDetail.getMessage();
-                    mAdapter = new QuestionDetailRecycleViewAdapter(context, message,null);
+                    answerList = message.getAnswers();
+                    title = message.getTitle();
+                    mAdapter = new QuestionDetailRecycleViewAdapter(context,title);
+                    mAdapter.addDatas(answerList);
                     mRecyclerView.setAdapter(mAdapter);
                     mAdapter.setHeaderView(header);
+
+                    TextView questionTitle;
+                    TextView content;
+                    TextView focusNum;
+                    TextView answerNum;
+                    TextView topics;
+                    questionTitle = (TextView) header.findViewById(R.id.quetion_detail_title);
+                    content = (TextView) header.findViewById(R.id.content);
+                    focusNum = (TextView) header.findViewById(R.id.focus_num);
+                    answerNum = (TextView) header.findViewById(R.id.answer_num);
+                    topics = (TextView) header.findViewById(R.id.topic);
+                    questionTitle.setText(message.getTitle());
+                    content.setText(message.getContent());
+                    focusNum.setText(message.getFocusNum() + "人关注");
+                    answerNum.setText(message.getAnswerNum() + "人回答");
+                    for (int i = 0; i < message.getTopics().size(); i++) {
+                        if (i != message.getTopics().size() - 1) {
+                            topics.setText(message.getTopics().get(i) + "·");
+                        } else {
+                            topics.setText(message.getTopics().get(i));
+                        }
+                    }
 
                     Long create_time = message.getCreateTime();
                     SimpleDateFormat sdf = null;
@@ -236,132 +401,15 @@ public class QuestionDetailActivity extends AppCompatActivity implements Refresh
             }
         };
         OkHttpManager.getAsync(urlDetail, datacallback, key, token);
-
     }
 
-    @Override
-    public void onHeaderRefresh() {
-        int times = 0;
-        refreshData(times);
+    private int getScrollY() {
+        View firstVisibleItem = mRecyclerView.getChildAt(0);
+        int firstItemPosition = mLinearLayoutManager.findFirstVisibleItemPosition();
+        int itemCount = mLinearLayoutManager.getItemCount();
+        int recyclerviewHeight = mRecyclerView.getHeight();
+        int itemHeight = firstVisibleItem.getHeight();
+        int firstItemBottom = mLinearLayoutManager.getDecoratedBottom(firstVisibleItem);
+        return (itemCount - firstItemPosition - 1) * itemHeight - recyclerviewHeight + firstItemBottom;
     }
-
-    private void refreshData(int times) {
-        sHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mPage = 1;
-                mRecyclerView.scrollToPosition(0);
-                mRefreshlayout.setHeaderRefreshing(false);
-
-                String url = OkHttpManager.API_QUESTION_DETAIL;
-                String url1 = OkHttpManager.attachHttpGetParam(url, "question_id", question_id);
-                String urlDetail = url1 + "&answer_page=" + mPage;
-                String key = OkHttpManager.X_ACCESS_TOKEN;
-                String token = Information.token;
-                OkHttpManager.DataCallBack datacallback = new OkHttpManager.DataCallBack() {
-                    @Override
-                    public void requestFailure(Request request, IOException e) {
-                        Toast.makeText(context, "无法访问", Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void requestSuccess(String result) throws Exception {
-                        QuestionDetail questinoDetail = GsonUtil.GsonToBean(result, QuestionDetail.class);
-                        Message message = questinoDetail.getMessage();
-                        mAdapter.notifyDataSetChanged();
-                        mAdapter = new QuestionDetailRecycleViewAdapter(context, message,null);
-                        mRecyclerView.setAdapter(mAdapter);
-                        mAdapter.setHeaderView(header);
-
-                        Long create_time = message.getCreateTime();
-                        SimpleDateFormat sdf = null;
-                        Date date = null;
-                        try {
-                            sdf = new SimpleDateFormat("MM月dd日创建");
-                            date = new Date(create_time);
-                            Toolbar toolbar = (Toolbar) findViewById(R.id.id_tool_bar);
-                            toolbar.setTitle(sdf.format(date));
-                            setSupportActionBar(toolbar);
-                            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    onBackPressed();
-                                }
-                            });
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                };
-                OkHttpManager.getAsync(urlDetail, datacallback, key, token);
-            }
-        }, times);
-    }
-
-
-    @Override
-    public void onFooterRefresh() {
-        sHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mPage++;
-                if (mPage == 2){
-                    mRecyclerView.scrollToPosition(9);
-                }else {
-                    mRecyclerView.scrollToPosition(10);
-                }
-
-                mRefreshlayout.setFooterRefreshing(false);
-                String url = OkHttpManager.API_QUESTION_DETAIL;
-                String url1 = OkHttpManager.attachHttpGetParam(url, "question_id", question_id);
-                String urlDetail = url1 + "&answer_page=" + mPage;
-                String key = OkHttpManager.X_ACCESS_TOKEN;
-                String token = Information.token;
-                OkHttpManager.DataCallBack datacallback = new OkHttpManager.DataCallBack() {
-                    @Override
-                    public void requestFailure(Request request, IOException e) {
-                        Toast.makeText(context, "无法访问", Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void requestSuccess(String result) throws Exception {
-                        Answer answer = GsonUtil.GsonToBean(result, Answer.class);
-                        com.akari.quark.entity.questionDetailAnswer.Message message1 = answer.getMessage();
-                        if (message1.getAnswers().size()==0){
-                            Toast.makeText(context, "没有更多了", Toast.LENGTH_SHORT).show();
-                        }else {
-//                            mAdapter.notifyDataSetChanged();
-                            mAdapter = new QuestionDetailRecycleViewAdapter(context, null,message1);
-                            mRecyclerView.setAdapter(mAdapter);
-                        }
-                    }
-                };
-                OkHttpManager.getAsync(urlDetail, datacallback, key, token);
-            }
-        }, 0);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-
 }
