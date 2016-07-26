@@ -27,6 +27,7 @@
         <activity android:name=".ui.activity.CommentActivity" />
         <activity android:name=".ui.activity.FollowActivity" />
         <activity android:name=".ui.activity.SearchActivity" />
+        <activity android:name=".ui.activity.FieldDetailActivity" />
         <activity
             android:name=".ui.activity.LoginActivity"
             android:theme="@style/AppTheme.Login" />

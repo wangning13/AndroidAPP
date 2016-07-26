@@ -1,6 +1,8 @@
 package com.akari.quark.ui.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +11,10 @@ import android.widget.TextView;
 
 import com.akari.quark.R;
 import com.akari.quark.entity.follow.FollowMessage;
+import com.akari.quark.entity.questionDetail.QuestionDetail;
+import com.akari.quark.ui.activity.AnswerDetailActivity;
+import com.akari.quark.ui.activity.FieldDetailActivity;
+import com.akari.quark.ui.activity.QuestionDetailActivity;
 import com.akari.quark.ui.adapter.baseAdapter.NewRecyclerViewAdapter;
 
 import java.util.List;
@@ -19,8 +25,10 @@ import java.util.List;
 public class FollowRecyclerViewAdapter extends NewRecyclerViewAdapter<FollowRecyclerViewAdapter.NormalViewHolder> {
     private LayoutInflater mLayoutInflater;
     private List<FollowMessage> mData;
+    private Context mContext;
 
     public FollowRecyclerViewAdapter(Context context) {
+        mContext = context;
         mLayoutInflater = LayoutInflater.from(context);
         setHasStableIds(true);
     }
@@ -38,7 +46,13 @@ public class FollowRecyclerViewAdapter extends NewRecyclerViewAdapter<FollowRecy
     public void onBindViewHolder(NormalViewHolder holder, final int position) {
         final FollowMessage follow = mData.get(position);
         holder.fillData(follow);
-//        holder.setListener(mContext, comment);
+        holder.mview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(mContext, FieldDetailActivity.class);
+                mContext.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -70,11 +84,13 @@ public class FollowRecyclerViewAdapter extends NewRecyclerViewAdapter<FollowRecy
     }
 
     public static class NormalViewHolder extends RecyclerView.ViewHolder {
+        private final View mview;
         private final TextView mUsername;
         private final TextView mIntroduction;
 
         public NormalViewHolder(View itemView) {
             super(itemView);
+            mview = (View) itemView.findViewById(R.id.item_user);
             mUsername = (TextView) itemView.findViewById(R.id.username);
             mIntroduction = (TextView) itemView.findViewById(R.id.introduction);
         }

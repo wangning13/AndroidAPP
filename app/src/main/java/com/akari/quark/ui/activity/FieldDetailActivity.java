@@ -71,6 +71,7 @@ public class FieldDetailActivity extends AppCompatActivity implements RefreshLay
         setHeader();
     }
 
+    
     private void setHeader() {
         header = LayoutInflater.from(context).inflate(R.layout.field_detail_headerview, mRecyclerView, false);
         for (int i=0;i<10;i++){
